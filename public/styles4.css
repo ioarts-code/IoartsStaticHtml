@@ -34,6 +34,68 @@ body { background: #0f0f0f; color: #c8c8c8; font-family: "Inter", "Inter:Bold", 
 img { display: block; max-width: 100%; }
 button { cursor: pointer; background: none; border: none; font-family: inherit; }
 
+.vertical-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 72px;
+  width: 42px;
+  height: 100vh;
+  padding: 36px 0 28px;
+  color: #fff;
+}
+
+.vertical-menu a {
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-decoration: none;
+  text-transform: uppercase;
+  white-space: nowrap;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+.vertical-menu__brand {
+  font-size: 14px;
+  letter-spacing: 2px;
+}
+
+.vertical-menu__links {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  gap: 42px;
+  justify-content: flex-start;
+}
+
+.vertical-menu a:hover {
+  color: #74d5ff;
+}
+
+.vertical-menu__dots {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: center;
+  padding: 0;
+  color: #fff;
+}
+
+.vertical-menu__dots span {
+  display: block;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #fff;
+}
+
 /* ── Hero ── */
 .hero {
   position: relative;
@@ -375,6 +437,8 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
 }
 
 @media (max-width: 720px) {
+  .vertical-menu { display: none; }
+
   .hero {
     height: 760px;
     min-height: 760px;
