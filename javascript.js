@@ -42,6 +42,10 @@ const heroCarousel = document.getElementById('hero-carousel');
 
 const FEATURED_PRODUCT_SLUGS = ['t-shirt-queens', 't-shirt-elden', 'for-the-horde'];
 
+function getProductUrl(slug) {
+  return `/products/${encodeURIComponent(slug || '')}`;
+}
+
 function getFeaturedProducts(products) {
   const order = new Map(FEATURED_PRODUCT_SLUGS.map((slug, index) => [slug, index]));
   return (products || [])
@@ -74,7 +78,7 @@ function renderFeaturedHero(products) {
               <span class="label">${getProductCategory(product)}</span>
               <h1 class="hero__title">${product?.name || 'Featured product'}</h1>
               ${product?.description ? `<p class="hero__desc">${product.description}</p>` : ''}
-              <a href="product.html?slug=${encodeURIComponent(product.slug || '')}" class="hero__btn">View</a>
+              <a href="${getProductUrl(product.slug)}" class="hero__btn">View</a>
             </div>
           </article>
         `;
@@ -140,11 +144,11 @@ function renderProducts(products) {
 
       return `
         <article class="card">
-          <a class="card__img" href="product.html?slug=${encodeURIComponent(productSlug)}">
+          <a class="card__img" href="${getProductUrl(productSlug)}">
             <img class="card__shadow" src="${imageUrl || 'https://placehold.co/800x1000/171717/a2a2a2?text=IOARTS'}" alt="">
             <img class="card__art" src="${hoverImageUrl || 'https://placehold.co/800x1000/171717/a2a2a2?text=Product'}" alt="${product?.name || 'Product image'}">
           </a>
-          <a class="card__label" href="product.html?slug=${encodeURIComponent(productSlug)}"><p class="card__name">${product?.name || 'Unnamed product'}</p></a>
+          <a class="card__label" href="${getProductUrl(productSlug)}"><p class="card__name">${product?.name || 'Unnamed product'}</p></a>
           <p class="card__tags">${getProductCategory(product)} / ${tags} / ${Number(product?.price) > 0 ? formatPrice(product.price) : 'FREE'}</p>
         </article>
       `;
@@ -354,16 +358,20 @@ window.BASIC_IOARTS = {
   fetchProductBySlug,
 };
 
-const currentPath = window.location.pathname.split('/').pop() || 'index.html';
-if (currentPath === 'product.html') {
-  const slug = new URLSearchParams(window.location.search).get('slug');
-  if (slug) {
-    fetchProductBySlug(slug);
-  } else {
-    const detailContainer = document.getElementById('product-detail');
-    if (detailContainer) {
-      detailContainer.innerHTML = '<div class="empty-state">No product was selected.</div>';
-    }
+const currentPath = window.location.pathname;
+const productPathMatch = currentPath.match(/^\/products\/([^/]+)\/?$/);
+const slug = productPathMatch
+  ? decodeURIComponent(productPathMatch[1])
+  : currentPath.endsWith('/product.html')
+    ? new URLSearchParams(window.location.search).get('slug')
+    : null;
+
+if (slug) {
+  fetchProductBySlug(slug);
+} else if (currentPath.endsWith('/product.html')) {
+  const detailContainer = document.getElementById('product-detail');
+  if (detailContainer) {
+    detailContainer.innerHTML = '<div class="empty-state">No product was selected.</div>';
   }
 } else {
   fetchProductsFromHygraph();
