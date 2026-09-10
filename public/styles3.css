@@ -1,0 +1,295 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #0f0f0f;
+  color: #a2a2a2;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Outer scaler so the design fits any viewport */
+.page-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.page {
+  position: relative;
+  width: 1920px;
+  height: 1000px;
+  background-color: #0f0f0f;
+  overflow: hidden;
+}
+
+.detail-loading,
+.empty-state {
+  padding: 72px 376px;
+  color: #a2a2a2;
+  font-size: 16px;
+}
+
+/* ── Back to Home ── */
+.back-link {
+  position: absolute;
+  left: 376px;
+  top: 72px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 207px;
+  height: 54px;
+  padding: 0 18px;
+  border: 2.5px solid #a2a2a2;
+  border-radius: 9999px;
+  text-decoration: none;
+  color: #a2a2a2;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.35px;
+  text-transform: uppercase;
+}
+
+.arrow-circle {
+  width: 32px;
+  height: 32px;
+  border: 2px solid #a2a2a2;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ── Product image (t-shirt) ── */
+.product-image {
+  position: absolute;
+  left: 748.8px;
+  right: 148.8px;
+  top: -11px;
+  /* aspect-ratio maintained by keeping height auto */
+}
+
+.product-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ── Navigation arrows ── */
+.nav-btn {
+  position: absolute;
+  width: 120px;
+  height: 40px;
+  top: 549px;
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid #a2a2a2;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.35;
+  cursor: pointer;
+}
+
+.nav-btn.prev { left: 976px; }
+.nav-btn.next { left: 1488px; }
+
+/* ── Title ── */
+.title {
+  position: absolute;
+  left: 376px;
+  top: 200px;
+  font-weight: 700;
+  font-size: 128px;
+  line-height: 112.64px;
+  letter-spacing: 5.4px;
+  text-transform: uppercase;
+  color: #a2a2a2;
+}
+
+/* ── Price ── */
+.price-section {
+  position: absolute;
+  left: 376px;
+  top: 455px;
+  padding-bottom: 8px;
+  border-bottom: 4px solid #949494;
+}
+
+.price {
+  font-weight: 600;
+  font-size: 48px;
+  line-height: 48px;
+  color: #a2a2a2;
+  display: block;
+}
+
+/* ── Description ── */
+.description {
+  position: absolute;
+  left: 376px;
+  top: 440px;
+  width: 550px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 26px;
+  color: #c8c8c8;
+}
+
+/* ── Action buttons ── */
+.buttons-row {
+  position: absolute;
+  left: 376px;
+  top: 540px;
+  display: flex;
+  gap: 20px;
+}
+
+.btn {
+  height: 50px;
+  padding: 0 28px;
+  border: 2.5px solid #a2a2a2;
+  border-radius: 9999px;
+  background: transparent;
+  color: #a2a2a2;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Metadata ── */
+.meta {
+  position: absolute;
+  left: 376px;
+  top: 630px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.meta-line {
+  font-weight: 700;
+  font-size: 14px;
+  color: #a2a2a2;
+  letter-spacing: -0.24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #a2a2a2;
+  border-radius: 9999px;
+  padding: 0 10px;
+  height: 28px;
+  font-weight: 900;
+  font-size: 11px;
+  letter-spacing: 0.275px;
+  color: #000;
+}
+
+/* ── Color swatches ── */
+.colors-row {
+  position: absolute;
+  left: 376px;
+  top: 750px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 28px;
+}
+
+.colors-label {
+  font-weight: 700;
+  font-size: 14px;
+  color: #a2a2a2;
+  letter-spacing: -0.24px;
+}
+
+.color-swatch {
+  width: 28px;
+  height: 28px;
+  border-radius: 9999px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.color-swatch.black {
+  background-color: #000;
+  border: 2px solid #74d5ff;
+  outline: 2px solid rgba(116, 213, 255, 0.4);
+  outline-offset: 0;
+}
+
+.color-swatch.selected {
+  outline: 2px solid #74d5ff;
+  outline-offset: 2px;
+}
+
+.color-swatch.white {
+  background-color: #fff;
+  border: 2px solid #a2a2a2;
+}
+
+@media (max-width: 1100px) {
+  .page {
+    width: 100vw;
+    min-width: 680px;
+    min-height: 100vh;
+    height: auto;
+  }
+
+  .back-link,
+  .title,
+  .price-section,
+  .description,
+  .buttons-row,
+  .meta,
+  .colors-row {
+    left: 6vw;
+  }
+
+  .product-image {
+    left: 42vw;
+    right: 4vw;
+  }
+
+  .title {
+    top: 180px;
+    font-size: clamp(64px, 10vw, 128px);
+  }
+
+  .description {
+    width: 30vw;
+  }
+
+  .nav-btn.next {
+    left: auto;
+    right: 5vw;
+  }
+}
+
+.ioarts-footer { position: relative; width: calc(100% - 96px); min-height: 532px; margin: 48px; padding: 44px; overflow: hidden; background: rgba(255,255,255,.2); border: 3px solid #a2a2a2; border-radius: 12px; }
+.ioarts-footer__brand { color: #a2a2a2; font-size: clamp(120px,22vw,288px); font-weight: 700; line-height: 1; }
+.ioarts-footer__social { position: absolute; top: 31px; right: 44px; display: flex; gap: 8px; }
+.ioarts-footer__social a { display: grid; width: 48px; height: 48px; place-items: center; border: 3px solid #a2a2a2; border-radius: 6px; color: #a2a2a2; font-size: 22px; font-weight: 700; text-decoration: none; }
+.ioarts-footer__links { position: absolute; bottom: 32px; left: 44px; display: flex; flex-wrap: wrap; gap: 28px; }
+.ioarts-footer__links a, .ioarts-footer__copyright { color: #a2a2a2; font-size: 14.6px; font-weight: 600; text-decoration: none; }
+.ioarts-footer__copyright { position: absolute; top: 50%; right: 20px; writing-mode: vertical-rl; transform: translateY(-50%); }
+@media (max-width: 1100px) { .ioarts-footer { width: calc(100% - 48px); min-height: 300px; margin: 24px; padding: 24px; } .ioarts-footer__brand { font-size: clamp(64px,18vw,180px); } .ioarts-footer__social { top: 20px; right: 20px; } .ioarts-footer__social a { width: 40px; height: 40px; } .ioarts-footer__links { bottom: 20px; left: 24px; right: 24px; gap: 12px; } .ioarts-footer__copyright { display: none; } }
