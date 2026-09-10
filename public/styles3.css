@@ -70,6 +70,7 @@ html, body {
 /* ── Product image (t-shirt) ── */
 .product-image {
   position: absolute;
+  z-index: 2;
   left: 748.8px;
   right: 148.8px;
   top: -11px;
@@ -85,11 +86,13 @@ html, body {
 /* ── Navigation arrows ── */
 .nav-btn {
   position: absolute;
+  z-index: 3;
   width: 120px;
   height: 40px;
   top: 549px;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.9);
   border: 1px solid #a2a2a2;
+  color: #a2a2a2;
   border-radius: 9999px;
   display: flex;
   align-items: center;
@@ -99,11 +102,11 @@ html, body {
 }
 
 .nav-btn.prev { left: 976px; }
-.nav-btn.next { left: 1488px; }
 
 /* ── Title ── */
 .title {
   position: absolute;
+  z-index: 1;
   left: 376px;
   top: 200px;
   font-weight: 700;

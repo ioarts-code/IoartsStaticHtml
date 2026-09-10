@@ -177,7 +177,7 @@ function renderProductDetail(product) {
     <div class="product-image">
       <img id="product-main-image" src="${imageUrl}" alt="${name}" />
     </div>
-    ${images.length > 1 ? `<button class="nav-btn prev" type="button" aria-label="Previous image"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button class="nav-btn next" type="button" aria-label="Next image"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/></svg></button>` : ''}
+    ${images.length > 1 ? `<button class="nav-btn prev" type="button" aria-label="Change image"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/></svg></button>` : ''}
     <div class="title">${titleMarkup}</div>
     <p class="description">${description}</p>
     <div class="buttons-row"><a class="btn" href="${downloadUrl}" ${downloadUrl === '#' ? '' : 'download'}>Download SVG</a></div>
@@ -208,7 +208,6 @@ function renderProductDetail(product) {
       mainImage.src = images[imageIndex].url;
     };
     detailContainer.querySelector('.nav-btn.prev').addEventListener('click', () => updateImage(imageIndex - 1));
-    detailContainer.querySelector('.nav-btn.next').addEventListener('click', () => updateImage(imageIndex + 1));
   }
 }
 
