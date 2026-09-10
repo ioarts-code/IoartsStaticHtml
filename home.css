@@ -496,5 +496,22 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
 .ioarts-footer__social a { display: grid; width: 48px; height: 48px; place-items: center; border: 3px solid #a2a2a2; border-radius: 6px; color: #a2a2a2; font-size: 22px; font-weight: 700; text-decoration: none; }
 .ioarts-footer__links { position: absolute; bottom: 32px; left: 44px; display: flex; flex-wrap: wrap; gap: 28px; }
 .ioarts-footer__links a, .ioarts-footer__copyright { color: #a2a2a2; font-size: 14.6px; font-weight: 600; text-decoration: none; }
-.ioarts-footer__copyright { position: absolute; top: 50%; right: 20px; writing-mode: vertical-rl; transform: translateY(-50%); }
+.ioarts-footer__copyright { position: absolute; top: auto; right: 20px; bottom: 20px; writing-mode: vertical-rl; transform: none; }
 @media (max-width: 720px) { .ioarts-footer { min-height: 300px; margin: 24px; padding: 24px; } .ioarts-footer__brand { font-size: clamp(64px,18vw,180px); } .ioarts-footer__social { top: 20px; right: 20px; } .ioarts-footer__social a { width: 40px; height: 40px; } .ioarts-footer__links { bottom: 20px; left: 24px; right: 24px; gap: 12px; } .ioarts-footer__copyright { display: none; } }
+
+@media (max-width: 720px) {
+  body { min-width: 0; overflow-x: hidden; }
+  .hero { height: min(760px, 100svh); min-height: 620px; }
+  .hero__tshirt { left: 28%; width: 112%; height: 78%; object-fit: contain; transform: translateX(-5%); }
+  .hero__side { padding: 92px 24px 250px; width: min(420px, 82vw); }
+  .hero__title { font-size: clamp(24px, 7vw, 34px); }
+  .hero__desc { max-width: 100%; font-size: 13px; line-height: 1.5; }
+  .hero__footer { height: 210px; padding: 18px 24px; }
+  .hero__sub { max-width: 100%; font-size: 10px; letter-spacing: .25em; }
+  .hero__blurb { font-size: 10px; }
+  .hero-dots { bottom: 228px; }
+  .products-heading { padding: 28px 24px 0; font-size: 32px; }
+  .gallery { grid-template-columns: 1fr; row-gap: 56px; padding: 32px 24px 72px; }
+  .card__name { font-size: clamp(20px, 6vw, 24px); }
+  .ioarts-footer { margin: 24px; width: calc(100% - 48px); }
+}
