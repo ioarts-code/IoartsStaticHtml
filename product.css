@@ -175,6 +175,11 @@ html, body {
 }
 
 .product-options {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
   width: min(360px, calc(100% - 32px));
   padding: 0;
   border: 2px solid #a2a2a2;
