@@ -84,6 +84,7 @@ html, body {
   display: block;
   touch-action: pan-y;
   cursor: grab;
+  user-select: none;
 }
 
 .product-image img:active {

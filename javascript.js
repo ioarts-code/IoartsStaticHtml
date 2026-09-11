@@ -188,7 +188,7 @@ function renderProductDetail(product) {
       Back to Home
     </a>
     <div class="product-image">
-      <img id="product-main-image" src="${imageUrl}" alt="${name}" />
+      <img id="product-main-image" src="${imageUrl}" alt="${name}" draggable="false" />
     </div>
     ${images.length > 1 ? `
       <div class="image-nav" aria-label="Product images">
@@ -280,6 +280,7 @@ function renderProductDetail(product) {
 
     let pointerStartX = null;
     mainImage.addEventListener('pointerdown', (event) => {
+      event.preventDefault();
       pointerStartX = event.clientX;
       mainImage.setPointerCapture(event.pointerId);
     });
