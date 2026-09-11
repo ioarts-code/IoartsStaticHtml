@@ -277,6 +277,23 @@ function renderProductDetail(product) {
     };
     detailContainer.querySelector('.nav-btn.prev').addEventListener('click', () => updateImage(imageIndex - 1));
     detailContainer.querySelector('.nav-btn.next').addEventListener('click', () => updateImage(imageIndex + 1));
+
+    let pointerStartX = null;
+    mainImage.addEventListener('pointerdown', (event) => {
+      pointerStartX = event.clientX;
+      mainImage.setPointerCapture(event.pointerId);
+    });
+    mainImage.addEventListener('pointerup', (event) => {
+      if (pointerStartX === null) return;
+
+      const distance = event.clientX - pointerStartX;
+      pointerStartX = null;
+      if (Math.abs(distance) < 40) return;
+      updateImage(imageIndex + (distance < 0 ? 1 : -1));
+    });
+    mainImage.addEventListener('pointercancel', () => {
+      pointerStartX = null;
+    });
   }
 }
 
