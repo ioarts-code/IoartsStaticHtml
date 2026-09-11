@@ -177,6 +177,7 @@ function renderProductDetail(product) {
   const category = product?.categories?.[0]?.name || 'Misc';
   const tags = product?.tags?.map((tag) => tag.name).join(', ') || category;
   const downloadUrl = product?.download?.url || '#';
+  const downloadFileName = product?.download?.fileName || `${product?.slug || 'product'}.svg`;
   const titleParts = name.split(/\s+/);
   const titleMarkup = titleParts.length > 1
     ? `<p>${titleParts.slice(0, Math.ceil(titleParts.length / 2)).join(' ')}</p><p>${titleParts.slice(Math.ceil(titleParts.length / 2)).join(' ')}</p>`
@@ -196,7 +197,7 @@ function renderProductDetail(product) {
     <div class="buttons-row"><button class="btn" type="button" data-open-product-options>Download SVG</button></div>
     <dialog class="product-options" data-product-options>
       <div class="product-options__content">
-        <a class="btn" href="${downloadUrl}" ${downloadUrl === '#' ? '' : 'download'}>Download SVG</a>
+        <a class="btn" href="${downloadUrl}" data-download-svg ${downloadUrl === '#' ? '' : `download="${downloadFileName}"`}>Download SVG</a>
         <a class="btn" href="https://buymeacoffee.com/ioartseu" target="_blank" rel="noopener noreferrer">Buy me coffee</a>
       </div>
     </dialog>
@@ -206,7 +207,29 @@ function renderProductDetail(product) {
 
   const productOptions = detailContainer.querySelector('[data-product-options]');
   const openProductOptions = detailContainer.querySelector('[data-open-product-options]');
+  const downloadButton = detailContainer.querySelector('[data-download-svg]');
   openProductOptions.addEventListener('click', () => productOptions.showModal());
+  downloadButton.addEventListener('click', async (event) => {
+    if (downloadUrl === '#') return;
+
+    event.preventDefault();
+    try {
+      const response = await fetch(downloadUrl);
+      if (!response.ok) throw new Error(`SVG download failed: ${response.status}`);
+
+      const blobUrl = URL.createObjectURL(await response.blob());
+      const temporaryLink = document.createElement('a');
+      temporaryLink.href = blobUrl;
+      temporaryLink.download = downloadFileName;
+      document.body.appendChild(temporaryLink);
+      temporaryLink.click();
+      temporaryLink.remove();
+      URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+      console.error('SVG download error:', error);
+      window.open(downloadUrl, '_blank', 'noopener,noreferrer');
+    }
+  });
   productOptions.addEventListener('click', (event) => {
     if (event.target === productOptions) productOptions.close();
   });
