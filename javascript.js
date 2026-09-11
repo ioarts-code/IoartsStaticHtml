@@ -193,13 +193,18 @@ function renderProductDetail(product) {
     ${images.length > 1 ? `<button class="nav-btn prev" type="button" aria-label="Change image"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/></svg></button>` : ''}
     <div class="title">${titleMarkup}</div>
     <p class="description">${description}</p>
-    <div class="buttons-row"><button class="btn" type="button" data-open-product-options>${primaryActionLabel}</button></div>
-    <dialog class="product-options" data-product-options>
-      <div class="product-options__content">
-        <a class="btn" href="${linkToEtsy || downloadUrl}" ${linkToEtsy ? 'target="_blank" rel="noopener noreferrer"' : `data-download-svg ${downloadUrl === '#' ? '' : `download="${downloadFileName}"`}`}>${primaryActionLabel}</a>
-        <a class="btn" href="https://buymeacoffee.com/ioartseu" target="_blank" rel="noopener noreferrer">Buy me coffee</a>
-      </div>
-    </dialog>
+    <div class="buttons-row">${linkToEtsy
+      ? `<a class="btn" href="${linkToEtsy}" target="_blank" rel="noopener noreferrer">Buy on Etsy</a>`
+      : '<button class="btn" type="button" data-open-product-options>Download SVG</button>'}
+    </div>
+    ${linkToEtsy ? '' : `
+      <dialog class="product-options" data-product-options>
+        <div class="product-options__content">
+          <a class="btn" href="${downloadUrl}" data-download-svg ${downloadUrl === '#' ? '' : `download="${downloadFileName}"`}>Download SVG</a>
+          <a class="btn" href="https://buymeacoffee.com/ioartseu" target="_blank" rel="noopener noreferrer">Buy me coffee</a>
+        </div>
+      </dialog>
+    `}
     <div class="meta"><span class="meta-line">Tags: ${tags}</span><span class="meta-line">Copyright: ${product?.copyright || 'Unofficial fanart'}</span><span class="meta-line">Product type <span class="badge">${productType}</span></span></div>
     <div class="colors-row"><span class="colors-label">Colors</span><button class="color-swatch black selected" type="button" data-product-color="#000000" aria-label="Black" aria-pressed="true"></button><button class="color-swatch white" type="button" data-product-color="#ffffff" aria-label="White" aria-pressed="false"></button></div>
   `;
@@ -207,7 +212,9 @@ function renderProductDetail(product) {
   const productOptions = detailContainer.querySelector('[data-product-options]');
   const openProductOptions = detailContainer.querySelector('[data-open-product-options]');
   const downloadButton = detailContainer.querySelector('[data-download-svg]');
-  openProductOptions.addEventListener('click', () => productOptions.showModal());
+  if (openProductOptions && productOptions) {
+    openProductOptions.addEventListener('click', () => productOptions.showModal());
+  }
   if (downloadButton && !linkToEtsy) downloadButton.addEventListener('click', async (event) => {
     if (downloadUrl === '#') return;
 
@@ -229,9 +236,11 @@ function renderProductDetail(product) {
       window.open(downloadUrl, '_blank', 'noopener,noreferrer');
     }
   });
-  productOptions.addEventListener('click', (event) => {
-    if (event.target === productOptions) productOptions.close();
-  });
+  if (productOptions) {
+    productOptions.addEventListener('click', (event) => {
+      if (event.target === productOptions) productOptions.close();
+    });
+  }
 
   const mainImage = detailContainer.querySelector('#product-main-image');
   let imageIndex = 0;
