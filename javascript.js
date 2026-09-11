@@ -173,8 +173,10 @@ function renderProductDetail(product) {
   const productType = product?.productType || 'Digital Product';
   const category = product?.categories?.[0]?.name || 'Misc';
   const tags = product?.tags?.map((tag) => tag.name).join(', ') || category;
+  const linkToEtsy = product?.linkToEtsy || '';
   const downloadUrl = product?.download?.url || '#';
   const downloadFileName = product?.download?.fileName || `${product?.slug || 'product'}.svg`;
+  const primaryActionLabel = linkToEtsy ? 'Buy on Etsy' : 'Download SVG';
   const titleParts = name.split(/\s+/);
   const titleMarkup = titleParts.length > 1
     ? `<p>${titleParts.slice(0, Math.ceil(titleParts.length / 2)).join(' ')}</p><p>${titleParts.slice(Math.ceil(titleParts.length / 2)).join(' ')}</p>`
@@ -191,10 +193,10 @@ function renderProductDetail(product) {
     ${images.length > 1 ? `<button class="nav-btn prev" type="button" aria-label="Change image"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/></svg></button>` : ''}
     <div class="title">${titleMarkup}</div>
     <p class="description">${description}</p>
-    <div class="buttons-row"><button class="btn" type="button" data-open-product-options>Download SVG</button></div>
+    <div class="buttons-row"><button class="btn" type="button" data-open-product-options>${primaryActionLabel}</button></div>
     <dialog class="product-options" data-product-options>
       <div class="product-options__content">
-        <a class="btn" href="${downloadUrl}" data-download-svg ${downloadUrl === '#' ? '' : `download="${downloadFileName}"`}>Download SVG</a>
+        <a class="btn" href="${linkToEtsy || downloadUrl}" ${linkToEtsy ? 'target="_blank" rel="noopener noreferrer"' : `data-download-svg ${downloadUrl === '#' ? '' : `download="${downloadFileName}"`}`}>${primaryActionLabel}</a>
         <a class="btn" href="https://buymeacoffee.com/ioartseu" target="_blank" rel="noopener noreferrer">Buy me coffee</a>
       </div>
     </dialog>
@@ -206,7 +208,7 @@ function renderProductDetail(product) {
   const openProductOptions = detailContainer.querySelector('[data-open-product-options]');
   const downloadButton = detailContainer.querySelector('[data-download-svg]');
   openProductOptions.addEventListener('click', () => productOptions.showModal());
-  downloadButton.addEventListener('click', async (event) => {
+  if (downloadButton && !linkToEtsy) downloadButton.addEventListener('click', async (event) => {
     if (downloadUrl === '#') return;
 
     event.preventDefault();
