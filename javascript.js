@@ -41,9 +41,15 @@ const productGrid = document.getElementById('product-grid');
 const heroCarousel = document.getElementById('hero-carousel');
 
 const FEATURED_PRODUCT_SLUGS = ['t-shirt-queens', 't-shirt-elden', 'for-the-horde'];
+const PRODUCT_GRID_CATEGORY = 'vectors';
 
-function getProductUrl(slug) {
-  return `/products/${encodeURIComponent(slug || '')}`;
+function getProductUrl(product) {
+  const slug = typeof product === 'string' ? product : product?.slug;
+  const category = typeof product === 'string'
+    ? ''
+    : product?.categories?.find((item) => item?.slug !== 'hero')?.slug || '';
+  const categoryPath = category ? `${encodeURIComponent(category)}/` : '';
+  return `/products/${categoryPath}${encodeURIComponent(slug || '')}`;
 }
 
 function getFeaturedProducts(products) {
@@ -78,7 +84,7 @@ function renderFeaturedHero(products) {
               <span class="label">${getProductCategory(product)}</span>
               <h1 class="hero__title">${product?.name || 'Featured product'}</h1>
               ${product?.description ? `<p class="hero__desc">${product.description}</p>` : ''}
-              <a href="${getProductUrl(product.slug)}" class="hero__btn">View</a>
+              <a href="${getProductUrl(product)}" class="hero__btn">View</a>
             </div>
           </article>
         `;
@@ -128,27 +134,30 @@ function formatPrice(price) {
 function renderProducts(products) {
   if (!productGrid) return;
 
-  if (!Array.isArray(products) || products.length === 0) {
+  const vectorProducts = Array.isArray(products)
+    ? products.filter((product) => product?.categories?.some((category) => category?.slug === PRODUCT_GRID_CATEGORY))
+    : [];
+
+  if (vectorProducts.length === 0) {
     showEmptyState('No products found. Check your Hygraph endpoint and project data.');
     return;
   }
 
-  productGrid.innerHTML = products
+  productGrid.innerHTML = vectorProducts
     .map((product) => {
       const imageUrls = [product?.heroImage?.url, ...(product?.images || []).map((image) => image?.url)]
         .filter((url, index, urls) => url && urls.indexOf(url) === index);
       const imageUrl = imageUrls[0] || '';
       const hoverImageUrl = imageUrls[1] || imageUrl;
-      const productSlug = product?.slug || '';
       const tags = product?.tags?.map((tag) => tag.name).join(' / ') || getProductCategory(product);
 
       return `
         <article class="card">
-          <a class="card__img" href="${getProductUrl(productSlug)}">
+          <a class="card__img" href="${getProductUrl(product)}">
             <img class="card__shadow" src="${imageUrl || 'https://placehold.co/800x1000/171717/a2a2a2?text=IOARTS'}" alt="">
             <img class="card__art" src="${hoverImageUrl || 'https://placehold.co/800x1000/171717/a2a2a2?text=Product'}" alt="${product?.name || 'Product image'}">
           </a>
-          <a class="card__label" href="${getProductUrl(productSlug)}"><p class="card__name">${product?.name || 'Unnamed product'}</p></a>
+          <a class="card__label" href="${getProductUrl(product)}"><p class="card__name">${product?.name || 'Unnamed product'}</p></a>
           <p class="card__tags">${getProductCategory(product)} / ${tags} / ${Number(product?.price) > 0 ? formatPrice(product.price) : 'FREE'}</p>
         </article>
       `;
@@ -238,6 +247,10 @@ async function fetchProductsFromHygraph() {
         }
         images {
           url
+        }
+        categories {
+          name
+          slug
         }
       }
     }
@@ -359,9 +372,9 @@ window.BASIC_IOARTS = {
 };
 
 const currentPath = window.location.pathname;
-const productPathMatch = currentPath.match(/^\/products\/([^/]+)\/?$/);
+const productPathMatch = currentPath.match(/^\/products\/(?:([^/]+)\/)?([^/]+)\/?$/);
 const slug = productPathMatch
-  ? decodeURIComponent(productPathMatch[1])
+  ? decodeURIComponent(productPathMatch[2])
   : currentPath.endsWith('/product.html')
     ? new URLSearchParams(window.location.search).get('slug')
     : null;
