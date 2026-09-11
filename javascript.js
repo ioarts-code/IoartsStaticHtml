@@ -146,7 +146,6 @@ function renderProducts(products) {
         .filter((url, index, urls) => url && urls.indexOf(url) === index);
       const imageUrl = imageUrls[0] || '';
       const hoverImageUrl = imageUrls[1] || imageUrl;
-      const tags = product?.tags?.map((tag) => tag.name).join(' / ') || getProductCategory(product);
 
       return `
         <article class="card">
@@ -155,7 +154,7 @@ function renderProducts(products) {
             <img class="card__art" src="${hoverImageUrl || 'https://placehold.co/800x1000/171717/a2a2a2?text=Product'}" alt="${product?.name || 'Product image'}">
           </a>
           <a class="card__label" href="${getProductUrl(product)}"><p class="card__name">${product?.name || 'Unnamed product'}</p></a>
-          <p class="card__tags">${getProductCategory(product)} / ${tags} / ${Number(product?.price) > 0 ? formatPrice(product.price) : 'FREE'}</p>
+          <p class="card__tags">Vectors / Free</p>
         </article>
       `;
     })
