@@ -45,10 +45,7 @@ const PRODUCT_GRID_CATEGORY = 'vectors';
 
 function getProductUrl(product) {
   const slug = typeof product === 'string' ? product : product?.slug;
-  const category = typeof product === 'string'
-    ? ''
-    : product?.categories?.find((item) => item?.slug !== 'hero')?.slug || '';
-  const categoryPath = category ? `${encodeURIComponent(category)}/` : '';
+  const categoryPath = typeof product === 'string' ? '' : `${PRODUCT_GRID_CATEGORY}/`;
   return `/products/${categoryPath}${encodeURIComponent(slug || '')}`;
 }
 
