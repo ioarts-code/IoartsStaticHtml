@@ -170,7 +170,7 @@ function renderProductDetail(product) {
   const description = product?.description || 'No description provided.';
   const imageUrl = product?.heroImage?.url || product?.images?.[0]?.url || 'https://placehold.co/1200x1200/f1e9e0/1f2a37?text=Product';
   const images = [product?.heroImage, ...(product?.images || [])].filter((image, index, list) => image?.url && list.findIndex((item) => item?.url === image.url) === index);
-  const productType = product?.productType || 'Digital Product';
+  const productType = (product?.productType || 'Digital Product').toUpperCase();
   const category = product?.categories?.[0]?.name || 'Misc';
   const tags = product?.tags?.map((tag) => tag.name).join(', ') || category;
   const linkToEtsy = product?.linkToEtsy || '';
