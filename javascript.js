@@ -190,7 +190,17 @@ function renderProductDetail(product) {
     <div class="product-image">
       <img id="product-main-image" src="${imageUrl}" alt="${name}" />
     </div>
-    ${images.length > 1 ? `<button class="nav-btn prev" type="button" aria-label="Change image"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/></svg></button>` : ''}
+    ${images.length > 1 ? `
+      <div class="image-nav" aria-label="Product images">
+        <button class="nav-btn prev" type="button" aria-label="Previous image">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <span class="image-counter" aria-live="polite">1 / ${images.length}</span>
+        <button class="nav-btn next" type="button" aria-label="Next image">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M7.5 5L12.5 10L7.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    ` : ''}
     <div class="title">${titleMarkup}</div>
     <p class="description">${description}</p>
     <div class="buttons-row">${linkToEtsy
@@ -263,8 +273,10 @@ function renderProductDetail(product) {
     const updateImage = (nextIndex) => {
       imageIndex = (nextIndex + images.length) % images.length;
       mainImage.src = images[imageIndex].url;
+      detailContainer.querySelector('.image-counter').textContent = `${imageIndex + 1} / ${images.length}`;
     };
     detailContainer.querySelector('.nav-btn.prev').addEventListener('click', () => updateImage(imageIndex - 1));
+    detailContainer.querySelector('.nav-btn.next').addEventListener('click', () => updateImage(imageIndex + 1));
   }
 }
 

@@ -84,25 +84,51 @@ html, body {
   display: block;
 }
 
-/* ── Navigation arrows ── */
-.nav-btn {
+/* ── Product image navigation ── */
+.image-nav {
   position: absolute;
   z-index: 3;
-  width: 120px;
-  height: 40px;
+  left: 50%;
   top: 549px;
-  background: rgba(0, 0, 0, 0.9);
-  border: 1px solid #a2a2a2;
-  color: #a2a2a2;
-  border-radius: 9999px;
+  transform: translateX(-50%);
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 0.35;
+  gap: 12px;
+  padding: 8px;
+  border: 1px solid rgba(162, 162, 162, 0.55);
+  border-radius: 14px;
+  background: rgba(15, 15, 15, 0.88);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(8px);
+}
+
+.nav-btn {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #a2a2a2;
+  border-radius: 10px;
+  background: transparent;
+  color: #a2a2a2;
   cursor: pointer;
 }
 
-.nav-btn.prev { left: 976px; }
+.nav-btn:hover,
+.nav-btn:focus-visible {
+  background: #a2a2a2;
+  color: #0f0f0f;
+}
+
+.image-counter {
+  min-width: 46px;
+  color: #c8c8c8;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 0;
+}
 
 /* ── Title ── */
 .title {
@@ -312,10 +338,6 @@ html, body {
     width: 30vw;
   }
 
-  .nav-btn.next {
-    left: auto;
-    right: 5vw;
-  }
 }
 
 @media (min-width: 1101px) and (max-width: 1919px) {
@@ -386,7 +408,7 @@ html, body {
 
   .back-link,
   .product-image,
-  .nav-btn,
+  .image-nav,
   .title,
   .description,
   .buttons-row,
@@ -402,7 +424,7 @@ html, body {
   .back-link { order: 1; width: max-content; }
   .product-image { order: 2; display: flex; width: 100%; max-height: 58vh; align-items: center; justify-content: center; overflow: hidden; }
   .product-image img { width: 100%; max-height: 58vh; margin-inline: auto; object-fit: contain; object-position: center; }
-  .nav-btn { order: 3; align-self: flex-start; width: 72px; height: 40px; opacity: 1; }
+  .image-nav { order: 3; align-self: center; }
   .title { order: 4; margin-top: -12px; font-size: clamp(48px, 15vw, 88px); line-height: .95; letter-spacing: 2px; }
   .description { order: 5; width: 100%; font-size: 15px; line-height: 1.55; }
   .buttons-row { order: 6; flex-wrap: wrap; }
