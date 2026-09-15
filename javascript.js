@@ -31,7 +31,12 @@ function clearHygraphAuthToken() {
 function getStoredConfig() {
   try {
     const raw = localStorage.getItem('basic_ioarts_hygraph');
-    return raw ? JSON.parse(raw) : {};
+    const parsed = raw ? JSON.parse(raw) : {};
+    if (parsed && typeof parsed === 'object' && parsed.authToken && (parsed.authToken.includes('YOUR_') || parsed.authToken === 'undefined')) {
+      clearHygraphAuthToken();
+      return {};
+    }
+    return parsed && typeof parsed === 'object' ? parsed : {};
   } catch {
     return {};
   }
@@ -475,6 +480,7 @@ window.BASIC_IOARTS = {
   fetchProductsFromHygraph,
   getHygraphConfig,
   fetchProductBySlug,
+  clearHygraphConfig: clearHygraphAuthToken,
 };
 
 const currentPath = window.location.pathname;
