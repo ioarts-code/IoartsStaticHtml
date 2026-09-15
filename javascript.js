@@ -337,9 +337,9 @@ async function fetchProductsFromHygraph() {
   const endpoint = (config.endpoint || '').trim();
   const token = (config.authToken || '').trim();
 
-  if (!endpoint || !token || endpoint.includes('YOUR_') || token.includes('YOUR_')) {
-    showHeroLoadingState('Configure the Hygraph endpoint and auth token to load featured products.');
-    showEmptyState('Configure the Hygraph endpoint and auth token in javascript.js or set window.__HYGRAPH_CONFIG__ before this script runs.');
+  if (!endpoint || endpoint.includes('YOUR_')) {
+    showHeroLoadingState('Configure the Hygraph endpoint to load featured products.');
+    showEmptyState('Configure the Hygraph endpoint in javascript.js or set window.__HYGRAPH_CONFIG__ before this script runs.');
     return;
   }
 
@@ -363,13 +363,18 @@ async function fetchProductsFromHygraph() {
   `;
 
   try {
+    const headers = {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    };
+
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    }
+
     const response = await fetch(endpoint, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
+      headers,
       body: JSON.stringify({ query }),
     });
 
@@ -406,8 +411,8 @@ async function fetchProductBySlug(slug) {
 
   if (!detailContainer) return;
 
-  if (!endpoint || !token || endpoint.includes('YOUR_') || token.includes('YOUR_')) {
-    detailContainer.innerHTML = '<div class="empty-state">Configure the Hygraph endpoint and auth token to show product details.</div>';
+  if (!endpoint || endpoint.includes('YOUR_')) {
+    detailContainer.innerHTML = '<div class="empty-state">Configure the Hygraph endpoint to show product details.</div>';
     return;
   }
 
@@ -441,13 +446,18 @@ async function fetchProductBySlug(slug) {
   `;
 
   try {
+    const headers = {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    };
+
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    }
+
     const response = await fetch(endpoint, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
+      headers,
       body: JSON.stringify({ query, variables: { slug } }),
     });
 
