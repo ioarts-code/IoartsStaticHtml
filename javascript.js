@@ -176,7 +176,7 @@ function renderProducts(products) {
   }
 
   productGrid.innerHTML = vectorProducts
-    .map((product, productIndex) => {
+    .map((product) => {
       const imageUrls = (product?.images || []).map((image) => image?.url)
         .filter((url, index, urls) => url && urls.indexOf(url) === index);
       const imageUrl = imageUrls[0] || '';
