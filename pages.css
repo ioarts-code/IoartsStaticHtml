@@ -150,9 +150,9 @@ img {
 @media (max-width: 640px) {
   .ioarts-footer {
     min-height: auto;
-    width: auto;
-    margin: 24px 16px;
-    padding: 24px 20px;
+    width: calc(100% - 48px);
+    margin: 24px;
+    padding: 24px;
     display: flex;
     flex-direction: column;
     gap: 18px;
@@ -1017,7 +1017,7 @@ img {
 }
 
 @media (max-width: 700px) {
-  .container { width: min(100% - 32px, 920px); }
+  .container { width: min(100% - 48px, 920px); }
   .header-inner { align-items: flex-start; flex-direction: column; padding: 20px 0; }
   .main-nav { justify-content: flex-start; gap: 8px 14px; }
   .main-nav a { font-size: 10px; }
@@ -1025,5 +1025,5 @@ img {
   .contact-header, .legal-header { margin-bottom: 28px; }
   .contact-panel, .legal-panel { padding: 22px 20px; }
   .contact-panel p, .legal-panel p, .legal-panel li { font-size: 14px; line-height: 1.65; }
-  .page-shell > .ioarts-footer { margin: 0 16px 16px; }
+  .page-shell > .ioarts-footer { margin: 0 24px 24px; width: calc(100% - 48px); }
 }

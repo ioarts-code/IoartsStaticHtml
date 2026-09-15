@@ -513,7 +513,7 @@ html, body {
     height: auto;
     flex-direction: column;
     gap: 24px;
-    padding: 24px 20px 88px;
+    padding: 24px 24px 48px;
     overflow: visible;
   }
 
@@ -547,9 +547,9 @@ html, body {
 
   .ioarts-footer {
     min-height: auto;
-    width: 100%;
-    margin: 0;
-    padding: 24px 20px;
+    width: calc(100% - 48px);
+    margin: 24px;
+    padding: 24px;
     display: flex;
     flex-direction: column;
     gap: 18px;

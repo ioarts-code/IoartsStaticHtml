@@ -604,9 +604,9 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
 @media (max-width: 768px) {
   .ioarts-footer {
     min-height: auto;
-    width: auto;
-    margin: 24px 16px;
-    padding: 24px 20px;
+    width: calc(100% - 48px);
+    margin: 24px;
+    padding: 24px;
     display: flex;
     flex-direction: column;
     gap: 18px;
