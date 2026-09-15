@@ -526,7 +526,7 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    gap: 10px;
+    gap: 8px;
   }
 
   .ioarts-footer__brand {
@@ -540,8 +540,8 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
     justify-content: flex-start;
     flex-wrap: wrap;
     gap: 8px 12px;
-    margin-top: 8px;
     z-index: 2;
+    order: 2;
   }
 
   .ioarts-footer__social a {
@@ -556,6 +556,7 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
     flex-wrap: wrap;
     gap: 8px 12px;
     z-index: 2;
+    order: 3;
   }
 
   .ioarts-footer__links a {
