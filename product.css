@@ -190,9 +190,8 @@ html, body {
 }
 
 .btn {
-  min-width: 210px;
   height: 50px;
-  padding: 0 42px;
+  padding: 0 28px;
   border: 2.5px solid #a2a2a2;
   border-radius: 9999px;
   background: transparent;
@@ -206,14 +205,6 @@ html, body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
-}
-
-.btn:hover,
-.btn:focus-visible {
-  background: #74D5FF;
-  border-color: #74D5FF;
-  color: #0f0f0f;
 }
 
 .product-options {
