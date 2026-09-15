@@ -218,7 +218,6 @@ function setupCardSwipe() {
     }, { passive: true });
   });
 }
-}
 
 function renderProductDetail(product) {
   const detailContainer = document.getElementById('product-detail');
