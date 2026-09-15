@@ -227,6 +227,7 @@ function renderProductDetail(product) {
   const description = product?.description || 'No description provided.';
   const imageUrl = product?.images?.[0]?.url || product?.heroImage?.url || 'https://placehold.co/1200x1200/f1e9e0/1f2a37?text=Product';
   const images = [...(product?.images || []), ...(product?.heroImage ? [product.heroImage] : [])].filter((image, index, list) => image?.url && list.findIndex((item) => item?.url === image.url) === index);
+  const secondaryImageUrl = images[1]?.url || imageUrl;
   const productType = (product?.productType || 'Digital Product').toUpperCase();
   const category = product?.categories?.[0]?.name || 'Misc';
   const tags = product?.tags?.map((tag) => tag.name).join(', ') || category;
@@ -245,7 +246,8 @@ function renderProductDetail(product) {
       Back to Home
     </a>
     <div class="product-image">
-      <img id="product-main-image" src="${imageUrl}" alt="${name}" draggable="false" />
+      <img id="product-secondary-image" class="product-image__bg" src="${secondaryImageUrl}" alt="" draggable="false" />
+      <img id="product-main-image" class="product-image__main" src="${imageUrl}" alt="${name}" draggable="false" />
     </div>
     <div class="title">${titleMarkup}</div>
     <p class="description">${description}</p>
@@ -299,8 +301,30 @@ function renderProductDetail(product) {
   }
 
   const mainImage = detailContainer.querySelector('#product-main-image');
+  const secondaryImage = detailContainer.querySelector('#product-secondary-image');
   const colorSwatches = Array.from(detailContainer.querySelectorAll('[data-product-color]'));
   let imageIndex = 0;
+
+  const setImages = (primaryIdx, direction = 0) => {
+    imageIndex = Math.min(primaryIdx, Math.max(images.length - 1, 0));
+    if (images[imageIndex]?.url && mainImage) {
+      if (direction !== 0) {
+        mainImage.animate([
+          { transform: `translateX(${direction * 18}px) scale(0.98)`, opacity: 0.8 },
+          { transform: 'translateX(0) scale(1)', opacity: 1 }
+        ], {
+          duration: 180,
+          easing: 'ease-out',
+          fill: 'forwards',
+        });
+      }
+      mainImage.src = images[imageIndex].url;
+    }
+    const bgIdx = images.length > 1 ? (imageIndex + 1) % images.length : imageIndex;
+    if (images[bgIdx]?.url && secondaryImage) {
+      secondaryImage.src = images[bgIdx].url;
+    }
+  };
 
   colorSwatches.forEach((button) => {
     button.addEventListener('click', () => {
@@ -311,28 +335,21 @@ function renderProductDetail(product) {
       });
 
       const requestedIndex = colorSwatches.indexOf(button);
-      imageIndex = Math.min(requestedIndex, Math.max(images.length - 1, 0));
-      if (images[imageIndex]?.url) {
-        mainImage.src = images[imageIndex].url;
-      }
+      setImages(requestedIndex);
     });
   });
 
   if (images.length > 1) {
     const updateImage = (nextIndex, direction = 0) => {
-      imageIndex = (nextIndex + images.length) % images.length;
-      if (!images[imageIndex]?.url) return;
-
-      mainImage.animate([
-        { transform: `translateX(${direction * 18}px) scale(0.98)`, opacity: 0.8 },
-        { transform: 'translateX(0) scale(1)', opacity: 1 }
-      ], {
-        duration: 180,
-        easing: 'ease-out',
-        fill: 'forwards',
-      });
-
-      mainImage.src = images[imageIndex].url;
+      const targetIndex = (nextIndex + images.length) % images.length;
+      setImages(targetIndex, direction);
+      if (colorSwatches[targetIndex]) {
+        colorSwatches.forEach((swatch, idx) => {
+          const selected = idx === targetIndex;
+          swatch.classList.toggle('selected', selected);
+          swatch.setAttribute('aria-pressed', String(selected));
+        });
+      }
     };
 
     let pointerStartX = null;
