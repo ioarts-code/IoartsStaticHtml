@@ -103,7 +103,7 @@ function renderFeaturedHero(products) {
   heroCarousel.innerHTML = `
     <div class="hero-slides">
       ${featuredProducts.map((product, index) => {
-        const imageUrl = product?.heroImage?.url || product?.images?.[0]?.url || '';
+        const imageUrl = product?.images?.[0]?.url || product?.heroImage?.url || '';
         return `
           <article class="hero-slide${index === 0 ? ' active' : ''}" data-hero-slide="${index}">
             <div class="hero__bg">${imageUrl ? `<img class="hero__tshirt" src="${imageUrl}" alt="${product?.name || 'Featured product'}">` : ''}</div>
@@ -202,8 +202,8 @@ function renderProductDetail(product) {
 
   const name = product?.name || 'Product';
   const description = product?.description || 'No description provided.';
-  const imageUrl = product?.heroImage?.url || product?.images?.[0]?.url || 'https://placehold.co/1200x1200/f1e9e0/1f2a37?text=Product';
-  const images = [product?.heroImage, ...(product?.images || [])].filter((image, index, list) => image?.url && list.findIndex((item) => item?.url === image.url) === index);
+  const imageUrl = product?.images?.[0]?.url || product?.heroImage?.url || 'https://placehold.co/1200x1200/f1e9e0/1f2a37?text=Product';
+  const images = [...(product?.images || []), ...(product?.heroImage ? [product.heroImage] : [])].filter((image, index, list) => image?.url && list.findIndex((item) => item?.url === image.url) === index);
   const productType = (product?.productType || 'Digital Product').toUpperCase();
   const category = product?.categories?.[0]?.name || 'Misc';
   const tags = product?.tags?.map((tag) => tag.name).join(', ') || category;
@@ -351,9 +351,6 @@ async function fetchProductsFromHygraph() {
         slug
         price
         description
-        heroImage {
-          url
-        }
         images {
           url
         }
@@ -435,9 +432,6 @@ async function fetchProductBySlug(slug) {
         }
         tags {
           name
-        }
-        heroImage {
-          url
         }
         images {
           url
