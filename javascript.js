@@ -149,6 +149,11 @@ function showEmptyState(message) {
   `;
 }
 
+function showHeroLoadingState(message) {
+  if (!heroCarousel) return;
+  heroCarousel.innerHTML = `<div class="hero-loading">${message}</div>`;
+}
+
 function formatPrice(price) {
   const value = Number(price || 0);
   if (!Number.isFinite(value)) return 'Price unavailable';
@@ -333,6 +338,7 @@ async function fetchProductsFromHygraph() {
   const token = (config.authToken || '').trim();
 
   if (!endpoint || !token || endpoint.includes('YOUR_') || token.includes('YOUR_')) {
+    showHeroLoadingState('Configure the Hygraph endpoint and auth token to load featured products.');
     showEmptyState('Configure the Hygraph endpoint and auth token in javascript.js or set window.__HYGRAPH_CONFIG__ before this script runs.');
     return;
   }
@@ -390,6 +396,7 @@ async function fetchProductsFromHygraph() {
     renderProducts(products);
   } catch (error) {
     console.error('Hygraph fetch error:', error);
+    showHeroLoadingState('Unable to load featured products. Check the Hygraph endpoint and token, or refresh with a valid auth token.');
     showEmptyState('Unable to load products from Hygraph. Check the endpoint and token, or refresh with a valid auth token.');
   }
 }
