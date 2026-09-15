@@ -196,6 +196,28 @@ function renderProducts(products) {
       `;
     })
     .join('');
+
+  setupCardSwipe();
+}
+
+function setupCardSwipe() {
+  if (!productGrid) return;
+
+  productGrid.querySelectorAll('.card__img').forEach((cardImage) => {
+    let touchStartX = 0;
+
+    cardImage.addEventListener('touchstart', (event) => {
+      touchStartX = event.touches[0].clientX;
+    }, { passive: true });
+
+    cardImage.addEventListener('touchend', (event) => {
+      const touchEndX = event.changedTouches[0].clientX;
+      const deltaX = touchEndX - touchStartX;
+      if (Math.abs(deltaX) < 30) return;
+      cardImage.classList.toggle('is-switched', deltaX < 0);
+    }, { passive: true });
+  });
+}
 }
 
 function renderProductDetail(product) {
