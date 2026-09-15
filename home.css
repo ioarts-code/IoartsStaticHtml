@@ -191,6 +191,7 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
   right: 0;
   height: 192px;
   background: #a2a2a2;
+  color: #000;
   backdrop-filter: blur(1px);
   -webkit-backdrop-filter: blur(1px);
   border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -211,7 +212,7 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
   font-weight: 700;
   font-size: 32px;
   line-height: 48px;
-  color: #fff;
+  color: #000;
   text-transform: uppercase;
 }
 
@@ -221,7 +222,7 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
   font-size: 12px;
   letter-spacing: 7.2px;
   text-transform: uppercase;
-  color: #fff;
+  color: #000;
 }
 
 .hero__blurb {
@@ -230,7 +231,7 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
   font-size: 12px;
   line-height: 17.4px;
   letter-spacing: 0.6px;
-  color: #a2a2a2;
+  color: #000;
   max-width: 680px;
 }
 
@@ -239,7 +240,7 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
   font-weight: 400;
   font-size: 20px;
   line-height: 30px;
-  color: rgba(187, 187, 187, 0.9);
+  color: #000;
 }
 
 .hero__footer > * {
