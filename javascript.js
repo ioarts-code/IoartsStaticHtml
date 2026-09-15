@@ -176,24 +176,41 @@ function renderProducts(products) {
   }
 
   productGrid.innerHTML = vectorProducts
-    .map((product) => {
-      const imageUrls = [product?.heroImage?.url, ...(product?.images || []).map((image) => image?.url)]
+    .map((product, productIndex) => {
+      const imageUrls = (product?.images || []).map((image) => image?.url)
         .filter((url, index, urls) => url && urls.indexOf(url) === index);
       const imageUrl = imageUrls[0] || '';
-      const hoverImageUrl = imageUrls[1] || imageUrl;
 
       return `
         <article class="card">
-          <a class="card__img" href="${getProductUrl(product)}">
-            <img class="card__shadow" src="${imageUrl || 'https://placehold.co/800x1000/171717/a2a2a2?text=IOARTS'}" alt="">
-            <img class="card__art" src="${hoverImageUrl || 'https://placehold.co/800x1000/171717/a2a2a2?text=Product'}" alt="${product?.name || 'Product image'}">
-          </a>
+          <div class="card__img">
+            <a class="card__img-link" href="${getProductUrl(product)}">
+              <img class="card__product-image" src="${imageUrl || 'https://placehold.co/800x1000/171717/a2a2a2?text=Product'}" alt="${product?.name || 'Product image'}">
+            </a>
+            ${imageUrls.length > 1 ? `<button class="card__image-switch" type="button" data-product-index="${productIndex}" aria-label="Show next image for ${product?.name || 'product'}">
+              <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M7 13a10 10 0 0 1 17-4l2 2"/><path d="M26 7v5h-5"/><path d="M25 19a10 10 0 0 1-17 4l-2-2"/><path d="M6 25v-5h5"/><path d="M10 11c2 1 5 2 8 2s6-1 8-2"/></svg>
+            </button>` : ''}
+          </div>
           <a class="card__label" href="${getProductUrl(product)}"><p class="card__name">${product?.name || 'Unnamed product'}</p></a>
           <p class="card__tags">Vectors / Free</p>
         </article>
       `;
     })
     .join('');
+
+  productGrid.querySelectorAll('.card__image-switch').forEach((switchButton) => {
+    const product = vectorProducts[Number(switchButton.dataset.productIndex)];
+    const imageUrls = (product?.images || []).map((image) => image?.url)
+      .filter((url, index, urls) => url && urls.indexOf(url) === index);
+    const image = switchButton.closest('.card__img').querySelector('.card__product-image');
+    let imageIndex = 0;
+
+    switchButton.addEventListener('click', () => {
+      imageIndex = (imageIndex + 1) % imageUrls.length;
+      image.src = imageUrls[imageIndex];
+      image.alt = `${product?.name || 'Product image'} image ${imageIndex + 1}`;
+    });
+  });
 }
 
 function renderProductDetail(product) {
