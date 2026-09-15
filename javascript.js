@@ -247,17 +247,6 @@ function renderProductDetail(product) {
     <div class="product-image">
       <img id="product-main-image" src="${imageUrl}" alt="${name}" draggable="false" />
     </div>
-    ${images.length > 1 ? `
-      <div class="image-nav" aria-label="Product images">
-        <button class="nav-btn prev" type="button" aria-label="Previous image">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-        <span class="image-counter" aria-live="polite">1 / ${images.length}</span>
-        <button class="nav-btn next" type="button" aria-label="Next image">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M7.5 5L12.5 10L7.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-      </div>
-    ` : ''}
     <div class="title">${titleMarkup}</div>
     <p class="description">${description}</p>
     <div class="buttons-row">${linkToEtsy
@@ -327,30 +316,63 @@ function renderProductDetail(product) {
   });
 
   if (images.length > 1) {
-    const updateImage = (nextIndex) => {
+    const updateImage = (nextIndex, direction = 0) => {
       imageIndex = (nextIndex + images.length) % images.length;
+      if (!images[imageIndex]?.url) return;
+
+      mainImage.animate([
+        { transform: `translateX(${direction * 18}px) scale(0.98)`, opacity: 0.8 },
+        { transform: 'translateX(0) scale(1)', opacity: 1 }
+      ], {
+        duration: 180,
+        easing: 'ease-out',
+        fill: 'forwards',
+      });
+
       mainImage.src = images[imageIndex].url;
-      detailContainer.querySelector('.image-counter').textContent = `${imageIndex + 1} / ${images.length}`;
     };
-    detailContainer.querySelector('.nav-btn.prev').addEventListener('click', () => updateImage(imageIndex - 1));
-    detailContainer.querySelector('.nav-btn.next').addEventListener('click', () => updateImage(imageIndex + 1));
 
     let pointerStartX = null;
+    let pointerStartY = null;
+
     mainImage.addEventListener('pointerdown', (event) => {
-      event.preventDefault();
       pointerStartX = event.clientX;
+      pointerStartY = event.clientY;
+      mainImage.style.transition = 'transform 120ms ease, opacity 120ms ease';
       mainImage.setPointerCapture(event.pointerId);
     });
+
+    mainImage.addEventListener('pointermove', (event) => {
+      if (pointerStartX === null) return;
+
+      const distanceX = event.clientX - pointerStartX;
+      const distanceY = event.clientY - pointerStartY;
+      if (Math.abs(distanceX) <= Math.abs(distanceY)) return;
+
+      const offset = distanceX * 0.18;
+      mainImage.style.transform = `translateX(${offset}px) scale(${1 - Math.min(Math.abs(distanceX) / 1000, 0.06)})`;
+      mainImage.style.opacity = String(1 - Math.min(Math.abs(distanceX) / 900, 0.15));
+    });
+
     mainImage.addEventListener('pointerup', (event) => {
       if (pointerStartX === null) return;
 
       const distance = event.clientX - pointerStartX;
+      const distanceY = event.clientY - pointerStartY;
       pointerStartX = null;
-      if (Math.abs(distance) < 40) return;
-      updateImage(imageIndex + (distance < 0 ? 1 : -1));
+      pointerStartY = null;
+      mainImage.style.transform = '';
+      mainImage.style.opacity = '';
+
+      if (Math.abs(distance) < 40 || Math.abs(distance) <= Math.abs(distanceY)) return;
+      updateImage(imageIndex + (distance < 0 ? 1 : -1), distance < 0 ? 1 : -1);
     });
+
     mainImage.addEventListener('pointercancel', () => {
       pointerStartX = null;
+      pointerStartY = null;
+      mainImage.style.transform = '';
+      mainImage.style.opacity = '';
     });
   }
 }
