@@ -180,14 +180,16 @@ function renderProducts(products) {
       const imageUrls = (product?.images || []).map((image) => image?.url)
         .filter((url, index, urls) => url && urls.indexOf(url) === index);
       const imageUrl = imageUrls[0] || '';
+      const secondaryImageUrl = imageUrls[1] || imageUrl;
 
       return `
         <article class="card">
           <div class="card__img">
             <a class="card__img-link" href="${getProductUrl(product)}">
-              <img class="card__product-image" src="${imageUrl || 'https://placehold.co/800x1000/171717/a2a2a2?text=Product'}" alt="${product?.name || 'Product image'}">
+              <img class="card__shadow" src="${imageUrl || 'https://placehold.co/800x1000/171717/a2a2a2?text=Product'}" alt="">
+              <img class="card__art" src="${secondaryImageUrl || 'https://placehold.co/800x1000/171717/a2a2a2?text=Product'}" alt="${product?.name || 'Product image'}">
             </a>
-            ${imageUrls.length > 1 ? `<button class="card__image-switch" type="button" data-product-index="${productIndex}" aria-label="Show next image for ${product?.name || 'product'}">
+            ${imageUrls.length > 1 ? `<button class="card__image-switch" type="button" data-product-index="${productIndex}" aria-label="Show alternate image for ${product?.name || 'product'}" aria-pressed="false">
               <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M7 13a10 10 0 0 1 17-4l2 2"/><path d="M26 7v5h-5"/><path d="M25 19a10 10 0 0 1-17 4l-2-2"/><path d="M6 25v-5h5"/><path d="M10 11c2 1 5 2 8 2s6-1 8-2"/></svg>
             </button>` : ''}
           </div>
@@ -202,13 +204,12 @@ function renderProducts(products) {
     const product = vectorProducts[Number(switchButton.dataset.productIndex)];
     const imageUrls = (product?.images || []).map((image) => image?.url)
       .filter((url, index, urls) => url && urls.indexOf(url) === index);
-    const image = switchButton.closest('.card__img').querySelector('.card__product-image');
-    let imageIndex = 0;
+    const cardImage = switchButton.closest('.card__img');
 
     switchButton.addEventListener('click', () => {
-      imageIndex = (imageIndex + 1) % imageUrls.length;
-      image.src = imageUrls[imageIndex];
-      image.alt = `${product?.name || 'Product image'} image ${imageIndex + 1}`;
+      const isSwitched = cardImage.classList.toggle('is-switched');
+      switchButton.setAttribute('aria-pressed', String(isSwitched));
+      switchButton.setAttribute('aria-label', `${isSwitched ? 'Show first' : 'Show alternate'} image for ${product?.name || 'product'}`);
     });
   });
 }

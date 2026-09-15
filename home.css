@@ -211,7 +211,7 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
   font-weight: 700;
   font-size: 32px;
   line-height: 48px;
-  color: #a2a2a2;
+  color: #fff;
   text-transform: uppercase;
 }
 
@@ -221,7 +221,7 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
   font-size: 12px;
   letter-spacing: 7.2px;
   text-transform: uppercase;
-  color: #a2a2a2;
+  color: #fff;
 }
 
 .hero__blurb {
@@ -316,16 +316,39 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
   height: 100%;
 }
 
-.card__product-image {
+.card__shadow {
   position: absolute;
-  top: 0;
-  right: 0;
+  inset: 0;
+  z-index: 2;
   width: 96%;
   height: 96%;
   margin: 0 auto 2%;
   object-fit: cover;
   object-position: center;
-  transition: opacity 0.2s ease;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.card__art {
+  position: absolute;
+  top: -8%;
+  right: -8%;
+  z-index: 1;
+  width: 96%;
+  height: 96%;
+  object-fit: cover;
+  opacity: 0.62;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.card__img.is-switched .card__art {
+  opacity: 1;
+  transform: translate(-5%, 5%);
+  z-index: 3;
+}
+
+.card__img.is-switched .card__shadow {
+  opacity: 0;
 }
 
 .card__image-switch {
