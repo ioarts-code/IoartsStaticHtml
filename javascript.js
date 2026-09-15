@@ -273,7 +273,7 @@ function renderProductDetail(product) {
       </dialog>
     `}
     <div class="meta"><span class="meta-line">Tags: ${tags}</span><span class="meta-line">Copyright: ${product?.copyright || 'Unofficial fanart'}</span><span class="meta-line">Product type <span class="badge">${productType}</span></span></div>
-    <div class="colors-row"><span class="colors-label">Choose Color</span><button class="color-swatch black selected" type="button" data-product-color="#000000" aria-label="Black" aria-pressed="true"></button><button class="color-swatch white" type="button" data-product-color="#ffffff" aria-label="White" aria-pressed="false"></button></div>
+    <div class="colors-row"><span class="colors-label">Choose Color</span><button class="color-swatch white selected" type="button" data-product-color="#ffffff" aria-label="White" aria-pressed="true"></button><button class="color-swatch black" type="button" data-product-color="#000000" aria-label="Black" aria-pressed="false"></button></div>
   `;
 
   const productOptions = detailContainer.querySelector('[data-product-options]');

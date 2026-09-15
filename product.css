@@ -298,9 +298,7 @@ html, body {
 
 .color-swatch.black {
   background-color: #000;
-  border: 2px solid #74d5ff;
-  outline: 2px solid rgba(116, 213, 255, 0.4);
-  outline-offset: 0;
+  border: 2px solid #a2a2a2;
 }
 
 .color-swatch.selected {
@@ -310,7 +308,9 @@ html, body {
 
 .color-swatch.white {
   background-color: #fff;
-  border: 2px solid #a2a2a2;
+  border: 2px solid #74d5ff;
+  outline: 2px solid rgba(116, 213, 255, 0.4);
+  outline-offset: 0;
 }
 
 @media (max-width: 1100px) {
@@ -390,7 +390,7 @@ html, body {
   }
 }
 
-.ioarts-footer { position: relative; width: calc(100% - 96px); min-height: 532px; margin: 48px; padding: 44px; overflow: hidden; background: #a2a2a2; border: 3px solid #a2a2a2; border-radius: 12px; }
+.ioarts-footer { position: relative; width: calc(100% - 96px); min-height: 532px; margin: 64px 48px 48px; padding: 44px; overflow: hidden; background: #a2a2a2; border: 3px solid #a2a2a2; border-radius: 12px; }
 .ioarts-footer__brand { color: #585858; font-size: clamp(120px,22vw,288px); font-weight: 700; line-height: 1; }
 .ioarts-footer__social, .footer-social, .social-link { display: none !important; }
 .ioarts-footer__social a { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; padding: 0; border: none !important; border-radius: 0 !important; outline: none !important; box-shadow: none !important; background: transparent; color: #585858; text-decoration: none; opacity: 1; visibility: visible; transition: color 0.2s ease, transform 0.2s ease; }
