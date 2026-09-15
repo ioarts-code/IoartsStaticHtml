@@ -190,7 +190,7 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
   left: 0;
   right: 0;
   height: 192px;
-  background: rgba(255, 255, 255, 0.2);
+  background: #a2a2a2;
   backdrop-filter: blur(1px);
   -webkit-backdrop-filter: blur(1px);
   border-top: 1px solid rgba(255, 255, 255, 0.1);
