@@ -1,7 +1,32 @@
 const DEFAULT_CONFIG = {
   endpoint: 'https://eu-west-2.cdn.hygraph.com/content/cmog3w3va0oy007jqcj9c8v7x/master',
-  authToken: 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImdjbXMtbWFpbi1wcm9kdWN0aW9uIn0.eyJ2ZXJzaW9uIjozLCJpYXQiOjE3ODg5OTUxMDksImF1ZCI6WyJodHRwczovL2FwaS1ldS13ZXN0LTIuaHlncmFwaC5jb20vdjIvY21vZzN3M3ZhMG95MDA3anFjajljOHY3eC9tYXN0ZXIiLCJtYW5hZ2VtZW50LW5leHQuZ3JhcGhjbXMuY29tIl0sImlzcyI6Imh0dHBzOi8vbWFuYWdlbWVudC1ldS13ZXN0LTIuaHlncmFwaC5jb20vIiwic3ViIjoiNGI0YzMzMTYtMGNlMC00ZTkyLTk2Y2QtZjNkNTc0MWRlMTE5IiwianRpIjoiY210dXBoeDM2MG5icTA2bW80dHo3MnFqbyJ9.1kSMtmXDeU2bcCpwWX2m2NgIcWuT4M6FPhP2qrQy4OV8vDZhcvn0z0PeCmJZH50k85jAbNc5cco7OkB8rbvyYpI2Y_C1le-6Eeujn1FOrXgfljJxknOpobwvcF0kIbEczBLx62gILReHIWPTVnYmPptKRQW7RHyMjMdHmEkrK600lxzrZDzZTKooKt7p-L7vSblPTmocVYK0077OtIn8d6ZL46_bba0HIz4MshO1OQ-sZVQDeWoa6oRDJ2OoFSTWsfWSCOhLF20Vsnt_3ofkVQZmLN2FLahm9Q45R8ZS7qsMrHTUAGgsGf-B4S3P5s7tCGk7pMcxcJpyiVWUCsfemuPZvSLZm2i1UCkg3kjmeU6Sr_jfJYRgQtPWzB0mIF9XjVBMuTxfJGLTkfXAVrsxRiWz3IUHI1izA4P5eu9RsiPWirNFNJ45vnfa7p5apahCOqKSlpUIGIw4hjtgCLdi2Z2PjoH5kLCAUxKCKwzjeyH2noY1AwJkoIM-L_ZjY2I32a1vQNflpIDxmOoeMdpEji0aNopfEaAoxeHCUdsbYbUpv9lxLZ-ELzMReVH3jKCHqk2-xjp--8ay-I9ERuL1tFBstDYhIT_dHxMAyAlfyUsRcIrHKkl_r_k3RSoZHRIi_T9HjUWdgFsmcd4wwfYWoz1G21gG5qfpaBquL33SODg',
+  authToken: '',
 };
+
+function sanitizeHygraphConfig(config = {}) {
+  const endpoint = String(config.endpoint || DEFAULT_CONFIG.endpoint || '').trim();
+  const authToken = String(config.authToken || '').trim();
+
+  return {
+    endpoint: endpoint || DEFAULT_CONFIG.endpoint,
+    authToken,
+  };
+}
+
+function clearHygraphAuthToken() {
+  try {
+    localStorage.removeItem('basic_ioarts_hygraph');
+  } catch {
+    // Ignore storage errors.
+  }
+
+  if (window.__HYGRAPH_CONFIG__) {
+    window.__HYGRAPH_CONFIG__ = {
+      ...window.__HYGRAPH_CONFIG__,
+      authToken: '',
+    };
+  }
+}
 
 function getStoredConfig() {
   try {
@@ -13,18 +38,18 @@ function getStoredConfig() {
 }
 
 function getHygraphConfig() {
-  return {
+  return sanitizeHygraphConfig({
     ...DEFAULT_CONFIG,
     ...getStoredConfig(),
     ...(window.__HYGRAPH_CONFIG__ || {}),
-  };
+  });
 }
 
 function setHygraphConfig(nextConfig) {
-  const merged = {
+  const merged = sanitizeHygraphConfig({
     ...getHygraphConfig(),
-    ...nextConfig,
-  };
+    ...(nextConfig || {}),
+  });
 
   window.__HYGRAPH_CONFIG__ = merged;
 
