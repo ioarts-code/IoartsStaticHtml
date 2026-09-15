@@ -91,10 +91,10 @@ img {
   height: auto;
   min-height: 36px;
   padding: 6px 18px;
-  border: 1.5px solid rgba(31, 31, 31, 0.4);
+  border: 1.5px solid #1f1f1f;
   border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.15);
-  color: #1f1f1f;
+  background: #1f1f1f;
+  color: #a2a2a2;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.06em;
@@ -107,9 +107,9 @@ img {
 
 .ioarts-footer__social a:hover,
 .ioarts-footer__social a:focus-visible {
-  background: #1f1f1f;
-  color: #ffffff;
-  border-color: #1f1f1f;
+  background: #ffffff;
+  color: #1f1f1f;
+  border-color: #ffffff;
   transform: translateY(-1px);
 }
 
@@ -190,10 +190,10 @@ img {
     height: auto;
     min-height: 32px;
     padding: 6px 14px;
-    border: 1.5px solid rgba(31, 31, 31, 0.35);
+    border: 1.5px solid #1f1f1f;
     border-radius: 9999px;
-    background: rgba(255, 255, 255, 0.2);
-    color: #1a1a1a;
+    background: #1f1f1f;
+    color: #a2a2a2;
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.05em;
