@@ -70,7 +70,7 @@ function setHygraphConfig(nextConfig) {
 const productGrid = document.getElementById('product-grid');
 const heroCarousel = document.getElementById('hero-carousel');
 
-const FEATURED_PRODUCT_SLUGS = ['t-shirt-cells', 'for-the-horde', 't-shirt-stray'];
+const FEATURED_PRODUCT_SLUGS = ['t-shirt-cells', 'for-the-horde',];
 const PRODUCT_GRID_CATEGORY = 'vectors';
 
 function getProductUrl(product) {
