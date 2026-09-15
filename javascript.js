@@ -299,15 +299,18 @@ function renderProductDetail(product) {
   }
 
   const mainImage = detailContainer.querySelector('#product-main-image');
+  const colorSwatches = Array.from(detailContainer.querySelectorAll('[data-product-color]'));
   let imageIndex = 0;
-  detailContainer.querySelectorAll('[data-product-color]').forEach((button) => {
+
+  colorSwatches.forEach((button) => {
     button.addEventListener('click', () => {
-      detailContainer.querySelectorAll('[data-product-color]').forEach((swatch) => {
+      colorSwatches.forEach((swatch) => {
         const selected = swatch === button;
         swatch.classList.toggle('selected', selected);
         swatch.setAttribute('aria-pressed', String(selected));
       });
-      const requestedIndex = button.dataset.productColor === '#ffffff' ? 1 : 0;
+
+      const requestedIndex = colorSwatches.indexOf(button);
       imageIndex = Math.min(requestedIndex, Math.max(images.length - 1, 0));
       if (images[imageIndex]?.url) {
         mainImage.src = images[imageIndex].url;
