@@ -367,6 +367,10 @@ async function fetchProductsFromHygraph() {
 
     if (!response.ok) {
       const errorText = await response.text();
+      if (response.status === 401 || response.status === 403) {
+        clearHygraphAuthToken();
+        throw new Error('Hygraph rejected the current auth token. Refresh with a valid auth token and retry.');
+      }
       throw new Error(`Hygraph request failed: ${response.status} ${errorText}`);
     }
 
@@ -443,6 +447,10 @@ async function fetchProductBySlug(slug) {
 
     if (!response.ok) {
       const errorText = await response.text();
+      if (response.status === 401 || response.status === 403) {
+        clearHygraphAuthToken();
+        throw new Error('Hygraph rejected the current auth token. Refresh with a valid auth token and retry.');
+      }
       throw new Error(`Hygraph request failed: ${response.status} ${errorText}`);
     }
 
