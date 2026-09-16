@@ -207,16 +207,24 @@ function setupCardSwipe() {
 
   productGrid.querySelectorAll('.card__img').forEach((cardImage) => {
     let touchStartX = 0;
+    let touchStartY = 0;
 
     cardImage.addEventListener('touchstart', (event) => {
       touchStartX = event.touches[0].clientX;
+      touchStartY = event.touches[0].clientY;
     }, { passive: true });
 
     cardImage.addEventListener('touchend', (event) => {
       const touchEndX = event.changedTouches[0].clientX;
+      const touchEndY = event.changedTouches[0].clientY;
       const deltaX = touchEndX - touchStartX;
-      if (Math.abs(deltaX) < 30) return;
-      cardImage.classList.toggle('is-switched', deltaX < 0);
+      const deltaY = touchEndY - touchStartY;
+
+      // Ensure horizontal intent and sufficient swipe distance
+      if (Math.abs(deltaX) < 30 || Math.abs(deltaX) <= Math.abs(deltaY)) return;
+
+      // Swiping in either direction toggles between front and back images
+      cardImage.classList.toggle('is-switched');
     }, { passive: true });
   });
 }
