@@ -87,8 +87,10 @@ function getFeaturedProducts(products) {
 }
 
 function getProductCategory(product) {
-  const category = product?.categories?.find((item) => item?.slug !== 'hero') || product?.categories?.[0];
-  return category?.name || 'Featured';
+  const category = product?.categories?.find((item) => item?.slug === 'vectors')
+    || product?.categories?.find((item) => item?.slug !== 'hero' && item?.slug !== 't-shirt')
+    || product?.categories?.[0];
+  return category?.name || 'Vectors';
 }
 
 function renderFeaturedHero(products) {
@@ -229,7 +231,7 @@ function renderProductDetail(product) {
   const images = [...(product?.images || []), ...(product?.heroImage ? [product.heroImage] : [])].filter((image, index, list) => image?.url && list.findIndex((item) => item?.url === image.url) === index);
   const secondaryImageUrl = images[1]?.url || imageUrl;
   const productType = (product?.productType || 'Digital Product').toUpperCase();
-  const category = product?.categories?.[0]?.name || 'Misc';
+  const category = getProductCategory(product);
   const tags = product?.tags?.map((tag) => tag.name).join(', ') || category;
   const linkToEtsy = product?.linkToEtsy || '';
   const downloadUrl = product?.download?.url || '#';
