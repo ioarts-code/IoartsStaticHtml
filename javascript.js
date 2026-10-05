@@ -291,7 +291,6 @@ function renderProductDetail(product) {
       </dialog>
     `}
     <div class="meta"><span class="meta-line">Tags: ${tags}</span><span class="meta-line">Copyright: ${product?.copyright || 'Unofficial fanart'}</span><span class="meta-line">Product type <span class="badge">${productType}</span></span></div>
-    <div class="colors-row"><span class="colors-label">Choose Color</span><button class="color-swatch white selected" type="button" data-product-color="#ffffff" aria-label="White" aria-pressed="true"></button><button class="color-swatch black" type="button" data-product-color="#000000" aria-label="Black" aria-pressed="false"></button></div>
   `;
 
   const productOptions = detailContainer.querySelector('[data-product-options]');
@@ -329,7 +328,6 @@ function renderProductDetail(product) {
 
   const mainImage = detailContainer.querySelector('#product-main-image');
   const secondaryImage = detailContainer.querySelector('#product-secondary-image');
-  const colorSwatches = Array.from(detailContainer.querySelectorAll('[data-product-color]'));
   let imageIndex = 0;
 
   const setImages = (primaryIdx, direction = 0) => {
@@ -353,30 +351,10 @@ function renderProductDetail(product) {
     }
   };
 
-  colorSwatches.forEach((button) => {
-    button.addEventListener('click', () => {
-      colorSwatches.forEach((swatch) => {
-        const selected = swatch === button;
-        swatch.classList.toggle('selected', selected);
-        swatch.setAttribute('aria-pressed', String(selected));
-      });
-
-      const requestedIndex = colorSwatches.indexOf(button);
-      setImages(requestedIndex);
-    });
-  });
-
   if (images.length > 1) {
     const updateImage = (nextIndex, direction = 0) => {
       const targetIndex = (nextIndex + images.length) % images.length;
       setImages(targetIndex, direction);
-      if (colorSwatches[targetIndex]) {
-        colorSwatches.forEach((swatch, idx) => {
-          const selected = idx === targetIndex;
-          swatch.classList.toggle('selected', selected);
-          swatch.setAttribute('aria-pressed', String(selected));
-        });
-      }
     };
 
     let pointerStartX = null;

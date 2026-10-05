@@ -301,49 +301,6 @@ html, body {
   color: #000;
 }
 
-/* ── Color swatches ── */
-.colors-row {
-  position: absolute;
-  left: 376px;
-  top: 750px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  height: 28px;
-}
-
-.colors-label {
-  font-weight: 700;
-  font-size: 14px;
-  color: #a2a2a2;
-  letter-spacing: -0.24px;
-}
-
-.color-swatch {
-  width: 28px;
-  height: 28px;
-  border-radius: 9999px;
-  cursor: pointer;
-  flex-shrink: 0;
-}
-
-.color-swatch.black {
-  background-color: #000;
-  border: 2px solid #a2a2a2;
-}
-
-.color-swatch.selected {
-  outline: 2px solid #74d5ff;
-  outline-offset: 2px;
-}
-
-.color-swatch.white {
-  background-color: #fff;
-  border: 2px solid #74d5ff;
-  outline: 2px solid rgba(116, 213, 255, 0.4);
-  outline-offset: 0;
-}
-
 @media (max-width: 1100px) {
   .page {
     width: 100vw;
@@ -357,8 +314,7 @@ html, body {
   .price-section,
   .description,
   .buttons-row,
-  .meta,
-  .colors-row {
+  .meta {
     left: 6vw;
   }
 
@@ -389,8 +345,7 @@ html, body {
   .price-section,
   .description,
   .buttons-row,
-  .meta,
-  .colors-row {
+  .meta {
     left: 6vw;
   }
 
@@ -416,9 +371,6 @@ html, body {
     top: 690px;
   }
 
-  .colors-row {
-    top: 810px;
-  }
 }
 
 .ioarts-footer {
@@ -540,8 +492,7 @@ html, body {
   .title,
   .description,
   .buttons-row,
-  .meta,
-  .colors-row {
+  .meta {
     position: relative;
     top: auto;
     right: auto;
@@ -562,7 +513,6 @@ html, body {
   .buttons-row { order: 6; flex-wrap: wrap; margin-bottom: 16px; }
   .meta { order: 7; gap: 16px; }
   .meta-line { flex-wrap: wrap; line-height: 1.8; }
-  .colors-row { order: 8; }
 
   .ioarts-footer {
     min-height: auto;
