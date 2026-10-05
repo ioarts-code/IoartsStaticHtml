@@ -69,13 +69,22 @@ function setHygraphConfig(nextConfig) {
 
 const productGrid = document.getElementById('product-grid');
 const heroCarousel = document.getElementById('hero-carousel');
+const loadMoreContainer = document.getElementById('load-more-container');
+const loadMoreButton = document.getElementById('load-more-products');
 
 const FEATURED_PRODUCT_SLUGS = ['t-shirt-cells', 'for-the-horde',];
 const PRODUCT_GRID_CATEGORY = 'vectors';
+const PRODUCT_PAGE_SIZE = 6;
+let productOffset = 0;
+let isLoadingMoreProducts = false;
 
 function getProductUrl(product) {
   const slug = typeof product === 'string' ? product : product?.slug;
-  const categoryPath = typeof product === 'string' ? '' : `${PRODUCT_GRID_CATEGORY}/`;
+  const category = typeof product === 'string' ? null
+    : product?.categories?.find((item) => item?.slug === PRODUCT_GRID_CATEGORY)
+      || product?.categories?.find((item) => item?.slug !== 'hero' && item?.slug !== 't-shirt')
+      || product?.categories?.[0];
+  const categoryPath = typeof product === 'string' ? '' : `${category?.slug || PRODUCT_GRID_CATEGORY}/`;
   return `/products/${categoryPath}${encodeURIComponent(slug || '')}`;
 }
 
@@ -165,19 +174,18 @@ function formatPrice(price) {
   }).format(value);
 }
 
-function renderProducts(products) {
+function renderProducts(products, append = false) {
   if (!productGrid) return;
 
-  const vectorProducts = Array.isArray(products)
-    ? products.filter((product) => product?.categories?.some((category) => category?.slug === PRODUCT_GRID_CATEGORY))
-    : [];
+  const gridProducts = Array.isArray(products) ? products : [];
 
-  if (vectorProducts.length === 0) {
+  if (!append && gridProducts.length === 0) {
     showEmptyState('No products found. Check your Hygraph endpoint and project data.');
     return;
   }
 
-  productGrid.innerHTML = vectorProducts
+  const existingCardCount = append ? productGrid.querySelectorAll('.card__img').length : 0;
+  const cardsMarkup = gridProducts
     .map((product) => {
       const imageUrls = (product?.images || []).map((image) => image?.url)
         .filter((url, index, urls) => url && urls.indexOf(url) === index);
@@ -193,19 +201,26 @@ function renderProducts(products) {
             </a>
           </div>
           <a class="card__label" href="${getProductUrl(product)}"><p class="card__name">${product?.name || 'Unnamed product'}</p></a>
-          <p class="card__tags">Vectors / Free</p>
+          <p class="card__tags">${getProductCategory(product)} / Free</p>
         </article>
       `;
     })
     .join('');
 
-  setupCardSwipe();
+  if (append) {
+    productGrid.insertAdjacentHTML('beforeend', cardsMarkup);
+  } else {
+    productGrid.innerHTML = cardsMarkup;
+  }
+
+  const newCardImages = Array.from(productGrid.querySelectorAll('.card__img')).slice(existingCardCount);
+  setupCardSwipe(newCardImages);
 }
 
-function setupCardSwipe() {
+function setupCardSwipe(cardImages = productGrid.querySelectorAll('.card__img')) {
   if (!productGrid) return;
 
-  productGrid.querySelectorAll('.card__img').forEach((cardImage) => {
+  cardImages.forEach((cardImage) => {
     let touchStartX = 0;
     let touchStartY = 0;
 
@@ -243,10 +258,9 @@ function renderProductDetail(product) {
   const tags = product?.tags?.map((tag) => tag.name).join(', ') || category;
   const linkToEtsy = product?.linkToEtsy || '';
   const linkToDeviantArt = product?.linktoDeviantArt || product?.linkToDeviantArt || '';
-  const externalLink = linkToDeviantArt || linkToEtsy;
+  const hasExternalLink = linkToDeviantArt || linkToEtsy;
   const downloadUrl = product?.download?.url || '#';
   const downloadFileName = product?.download?.fileName || `${product?.slug || 'product'}.svg`;
-  const primaryActionLabel = linkToDeviantArt ? 'View On DeviantArt' : linkToEtsy ? 'Buy on Etsy' : 'Download Image Free';
   const titleParts = name.split(/\s+/);
   const titleMarkup = titleParts.length > 1
     ? `<p>${titleParts.slice(0, Math.ceil(titleParts.length / 2)).join(' ')}</p><p>${titleParts.slice(Math.ceil(titleParts.length / 2)).join(' ')}</p>`
@@ -263,11 +277,12 @@ function renderProductDetail(product) {
     </div>
     <div class="title">${titleMarkup}</div>
     <p class="description">${description}</p>
-    <div class="buttons-row">${externalLink
-      ? `<a class="btn" href="${externalLink}" target="_blank" rel="noopener noreferrer">${primaryActionLabel}</a>`
-      : `<button class="btn" type="button" data-open-product-options>${primaryActionLabel}</button>`}
+    <div class="buttons-row">
+      ${linkToEtsy ? `<a class="btn" href="${linkToEtsy}" target="_blank" rel="noopener noreferrer">Buy on Etsy</a>` : ''}
+      ${linkToDeviantArt ? `<a class="btn" href="${linkToDeviantArt}" target="_blank" rel="noopener noreferrer">View On DeviantArt</a>` : ''}
+      ${hasExternalLink ? '' : '<button class="btn" type="button" data-open-product-options>Download Image Free</button>'}
     </div>
-    ${externalLink ? '' : `
+    ${hasExternalLink ? '' : `
       <dialog class="product-options" data-product-options>
         <div class="product-options__content">
           <a class="btn" href="${downloadUrl}" data-download-svg ${downloadUrl === '#' ? '' : `download="${downloadFileName}"`}>Download Image Free</a>
@@ -285,7 +300,7 @@ function renderProductDetail(product) {
   if (openProductOptions && productOptions) {
     openProductOptions.addEventListener('click', () => productOptions.showModal());
   }
-  if (downloadButton && !externalLink) downloadButton.addEventListener('click', async (event) => {
+  if (downloadButton && !hasExternalLink) downloadButton.addEventListener('click', async (event) => {
     if (downloadUrl === '#') return;
 
     event.preventDefault();
@@ -409,20 +424,18 @@ function renderProductDetail(product) {
   }
 }
 
-async function fetchProductsFromHygraph() {
+async function fetchProductPage(skip) {
   const config = getHygraphConfig();
   const endpoint = (config.endpoint || '').trim();
   const token = (config.authToken || '').trim();
 
   if (!endpoint || endpoint.includes('YOUR_')) {
-    showHeroLoadingState('Configure the Hygraph endpoint to load featured products.');
-    showEmptyState('Configure the Hygraph endpoint in javascript.js or set window.__HYGRAPH_CONFIG__ before this script runs.');
-    return;
+    throw new Error('Configure the Hygraph endpoint before loading products.');
   }
 
   const query = `
-    query GetProducts {
-      products(first: 100) {
+    query GetProducts($first: Int!, $skip: Int!) {
+      products(first: $first, skip: $skip) {
         id
         name
         slug
@@ -439,46 +452,82 @@ async function fetchProductsFromHygraph() {
     }
   `;
 
-  try {
-    const headers = {
+  const headers = {
       'Content-Type': 'application/json',
       Accept: 'application/json',
     };
 
-    if (token) {
-      headers.Authorization = `Bearer ${token}`;
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+
+  const response = await fetch(endpoint, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({ query, variables: { first: PRODUCT_PAGE_SIZE, skip } }),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    if (response.status === 401 || response.status === 403) {
+      clearHygraphAuthToken();
+      throw new Error('Hygraph rejected the current auth token. Refresh with a valid auth token and retry.');
     }
+    throw new Error(`Hygraph request failed: ${response.status} ${errorText}`);
+  }
 
-    const response = await fetch(endpoint, {
-      method: 'POST',
-      headers,
-      body: JSON.stringify({ query }),
-    });
+  const result = await response.json();
+  if (Array.isArray(result?.errors) && result.errors.length > 0) {
+    throw new Error(result.errors.map((error) => error.message).join('; '));
+  }
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      if (response.status === 401 || response.status === 403) {
-        clearHygraphAuthToken();
-        throw new Error('Hygraph rejected the current auth token. Refresh with a valid auth token and retry.');
-      }
-      throw new Error(`Hygraph request failed: ${response.status} ${errorText}`);
-    }
+  const products = result?.data?.products;
 
-    const result = await response.json();
-    const products = result?.data?.products || [];
+  if (!Array.isArray(products)) {
+    throw new Error('Hygraph response does not contain a products array.');
+  }
 
-    if (!Array.isArray(products)) {
-      throw new Error('Hygraph response does not contain a products array.');
-    }
+  return products;
+}
 
+async function fetchProductsFromHygraph() {
+  try {
+    const products = await fetchProductPage(0);
+    productOffset = products.length;
     renderFeaturedHero(products);
     renderProducts(products);
+    if (loadMoreContainer) loadMoreContainer.hidden = products.length < PRODUCT_PAGE_SIZE;
   } catch (error) {
     console.error('Hygraph fetch error:', error);
     showHeroLoadingState('Unable to load featured products. Check the Hygraph endpoint and token, or refresh with a valid auth token.');
     showEmptyState('Unable to load products from Hygraph. Check the endpoint and token, or refresh with a valid auth token.');
+    if (loadMoreContainer) loadMoreContainer.hidden = true;
   }
 }
+
+async function loadMoreProducts() {
+  if (isLoadingMoreProducts || !loadMoreButton) return;
+
+  isLoadingMoreProducts = true;
+  loadMoreButton.disabled = true;
+  loadMoreButton.textContent = 'Loading...';
+
+  try {
+    const products = await fetchProductPage(productOffset);
+    productOffset += products.length;
+    renderProducts(products, true);
+    if (loadMoreContainer) loadMoreContainer.hidden = products.length < PRODUCT_PAGE_SIZE;
+  } catch (error) {
+    console.error('Hygraph load-more error:', error);
+    loadMoreButton.textContent = 'Try Again';
+  } finally {
+    isLoadingMoreProducts = false;
+    loadMoreButton.disabled = false;
+    if (loadMoreButton.textContent === 'Loading...') loadMoreButton.textContent = 'Load More';
+  }
+}
+
+if (loadMoreButton) loadMoreButton.addEventListener('click', loadMoreProducts);
 
 async function fetchProductBySlug(slug) {
   const config = getHygraphConfig();

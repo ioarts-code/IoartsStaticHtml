@@ -307,6 +307,36 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
   padding: 48px 48px 96px;
 }
 
+.load-more-container {
+  display: flex;
+  justify-content: center;
+  padding: 0 48px 96px;
+}
+
+.load-more-container[hidden] {
+  display: none;
+}
+
+.load-more-button {
+  min-width: 160px;
+  padding: 14px 24px;
+  border: 1px solid #a2a2a2;
+  background: transparent;
+  color: #a2a2a2;
+  font: inherit;
+  cursor: pointer;
+}
+
+.load-more-button:hover:not(:disabled) {
+  background: #a2a2a2;
+  color: #000;
+}
+
+.load-more-button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
 /* ── Card ── */
 .card {
   display: flex;
@@ -510,6 +540,10 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
   .gallery {
     grid-template-columns: 1fr;
     padding: 32px 24px 72px;
+  }
+
+  .load-more-container {
+    padding: 0 24px 72px;
   }
 }
 
