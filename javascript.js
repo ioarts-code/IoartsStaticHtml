@@ -246,7 +246,7 @@ function renderProductDetail(product) {
   const externalLink = linkToDeviantArt || linkToEtsy;
   const downloadUrl = product?.download?.url || '#';
   const downloadFileName = product?.download?.fileName || `${product?.slug || 'product'}.svg`;
-  const primaryActionLabel = linkToDeviantArt ? 'DeviantArt' : linkToEtsy ? 'Buy on Etsy' : 'Download Image Free';
+  const primaryActionLabel = linkToDeviantArt ? 'View On DeviantArt' : linkToEtsy ? 'Buy on Etsy' : 'Download Image Free';
   const titleParts = name.split(/\s+/);
   const titleMarkup = titleParts.length > 1
     ? `<p>${titleParts.slice(0, Math.ceil(titleParts.length / 2)).join(' ')}</p><p>${titleParts.slice(Math.ceil(titleParts.length / 2)).join(' ')}</p>`
