@@ -253,7 +253,6 @@ function renderProductDetail(product) {
   const imageUrl = product?.images?.[0]?.url || product?.heroImage?.url || 'https://placehold.co/1200x1200/f1e9e0/1f2a37?text=Product';
   const images = [...(product?.images || []), ...(product?.heroImage ? [product.heroImage] : [])].filter((image, index, list) => image?.url && list.findIndex((item) => item?.url === image.url) === index);
   const secondaryImageUrl = images[1]?.url || imageUrl;
-  const productType = (product?.productType || 'Digital Product').toUpperCase();
   const category = getProductCategory(product);
   const tags = product?.tags?.map((tag) => tag.name).join(', ') || category;
   const linkToEtsy = product?.linkToEtsy || '';
@@ -290,7 +289,7 @@ function renderProductDetail(product) {
         </div>
       </dialog>
     `}
-    <div class="meta"><span class="meta-line">Tags: ${tags}</span><span class="meta-line">Copyright: ${product?.copyright || 'Unofficial fanart'}</span><span class="meta-line">Product type <span class="badge">${productType}</span></span></div>
+    <div class="meta"><span class="meta-line">Tags: ${tags}</span><span class="meta-line">Copyright: ${product?.copyright || 'Unofficial fanart'}</span></div>
   `;
 
   const productOptions = detailContainer.querySelector('[data-product-options]');
@@ -530,7 +529,6 @@ async function fetchProductBySlug(slug) {
         linkToEtsy
         linktoDeviantArt
         description
-        productType
         copyright
         download {
           url
