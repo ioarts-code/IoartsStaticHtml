@@ -242,9 +242,11 @@ function renderProductDetail(product) {
   const category = getProductCategory(product);
   const tags = product?.tags?.map((tag) => tag.name).join(', ') || category;
   const linkToEtsy = product?.linkToEtsy || '';
+  const linkToDeviantArt = product?.linkToDeviantArt || '';
+  const externalLink = linkToDeviantArt || linkToEtsy;
   const downloadUrl = product?.download?.url || '#';
   const downloadFileName = product?.download?.fileName || `${product?.slug || 'product'}.svg`;
-  const primaryActionLabel = linkToEtsy ? 'Buy on Etsy' : 'Download SVG';
+  const primaryActionLabel = linkToDeviantArt ? 'DeviantArt' : linkToEtsy ? 'Buy on Etsy' : 'Download Image Free';
   const titleParts = name.split(/\s+/);
   const titleMarkup = titleParts.length > 1
     ? `<p>${titleParts.slice(0, Math.ceil(titleParts.length / 2)).join(' ')}</p><p>${titleParts.slice(Math.ceil(titleParts.length / 2)).join(' ')}</p>`
@@ -261,14 +263,14 @@ function renderProductDetail(product) {
     </div>
     <div class="title">${titleMarkup}</div>
     <p class="description">${description}</p>
-    <div class="buttons-row">${linkToEtsy
-      ? `<a class="btn" href="${linkToEtsy}" target="_blank" rel="noopener noreferrer">Buy on Etsy</a>`
-      : '<button class="btn" type="button" data-open-product-options>Download SVG</button>'}
+    <div class="buttons-row">${externalLink
+      ? `<a class="btn" href="${externalLink}" target="_blank" rel="noopener noreferrer">${primaryActionLabel}</a>`
+      : `<button class="btn" type="button" data-open-product-options>${primaryActionLabel}</button>`}
     </div>
-    ${linkToEtsy ? '' : `
+    ${externalLink ? '' : `
       <dialog class="product-options" data-product-options>
         <div class="product-options__content">
-          <a class="btn" href="${downloadUrl}" data-download-svg ${downloadUrl === '#' ? '' : `download="${downloadFileName}"`}>Download SVG</a>
+          <a class="btn" href="${downloadUrl}" data-download-svg ${downloadUrl === '#' ? '' : `download="${downloadFileName}"`}>Download Image Free</a>
           <a class="btn" href="https://buymeacoffee.com/ioartseu" target="_blank" rel="noopener noreferrer">Buy me coffee</a>
         </div>
       </dialog>
@@ -283,7 +285,7 @@ function renderProductDetail(product) {
   if (openProductOptions && productOptions) {
     openProductOptions.addEventListener('click', () => productOptions.showModal());
   }
-  if (downloadButton && !linkToEtsy) downloadButton.addEventListener('click', async (event) => {
+  if (downloadButton && !externalLink) downloadButton.addEventListener('click', async (event) => {
     if (downloadUrl === '#') return;
 
     event.preventDefault();
@@ -499,6 +501,7 @@ async function fetchProductBySlug(slug) {
         slug
         price
         linkToEtsy
+        linkToDeviantArt
         description
         productType
         copyright
