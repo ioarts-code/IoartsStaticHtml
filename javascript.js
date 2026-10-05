@@ -242,7 +242,7 @@ function renderProductDetail(product) {
   const category = getProductCategory(product);
   const tags = product?.tags?.map((tag) => tag.name).join(', ') || category;
   const linkToEtsy = product?.linkToEtsy || '';
-  const linkToDeviantArt = product?.linkToDeviantArt || '';
+  const linkToDeviantArt = product?.linktoDeviantArt || product?.linkToDeviantArt || '';
   const externalLink = linkToDeviantArt || linkToEtsy;
   const downloadUrl = product?.download?.url || '#';
   const downloadFileName = product?.download?.fileName || `${product?.slug || 'product'}.svg`;
@@ -501,7 +501,7 @@ async function fetchProductBySlug(slug) {
         slug
         price
         linkToEtsy
-        linkToDeviantArt
+        linktoDeviantArt
         description
         productType
         copyright
