@@ -1027,6 +1027,109 @@ img {
   text-transform: uppercase;
 }
 
+/* Left vertical menu, shared with the start page */
+.vertical-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 72px;
+  width: 42px;
+  height: 100vh;
+  padding: 36px 0 28px;
+  color: #fff;
+}
+
+.vertical-menu a {
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+.vertical-menu__brand {
+  font-size: 14px;
+  letter-spacing: 2px;
+}
+
+.vertical-menu__links {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  gap: 42px;
+}
+
+.vertical-menu a:hover {
+  color: #74d5ff;
+}
+
+.vertical-menu__dots {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 0;
+}
+
+.vertical-menu__dots span {
+  display: block;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #fff;
+}
+
+/* About page: white rounded card holding all text */
+.about-page .page-shell {
+  padding-left: 42px;
+}
+
+.about-card {
+  padding: clamp(24px, 5vw, 56px);
+  border-radius: 24px;
+  background: #fff;
+}
+
+.about-card .eyebrow {
+  color: #0b6f94;
+}
+
+.about-card .legal-header h1,
+.about-card .legal-panel h2,
+.about-card .legal-panel h3 {
+  color: #111;
+}
+
+.about-card .legal-header > p:last-child,
+.about-card .legal-panel p,
+.about-card .legal-panel li {
+  color: #333;
+}
+
+.about-card .legal-panel {
+  border-color: rgba(0, 0, 0, 0.12);
+  background: transparent;
+}
+
+.about-card .profile-link {
+  border-color: rgba(0, 0, 0, 0.3);
+  color: #111;
+}
+
+.about-card .profile-link:hover,
+.about-card .profile-link:focus-visible {
+  background: #111;
+  color: #fff;
+}
+
 .site-footer {
   display: none;
 }
@@ -1037,6 +1140,8 @@ img {
 }
 
 @media (max-width: 700px) {
+  .vertical-menu { display: none; }
+  .about-page .page-shell { padding-left: 0; }
   .container { width: min(100% - 48px, 920px); }
   .header-inner { align-items: flex-start; flex-direction: column; padding: 20px 0; }
   .main-nav { justify-content: flex-start; gap: 8px 14px; }
