@@ -284,15 +284,6 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
   width: 100%;
 }
 
-.filters__label {
-  color: #585858;
-  font-family: "Inter:Bold", "Inter", sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
 .filters__row {
   display: flex;
   flex-wrap: wrap;
