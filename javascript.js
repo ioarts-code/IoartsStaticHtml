@@ -319,6 +319,9 @@ function renderProductDetail(product) {
   const imageUrl = product?.images?.[0]?.url || product?.heroImage?.url || 'https://placehold.co/1200x1200/f1e9e0/1f2a37?text=Product';
   const images = [...(product?.images || []), ...(product?.heroImage ? [product.heroImage] : [])].filter((image, index, list) => image?.url && list.findIndex((item) => item?.url === image.url) === index);
   const secondaryImageUrl = images[1]?.url || imageUrl;
+  const colorType = product?.colorTypeModel
+    ? product.colorTypeModel.charAt(0).toUpperCase() + product.colorTypeModel.slice(1)
+    : '';
   const category = getProductCategory(product);
   const tags = product?.tags?.map((tag) => tag.name).join(', ') || category;
   const linkToEtsy = product?.linkToEtsy || '';
@@ -339,6 +342,7 @@ function renderProductDetail(product) {
     <div class="product-image">
       <img id="product-secondary-image" class="product-image__bg" src="${secondaryImageUrl}" alt="" draggable="false" />
       <img id="product-main-image" class="product-image__main" src="${imageUrl}" alt="${name}" draggable="false" />
+      ${images.length > 1 ? `<div class="image-swipe-info" aria-live="polite"><span data-image-counter>1 / ${images.length}</span><span>Swipe to view</span></div>` : ''}
     </div>
     <div class="title">${titleMarkup}</div>
     <p class="description">${description}</p>
@@ -355,7 +359,7 @@ function renderProductDetail(product) {
         </div>
       </dialog>
     `}
-    <div class="meta"><span class="meta-line">Tags: ${tags}</span><span class="meta-line">Copyright: ${product?.copyright || 'Unofficial fanart'}</span></div>
+    <div class="meta"><span class="meta-line">Tags: ${tags}</span><span class="meta-line">Copyright: ${product?.copyright || 'Unofficial fanart'}</span>${colorType ? `<span class="meta-line">Color Type: ${colorType}</span>` : ''}</div>
   `;
 
   const productOptions = detailContainer.querySelector('[data-product-options]');
@@ -393,6 +397,7 @@ function renderProductDetail(product) {
 
   const mainImage = detailContainer.querySelector('#product-main-image');
   const secondaryImage = detailContainer.querySelector('#product-secondary-image');
+  const imageCounter = detailContainer.querySelector('[data-image-counter]');
   let imageIndex = 0;
 
   const setImages = (primaryIdx, direction = 0) => {
@@ -414,6 +419,7 @@ function renderProductDetail(product) {
     if (images[bgIdx]?.url && secondaryImage) {
       secondaryImage.src = images[bgIdx].url;
     }
+    if (imageCounter) imageCounter.textContent = `${imageIndex + 1} / ${images.length}`;
   };
 
   if (images.length > 1) {
@@ -609,6 +615,7 @@ async function fetchProductBySlug(slug) {
         linktoDeviantArt
         description
         copyright
+        colorTypeModel
         download {
           url
           fileName

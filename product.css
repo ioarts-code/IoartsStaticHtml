@@ -108,6 +108,34 @@ html, body {
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
+.image-swipe-info {
+  position: absolute;
+  z-index: 4;
+  left: 50%;
+  bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  transform: translateX(-50%);
+  border: 1px solid rgba(200, 200, 200, 0.42);
+  border-radius: 9999px;
+  background: rgba(15, 15, 15, 0.72);
+  color: #c8c8c8;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  pointer-events: none;
+  backdrop-filter: blur(8px);
+}
+
+[data-image-counter] {
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+
 /* ── Product image navigation ── */
 .image-nav {
   position: absolute;
