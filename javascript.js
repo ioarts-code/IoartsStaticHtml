@@ -233,6 +233,10 @@ function renderProductGrid() {
     const matchesColorType = activeColorTypeFilter === 'all'
       || product?.colorTypeModel === activeColorTypeFilter;
     return matchesTag && matchesColorType;
+  }).sort((first, second) => {
+    const firstOrder = first?.colorTypeModel === 'light' ? 0 : first?.colorTypeModel === 'dark' ? 2 : 1;
+    const secondOrder = second?.colorTypeModel === 'light' ? 0 : second?.colorTypeModel === 'dark' ? 2 : 1;
+    return firstOrder - secondOrder;
   });
 
   if (gridProducts.length === 0) {
