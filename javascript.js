@@ -81,6 +81,8 @@ let productOffset = 0;
 let isLoadingMoreProducts = false;
 let loadedProducts = [];
 let colorTypeOptions = [];
+let tagOptionNames = [];
+let productRequestId = 0;
 let activeTagFilter = 'all';
 let activeColorTypeFilter = 'all';
 
@@ -124,16 +126,9 @@ function renderFilterGroup(container, options, activeValue, onChange) {
 }
 
 function renderProductFilters() {
-  const tags = new Map();
-  loadedProducts.forEach((product) => {
-    (product?.tags || []).forEach((tag) => {
-      if (tag?.name) tags.set(tag.name, tag.name);
-    });
-  });
-
   const tagOptions = [
     { value: 'all', label: 'All' },
-    ...Array.from(tags, ([value, label]) => ({ value, label })),
+    ...tagOptionNames.map((value) => ({ value, label: value })),
   ];
   const colorOptions = [
     { value: 'all', label: 'All' },
@@ -143,12 +138,12 @@ function renderProductFilters() {
   renderFilterGroup(tagFilters, tagOptions, activeTagFilter, (value) => {
     activeTagFilter = value;
     renderProductFilters();
-    renderProductGrid();
+    reloadProducts();
   });
   renderFilterGroup(colorTypeFilters, colorOptions, activeColorTypeFilter, (value) => {
     activeColorTypeFilter = value;
     renderProductFilters();
-    renderProductGrid();
+    reloadProducts();
   });
 }
 
@@ -227,20 +222,14 @@ function formatPrice(price) {
 function renderProductGrid() {
   if (!productGrid) return;
 
-  const gridProducts = loadedProducts.filter((product) => {
-    const matchesTag = activeTagFilter === 'all'
-      || product?.tags?.some((tag) => tag?.name === activeTagFilter);
-    const matchesColorType = activeColorTypeFilter === 'all'
-      || product?.colorTypeModel === activeColorTypeFilter;
-    return matchesTag && matchesColorType;
-  }).sort((first, second) => {
+  const gridProducts = [...loadedProducts].sort((first, second) => {
     const firstOrder = first?.colorTypeModel === 'light' ? 0 : first?.colorTypeModel === 'dark' ? 2 : 1;
     const secondOrder = second?.colorTypeModel === 'light' ? 0 : second?.colorTypeModel === 'dark' ? 2 : 1;
     return firstOrder - secondOrder;
   });
 
   if (gridProducts.length === 0) {
-    if (loadedProducts.length === 0) {
+    if (activeTagFilter === 'all' && activeColorTypeFilter === 'all') {
       showEmptyState('No products found. Check your Hygraph endpoint and project data.');
     } else {
       productGrid.innerHTML = '<p class="empty-state">No products match these filters.</p>';
@@ -482,14 +471,21 @@ async function fetchProductPage(skip) {
     throw new Error('Configure the Hygraph endpoint before loading products.');
   }
 
+  const where = {};
+  if (activeTagFilter !== 'all') where.tags_some = { name: activeTagFilter };
+  if (activeColorTypeFilter !== 'all') where.colorTypeModel = activeColorTypeFilter;
+
   const query = `
-    query GetProducts($first: Int!, $skip: Int!) {
+    query GetProducts($first: Int!, $skip: Int!, $where: ProductWhereInput) {
       colorTypes: __type(name: "ColorEnumeration") {
         enumValues {
           name
         }
       }
-      products(first: $first, skip: $skip) {
+      allTags: tags(first: 100) {
+        name
+      }
+      products(first: $first, skip: $skip, where: $where) {
         id
         name
         slug
@@ -522,7 +518,7 @@ async function fetchProductPage(skip) {
   const response = await fetch(endpoint, {
     method: 'POST',
     headers,
-    body: JSON.stringify({ query, variables: { first: PRODUCT_PAGE_SIZE, skip } }),
+    body: JSON.stringify({ query, variables: { first: PRODUCT_PAGE_SIZE, skip, where } }),
   });
 
   if (!response.ok) {
@@ -548,13 +544,15 @@ async function fetchProductPage(skip) {
   return {
     products,
     colorTypes: result?.data?.colorTypes?.enumValues?.map((colorType) => colorType.name) || [],
+    tagNames: (result?.data?.allTags || []).map((tag) => tag.name).filter(Boolean),
   };
 }
 
 async function fetchProductsFromHygraph() {
   try {
-    const { products, colorTypes } = await fetchProductPage(0);
+    const { products, colorTypes, tagNames } = await fetchProductPage(0);
     colorTypeOptions = colorTypes;
+    tagOptionNames = tagNames;
     productOffset = products.length;
     renderFeaturedHero(products);
     renderProducts(products);
@@ -567,15 +565,35 @@ async function fetchProductsFromHygraph() {
   }
 }
 
+async function reloadProducts() {
+  const requestId = ++productRequestId;
+  showEmptyState('Loading products...');
+  if (loadMoreContainer) loadMoreContainer.hidden = true;
+
+  try {
+    const { products } = await fetchProductPage(0);
+    if (requestId !== productRequestId) return;
+    productOffset = products.length;
+    renderProducts(products);
+    if (loadMoreContainer) loadMoreContainer.hidden = products.length < PRODUCT_PAGE_SIZE;
+  } catch (error) {
+    if (requestId !== productRequestId) return;
+    console.error('Hygraph filter error:', error);
+    showEmptyState('Unable to load products from Hygraph. Check the endpoint and token, or refresh with a valid auth token.');
+  }
+}
+
 async function loadMoreProducts() {
   if (isLoadingMoreProducts || !loadMoreButton) return;
 
+  const requestId = productRequestId;
   isLoadingMoreProducts = true;
   loadMoreButton.disabled = true;
   loadMoreButton.textContent = 'Loading...';
 
   try {
     const { products } = await fetchProductPage(productOffset);
+    if (requestId !== productRequestId) return;
     productOffset += products.length;
     renderProducts(products, true);
     if (loadMoreContainer) loadMoreContainer.hidden = products.length < PRODUCT_PAGE_SIZE;
