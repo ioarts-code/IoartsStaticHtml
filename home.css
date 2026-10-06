@@ -266,8 +266,24 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
   gap: 12px;
 }
 
+.filters__group {
+  display: grid;
+  grid-template-columns: 100px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+}
+
+.filters__label {
+  color: #a2a2a2;
+  font-family: "Inter:Bold", "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
 .filters__row {
   display: flex;
+  flex-wrap: wrap;
   gap: 12px;
 }
 
@@ -280,8 +296,10 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
   font-size: 14px;
   line-height: 20px;
   color: #a2a2a2;
+  background: transparent;
   text-transform: lowercase;
   transition: background 0.15s, color 0.15s;
+  cursor: pointer;
 }
 
 .filter--active {
@@ -535,6 +553,11 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
 
   .filters__row {
     flex-wrap: wrap;
+  }
+
+  .filters__group {
+    grid-template-columns: 1fr;
+    gap: 8px;
   }
 
   .gallery {

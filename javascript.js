@@ -474,12 +474,18 @@ async function fetchProductPage(skip) {
 
   const query = `
     query GetProducts($first: Int!, $skip: Int!) {
+      colorTypes: __type(name: "ColorEnumeration") {
+        enumValues {
+          name
+        }
+      }
       products(first: $first, skip: $skip) {
         id
         name
         slug
         price
         description
+        colorTypeModel
         images {
           url
         }
@@ -526,12 +532,16 @@ async function fetchProductPage(skip) {
     throw new Error('Hygraph response does not contain a products array.');
   }
 
-  return products;
+  return {
+    products,
+    colorTypes: result?.data?.colorTypes?.enumValues?.map((colorType) => colorType.name) || [],
+  };
 }
 
 async function fetchProductsFromHygraph() {
   try {
-    const products = await fetchProductPage(0);
+    const { products, colorTypes } = await fetchProductPage(0);
+    colorTypeOptions = colorTypes;
     productOffset = products.length;
     renderFeaturedHero(products);
     renderProducts(products);
@@ -552,7 +562,7 @@ async function loadMoreProducts() {
   loadMoreButton.textContent = 'Loading...';
 
   try {
-    const products = await fetchProductPage(productOffset);
+    const { products } = await fetchProductPage(productOffset);
     productOffset += products.length;
     renderProducts(products, true);
     if (loadMoreContainer) loadMoreContainer.hidden = products.length < PRODUCT_PAGE_SIZE;
