@@ -71,7 +71,7 @@ const productGrid = document.getElementById('product-grid');
 const heroCarousel = document.getElementById('hero-carousel');
 const loadMoreContainer = document.getElementById('load-more-container');
 const loadMoreButton = document.getElementById('load-more-products');
-const categoryFilters = document.getElementById('category-filters');
+const tagFilters = document.getElementById('tag-filters');
 const colorTypeFilters = document.getElementById('color-type-filters');
 
 const FEATURED_PRODUCT_SLUGS = ['t-shirt-cells', 'for-the-horde',];
@@ -81,7 +81,7 @@ let productOffset = 0;
 let isLoadingMoreProducts = false;
 let loadedProducts = [];
 let colorTypeOptions = [];
-let activeCategoryFilter = 'all';
+let activeTagFilter = 'all';
 let activeColorTypeFilter = 'all';
 
 function getProductUrl(product) {
@@ -124,24 +124,24 @@ function renderFilterGroup(container, options, activeValue, onChange) {
 }
 
 function renderProductFilters() {
-  const categories = new Map();
+  const tags = new Map();
   loadedProducts.forEach((product) => {
-    (product?.categories || []).forEach((category) => {
-      if (category?.slug && category.slug !== 'hero') categories.set(category.slug, category.name || category.slug);
+    (product?.tags || []).forEach((tag) => {
+      if (tag?.name) tags.set(tag.name, tag.name);
     });
   });
 
-  const categoryOptions = [
+  const tagOptions = [
     { value: 'all', label: 'All' },
-    ...Array.from(categories, ([value, label]) => ({ value, label })),
+    ...Array.from(tags, ([value, label]) => ({ value, label })),
   ];
   const colorOptions = [
     { value: 'all', label: 'All' },
     ...colorTypeOptions.map((value) => ({ value, label: value })),
   ];
 
-  renderFilterGroup(categoryFilters, categoryOptions, activeCategoryFilter, (value) => {
-    activeCategoryFilter = value;
+  renderFilterGroup(tagFilters, tagOptions, activeTagFilter, (value) => {
+    activeTagFilter = value;
     renderProductFilters();
     renderProductGrid();
   });
@@ -228,11 +228,11 @@ function renderProductGrid() {
   if (!productGrid) return;
 
   const gridProducts = loadedProducts.filter((product) => {
-    const matchesCategory = activeCategoryFilter === 'all'
-      || product?.categories?.some((category) => category?.slug === activeCategoryFilter);
+    const matchesTag = activeTagFilter === 'all'
+      || product?.tags?.some((tag) => tag?.name === activeTagFilter);
     const matchesColorType = activeColorTypeFilter === 'all'
       || product?.colorTypeModel === activeColorTypeFilter;
-    return matchesCategory && matchesColorType;
+    return matchesTag && matchesColorType;
   });
 
   if (gridProducts.length === 0) {
@@ -486,6 +486,9 @@ async function fetchProductPage(skip) {
         price
         description
         colorTypeModel
+        tags {
+          name
+        }
         images {
           url
         }
