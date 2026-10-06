@@ -1120,8 +1120,9 @@ img {
 }
 
 .about-card .profile-link {
-  border-color: rgba(0, 0, 0, 0.3);
-  color: #111;
+  border-color: #111;
+  background: #111;
+  color: #fff;
 }
 
 .about-card .legal-panel ul {
@@ -1152,8 +1153,9 @@ img {
 
 .about-card .profile-link:hover,
 .about-card .profile-link:focus-visible {
-  background: #111;
-  color: #fff;
+  border-color: #a2a2a2;
+  background: #a2a2a2;
+  color: #111;
 }
 
 .site-footer {
