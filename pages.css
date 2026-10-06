@@ -1124,6 +1124,32 @@ img {
   color: #111;
 }
 
+.about-card .legal-panel ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 0;
+  list-style: none;
+}
+
+.about-card .legal-panel li {
+  padding: 12px 24px;
+  border-radius: 999px;
+  background: #111;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.2;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+  transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+}
+
+.about-card .legal-panel li:hover {
+  background: #0b6f94;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.24);
+}
+
 .about-card .profile-link:hover,
 .about-card .profile-link:focus-visible {
   background: #111;
