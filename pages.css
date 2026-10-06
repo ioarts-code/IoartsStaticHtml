@@ -1124,6 +1124,55 @@ img {
   background: transparent;
 }
 
+.about-page .legal-wrap {
+  max-width: 1120px;
+}
+
+.about-card {
+  padding: clamp(24px, 4vw, 48px);
+}
+
+.about-card .legal-header {
+  max-width: none;
+  margin-bottom: 32px;
+}
+
+.about-card .legal-header h1 {
+  margin-bottom: 12px;
+  font-size: clamp(38px, 5vw, 64px);
+  letter-spacing: 0;
+}
+
+.about-card .legal-content {
+  gap: 36px;
+}
+
+.about-card .legal-panel {
+  padding: 28px 0 0;
+  border: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 0;
+}
+
+.about-card .legal-panel h2 {
+  margin-bottom: 22px;
+  font-size: 24px;
+}
+
+.about-skills__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px 32px;
+}
+
+.about-card .about-skill-group h3 {
+  margin: 0 0 12px;
+  color: #555;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
 .about-card .profile-link {
   border-color: #111;
   background: #111;
@@ -1133,27 +1182,52 @@ img {
 .about-card .legal-panel ul {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 8px;
   padding: 0;
   list-style: none;
 }
 
 .about-card .legal-panel li {
-  padding: 12px 24px;
+  padding: 8px 14px;
   border-radius: 999px;
   background: #111;
   color: #fff;
-  font-size: 15px;
-  font-weight: 700;
-  line-height: 1.2;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
-  transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.3;
+  box-shadow: none;
+  transition: background 0.15s;
 }
 
 .about-card .legal-panel li:hover {
   background: #0b6f94;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.24);
+}
+
+.about-experience__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px 36px;
+}
+
+.about-card .about-experience__item {
+  min-width: 0;
+  padding-top: 16px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.about-card .about-experience__item h3 {
+  margin: 0 0 5px;
+  color: #111;
+  font-size: 16px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.about-card .about-experience__item > p {
+  margin-bottom: 12px;
+  color: #666;
+  font-size: 13px;
+  line-height: 1.4;
 }
 
 .about-card .profile-link:hover,
@@ -1184,4 +1258,28 @@ img {
   .contact-panel, .legal-panel { padding: 22px 20px; }
   .contact-panel p, .legal-panel p, .legal-panel li { font-size: 14px; line-height: 1.65; }
   .page-shell > .ioarts-footer { margin: 0 24px 24px; width: calc(100% - 48px); }
+}
+
+@media (max-width: 900px) {
+  .about-skills__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+  }
+}
+
+@media (max-width: 560px) {
+  .about-skills__grid,
+  .about-experience__grid {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+  .about-card .legal-panel h2 {
+    font-size: 21px;
+  }
+
+  .about-card .legal-panel li {
+    padding: 7px 12px;
+    font-size: 12px;
+  }
 }
