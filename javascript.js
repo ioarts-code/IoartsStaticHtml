@@ -71,12 +71,18 @@ const productGrid = document.getElementById('product-grid');
 const heroCarousel = document.getElementById('hero-carousel');
 const loadMoreContainer = document.getElementById('load-more-container');
 const loadMoreButton = document.getElementById('load-more-products');
+const categoryFilters = document.getElementById('category-filters');
+const colorTypeFilters = document.getElementById('color-type-filters');
 
 const FEATURED_PRODUCT_SLUGS = ['t-shirt-cells', 'for-the-horde',];
 const PRODUCT_GRID_CATEGORY = 'vectors';
 const PRODUCT_PAGE_SIZE = 6;
 let productOffset = 0;
 let isLoadingMoreProducts = false;
+let loadedProducts = [];
+let colorTypeOptions = [];
+let activeCategoryFilter = 'all';
+let activeColorTypeFilter = 'all';
 
 function getProductUrl(product) {
   const slug = typeof product === 'string' ? product : product?.slug;
@@ -100,6 +106,50 @@ function getProductCategory(product) {
     || product?.categories?.find((item) => item?.slug !== 'hero' && item?.slug !== 't-shirt')
     || product?.categories?.[0];
   return category?.name || 'Vectors';
+}
+
+function renderFilterGroup(container, options, activeValue, onChange) {
+  if (!container) return;
+
+  container.replaceChildren();
+  options.forEach(({ value, label }) => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = `filter${value === activeValue ? ' filter--active' : ''}`;
+    button.textContent = label;
+    button.setAttribute('aria-pressed', String(value === activeValue));
+    button.addEventListener('click', () => onChange(value));
+    container.append(button);
+  });
+}
+
+function renderProductFilters() {
+  const categories = new Map();
+  loadedProducts.forEach((product) => {
+    (product?.categories || []).forEach((category) => {
+      if (category?.slug && category.slug !== 'hero') categories.set(category.slug, category.name || category.slug);
+    });
+  });
+
+  const categoryOptions = [
+    { value: 'all', label: 'All' },
+    ...Array.from(categories, ([value, label]) => ({ value, label })),
+  ];
+  const colorOptions = [
+    { value: 'all', label: 'All' },
+    ...colorTypeOptions.map((value) => ({ value, label: value })),
+  ];
+
+  renderFilterGroup(categoryFilters, categoryOptions, activeCategoryFilter, (value) => {
+    activeCategoryFilter = value;
+    renderProductFilters();
+    renderProductGrid();
+  });
+  renderFilterGroup(colorTypeFilters, colorOptions, activeColorTypeFilter, (value) => {
+    activeColorTypeFilter = value;
+    renderProductFilters();
+    renderProductGrid();
+  });
 }
 
 function renderFeaturedHero(products) {
@@ -174,18 +224,27 @@ function formatPrice(price) {
   }).format(value);
 }
 
-function renderProducts(products, append = false) {
+function renderProductGrid() {
   if (!productGrid) return;
 
-  const gridProducts = Array.isArray(products) ? products : [];
+  const gridProducts = loadedProducts.filter((product) => {
+    const matchesCategory = activeCategoryFilter === 'all'
+      || product?.categories?.some((category) => category?.slug === activeCategoryFilter);
+    const matchesColorType = activeColorTypeFilter === 'all'
+      || product?.colorTypeModel === activeColorTypeFilter;
+    return matchesCategory && matchesColorType;
+  });
 
-  if (!append && gridProducts.length === 0) {
-    showEmptyState('No products found. Check your Hygraph endpoint and project data.');
+  if (gridProducts.length === 0) {
+    if (loadedProducts.length === 0) {
+      showEmptyState('No products found. Check your Hygraph endpoint and project data.');
+    } else {
+      productGrid.innerHTML = '<p class="empty-state">No products match these filters.</p>';
+    }
     return;
   }
 
-  const existingCardCount = append ? productGrid.querySelectorAll('.card__img').length : 0;
-  const cardsMarkup = gridProducts
+  productGrid.innerHTML = gridProducts
     .map((product) => {
       const imageUrls = (product?.images || []).map((image) => image?.url)
         .filter((url, index, urls) => url && urls.indexOf(url) === index);
@@ -207,14 +266,17 @@ function renderProducts(products, append = false) {
     })
     .join('');
 
-  if (append) {
-    productGrid.insertAdjacentHTML('beforeend', cardsMarkup);
-  } else {
-    productGrid.innerHTML = cardsMarkup;
-  }
+  setupCardSwipe();
+}
 
-  const newCardImages = Array.from(productGrid.querySelectorAll('.card__img')).slice(existingCardCount);
-  setupCardSwipe(newCardImages);
+function renderProducts(products, append = false) {
+  if (!productGrid) return;
+
+  if (append) loadedProducts.push(...products);
+  else loadedProducts = [...products];
+
+  renderProductFilters();
+  renderProductGrid();
 }
 
 function setupCardSwipe(cardImages = productGrid.querySelectorAll('.card__img')) {
