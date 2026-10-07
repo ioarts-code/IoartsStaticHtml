@@ -111,7 +111,7 @@ html, body {
   width: 72px;
   height: 72px;
   transform: translateY(-50%);
-  color: #a2a2a2;
+  color: #444444;
   cursor: pointer;
   transition: color 0.2s ease;
 }
