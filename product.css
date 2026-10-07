@@ -103,7 +103,21 @@ html, body {
 }
 
 .product-image__arrow {
-  display: none;
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  right: -72px;
+  display: block;
+  width: 96px;
+  height: 96px;
+  transform: translateY(-50%);
+  color: #a2a2a2;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.product-image__arrow:hover {
+  color: #ffffff;
 }
 
 /* ── Title ── */
