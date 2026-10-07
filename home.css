@@ -746,6 +746,6 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
   .hero-dots { bottom: 228px; }
   .gallery { grid-template-columns: 1fr; row-gap: 56px; padding: 32px 24px 72px; }
   .card__name { font-size: clamp(20px, 6vw, 24px); }
-  .card__label { margin-top: 12px; }
+  .card__label { margin-top: 2px; }
   .ioarts-footer { margin: 24px; width: calc(100% - 48px); }
 }
