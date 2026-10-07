@@ -77,6 +77,7 @@ const colorTypeFilters = document.getElementById('color-type-filters');
 const FEATURED_PRODUCT_SLUGS = ['t-shirt-cells', 'for-the-horde',];
 const PRODUCT_GRID_CATEGORY = 'vectors';
 const PRODUCT_PAGE_SIZE = 6;
+const INITIAL_PRODUCT_COUNT = 3;
 let productOffset = 0;
 let isLoadingMoreProducts = false;
 let loadedProducts = [];
@@ -466,7 +467,7 @@ function renderProductDetail(product) {
   }
 }
 
-async function fetchProductPage(skip) {
+async function fetchProductPage(skip, pageSize = PRODUCT_PAGE_SIZE) {
   const config = getHygraphConfig();
   const endpoint = (config.endpoint || '').trim();
   const token = (config.authToken || '').trim();
@@ -522,7 +523,7 @@ async function fetchProductPage(skip) {
   const response = await fetch(endpoint, {
     method: 'POST',
     headers,
-    body: JSON.stringify({ query, variables: { first: PRODUCT_PAGE_SIZE, skip, where } }),
+    body: JSON.stringify({ query, variables: { first: pageSize, skip, where } }),
   });
 
   if (!response.ok) {
@@ -554,13 +555,13 @@ async function fetchProductPage(skip) {
 
 async function fetchProductsFromHygraph() {
   try {
-    const { products, colorTypes, tagNames } = await fetchProductPage(0);
+    const { products, colorTypes, tagNames } = await fetchProductPage(0, INITIAL_PRODUCT_COUNT);
     colorTypeOptions = colorTypes;
     tagOptionNames = tagNames;
     productOffset = products.length;
     renderFeaturedHero(products);
     renderProducts(products);
-    if (loadMoreContainer) loadMoreContainer.hidden = products.length < PRODUCT_PAGE_SIZE;
+    if (loadMoreContainer) loadMoreContainer.hidden = products.length < INITIAL_PRODUCT_COUNT;
   } catch (error) {
     console.error('Hygraph fetch error:', error);
     showHeroLoadingState('Unable to load featured products. Check the Hygraph endpoint and token, or refresh with a valid auth token.');
@@ -575,11 +576,11 @@ async function reloadProducts() {
   if (loadMoreContainer) loadMoreContainer.hidden = true;
 
   try {
-    const { products } = await fetchProductPage(0);
+    const { products } = await fetchProductPage(0, INITIAL_PRODUCT_COUNT);
     if (requestId !== productRequestId) return;
     productOffset = products.length;
     renderProducts(products);
-    if (loadMoreContainer) loadMoreContainer.hidden = products.length < PRODUCT_PAGE_SIZE;
+    if (loadMoreContainer) loadMoreContainer.hidden = products.length < INITIAL_PRODUCT_COUNT;
   } catch (error) {
     if (requestId !== productRequestId) return;
     console.error('Hygraph filter error:', error);
