@@ -452,7 +452,7 @@ html, body {
   .product-image img { max-height: 58vh; margin-inline: auto; object-fit: contain; object-position: center; }
   .product-image__main { position: relative; z-index: 2; width: 92%; touch-action: pan-y; }
   .product-image__bg { position: absolute; top: -8%; right: -8%; z-index: 1; width: 92%; opacity: 0.62; }
-  .title { order: 4; margin-top: -12px; font-size: clamp(36px, 10vw, 64px); font-weight: 500; line-height: .95; letter-spacing: 2px; }
+  .title { order: 4; margin-top: -20px; font-size: clamp(36px, 10vw, 64px); font-weight: 500; line-height: .95; letter-spacing: 2px; }
   .description { order: 5; width: 100%; font-size: 15px; line-height: 1.55; }
   .buttons-row { order: 6; flex-wrap: wrap; margin-bottom: 16px; }
   .meta { order: 7; gap: 16px; }
