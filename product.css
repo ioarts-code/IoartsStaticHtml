@@ -394,7 +394,7 @@ html, body {
 }
 
 .ioarts-footer__links a {
-  color: #1f1f1f;
+  color: #585858;
   font-size: 14px;
   font-weight: 600;
   text-decoration: none;
@@ -520,7 +520,7 @@ html, body {
   .ioarts-footer__links a {
     font-size: 11px;
     font-weight: 600;
-    color: #222222;
+    color: #444444;
     white-space: nowrap;
   }
 
