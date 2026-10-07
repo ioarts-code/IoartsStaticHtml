@@ -326,7 +326,7 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
   grid-template-columns: repeat(3, 1fr);
   column-gap: 24px;
   row-gap: 72px;
-  padding: 48px 48px 96px;
+  padding: 72px 48px 96px;
 }
 
 .load-more-container {
@@ -548,7 +548,7 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
 
   .gallery {
     grid-template-columns: 1fr;
-    padding: 32px 24px 72px;
+    padding: 56px 24px 72px;
   }
 
   .load-more-container {
