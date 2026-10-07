@@ -218,11 +218,9 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
 }
 
 .hero__brand {
-  font-family: "Inter:Bold", "Inter", sans-serif;
-  font-weight: 700;
+  font-family: "Inter:Black", "Inter", sans-serif;
+  font-weight: 900;
   font-size: 32px;
-  line-height: 48px;
-  color: #585858;
   text-transform: uppercase;
 }
 
