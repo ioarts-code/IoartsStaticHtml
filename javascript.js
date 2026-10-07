@@ -285,6 +285,8 @@ function setupCardSwipe(cardImages = productGrid.querySelectorAll('.card__img'))
     }, { passive: true });
 
     cardImage.addEventListener('touchend', (event) => {
+      if (!window.matchMedia('(max-width: 1100px)').matches) return;
+
       const touchEndX = event.changedTouches[0].clientX;
       const touchEndY = event.changedTouches[0].clientY;
       const deltaX = touchEndX - touchStartX;
@@ -331,7 +333,6 @@ function renderProductDetail(product) {
     <div class="product-image">
       <img id="product-secondary-image" class="product-image__bg" src="${secondaryImageUrl}" alt="" draggable="false" />
       <img id="product-main-image" class="product-image__main" src="${imageUrl}" alt="${name}" draggable="false" />
-      ${images.length > 1 ? `<div class="image-swipe-info" aria-live="polite"><span data-image-counter>1 / ${images.length}</span><span>Swipe to view</span></div>` : ''}
     </div>
     <div class="title">${titleMarkup}</div>
     <p class="description">${description}</p>
@@ -386,7 +387,6 @@ function renderProductDetail(product) {
 
   const mainImage = detailContainer.querySelector('#product-main-image');
   const secondaryImage = detailContainer.querySelector('#product-secondary-image');
-  const imageCounter = detailContainer.querySelector('[data-image-counter]');
   let imageIndex = 0;
 
   const setImages = (primaryIdx, direction = 0) => {
@@ -408,7 +408,6 @@ function renderProductDetail(product) {
     if (images[bgIdx]?.url && secondaryImage) {
       secondaryImage.src = images[bgIdx].url;
     }
-    if (imageCounter) imageCounter.textContent = `${imageIndex + 1} / ${images.length}`;
   };
 
   if (images.length > 1) {
@@ -421,6 +420,8 @@ function renderProductDetail(product) {
     let pointerStartY = null;
 
     mainImage.addEventListener('pointerdown', (event) => {
+      if (!window.matchMedia('(max-width: 1100px)').matches) return;
+
       pointerStartX = event.clientX;
       pointerStartY = event.clientY;
       mainImage.style.transition = 'transform 120ms ease, opacity 120ms ease';
