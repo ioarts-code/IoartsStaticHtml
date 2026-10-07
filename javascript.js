@@ -279,8 +279,6 @@ function renderProductGrid() {
       `;
     })
     .join('');
-
-  setupCardSwipe();
 }
 
 function renderProducts(products, append = false) {
@@ -291,35 +289,6 @@ function renderProducts(products, append = false) {
 
   renderProductFilters();
   renderProductGrid();
-}
-
-function setupCardSwipe(cardImages = productGrid.querySelectorAll('.card__img')) {
-  if (!productGrid) return;
-
-  cardImages.forEach((cardImage) => {
-    let touchStartX = 0;
-    let touchStartY = 0;
-
-    cardImage.addEventListener('touchstart', (event) => {
-      touchStartX = event.touches[0].clientX;
-      touchStartY = event.touches[0].clientY;
-    }, { passive: true });
-
-    cardImage.addEventListener('touchend', (event) => {
-      if (!window.matchMedia('(max-width: 1100px)').matches) return;
-
-      const touchEndX = event.changedTouches[0].clientX;
-      const touchEndY = event.changedTouches[0].clientY;
-      const deltaX = touchEndX - touchStartX;
-      const deltaY = touchEndY - touchStartY;
-
-      // Ensure horizontal intent and sufficient swipe distance
-      if (Math.abs(deltaX) < 30 || Math.abs(deltaX) <= Math.abs(deltaY)) return;
-
-      // Swiping in either direction toggles between front and back images
-      cardImage.classList.toggle('is-switched');
-    }, { passive: true });
-  });
 }
 
 function renderProductDetail(product) {
