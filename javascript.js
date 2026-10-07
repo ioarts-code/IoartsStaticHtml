@@ -417,6 +417,8 @@ function renderProductDetail(product) {
       setImages(targetIndex, direction);
     };
 
+    detailContainer.querySelector('.product-image__arrow')?.addEventListener('click', () => updateImage(imageIndex + 1, 1));
+
     let pointerStartX = null;
     let pointerStartY = null;
 
