@@ -1,9 +1,13 @@
 /* =============================================
-   IOARTS — Fanart Gallery  |  styles.css
+   IOARTS — Content pages  |  pages.css
+   Sections: Base, Footer, Aside, Hero, Filters,
+   Cards, Legacy footer, Product detail, Content
+   pages, Side menu, Page cards, About
    ============================================= */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Mr+Dafoe&display=swap');
 
+/* ── Base / reset ── */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -49,6 +53,7 @@ img {
   max-width: 100%;
 }
 
+/* ── Footer ── */
 .ioarts-footer {
   position: relative;
   min-height: 480px;
@@ -236,6 +241,7 @@ img {
   .footer-inner { align-items: flex-start; }
 }
 
+/* ── Aside menu ── */
 .aside {
   position: fixed;
   top: 0;
@@ -308,6 +314,7 @@ img {
   opacity: 0.65;
 }
 
+/* ── Page wrapper & hero ── */
 .page-wrap {
   margin-right: var(--aside-w);
 }
@@ -415,6 +422,7 @@ img {
   background: rgba(162,162,162,0.08);
 }
 
+/* Hero bottom bar */
 .hero-bar {
   position: absolute;
   bottom: 0;
@@ -472,6 +480,7 @@ img {
   margin-top: 2px;
 }
 
+/* Hero arrows */
 .hero-arrow {
   position: absolute;
   z-index: 5;
@@ -499,6 +508,7 @@ img {
   right: 5%;
 }
 
+/* ── Filters ── */
 .filters {
   padding: 48px 48px 0;
 }
@@ -531,6 +541,7 @@ img {
   background: rgba(162,162,162,0.08);
 }
 
+/* ── Gallery & cards ── */
 .gallery {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -602,6 +613,7 @@ img {
   opacity: 0.5;
 }
 
+/* ── Legacy footer (wordmark, social, nav) ── */
 .footer {
   background: var(--bg);
   padding: 48px;
@@ -688,6 +700,7 @@ img {
   white-space: nowrap;
 }
 
+/* ── Responsive: aside, hero, cards, footer (max 900px) ── */
 @media (max-width: 900px) {
   .aside { display: none; }
   .page-wrap { margin-right: 0; }
@@ -757,6 +770,7 @@ img {
   }
 }
 
+/* ── Product detail ── */
 .product-detail-shell {
   min-height: 400px;
 }
@@ -1014,6 +1028,7 @@ img {
   padding-left: 22px;
 }
 
+/* Back link */
 .back-link {
   display: inline-flex;
   margin-top: 34px;
@@ -1092,6 +1107,7 @@ img {
   padding-left: 42px;
 }
 
+/* Page card */
 .page-card {
   padding: clamp(24px, 5vw, 56px);
   border-radius: 24px;
@@ -1128,6 +1144,7 @@ img {
   max-width: 1120px;
 }
 
+/* ── About page ── */
 .about-card {
   padding: clamp(24px, 4vw, 48px);
 }
@@ -1237,6 +1254,7 @@ img {
   color: #111;
 }
 
+/* ── Footer overrides for content pages ── */
 .site-footer {
   display: none;
 }
@@ -1246,6 +1264,7 @@ img {
   margin: 0 48px 48px;
 }
 
+/* ── Responsive: content pages (max 700px) ── */
 @media (max-width: 700px) {
   .vertical-menu { display: none; }
   .has-side-menu .page-shell { padding-left: 0; }
