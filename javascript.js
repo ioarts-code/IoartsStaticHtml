@@ -133,10 +133,17 @@ function getProductCategory(product) {
 
 function updateProductMetadata(product) {
   const title = `${product?.name || 'Product'} | IOARTS`;
-  const description = String(product?.description || `Explore ${product?.name || 'this product'} in the IOARTS digital art gallery.`)
+  const descriptionText = String(product?.description || `Explore ${product?.name || 'this product'} in the IOARTS digital art gallery.`)
     .replace(/\s+/g, ' ')
-    .trim()
-    .slice(0, 160);
+    .trim();
+  const descriptionCharacters = Array.from(descriptionText);
+  let description = descriptionText;
+  if (descriptionCharacters.length > 160) {
+    let shortenedDescription = descriptionCharacters.slice(0, 159).join('');
+    const wordBoundary = shortenedDescription.lastIndexOf(' ');
+    if (wordBoundary > 0) shortenedDescription = shortenedDescription.slice(0, wordBoundary);
+    description = `${shortenedDescription.trimEnd()}…`;
+  }
   const canonical = document.querySelector('link[rel="canonical"]');
   const canonicalUrl = window.location.pathname.startsWith('/products/')
     ? `https://ioarts.ink${window.location.pathname.endsWith('/') ? window.location.pathname : `${window.location.pathname}/`}`
