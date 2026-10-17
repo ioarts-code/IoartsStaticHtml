@@ -114,7 +114,7 @@ function getProductUrl(product) {
       || product?.categories?.find((item) => item?.slug !== 'hero' && item?.slug !== 't-shirt')
       || product?.categories?.[0];
   const categoryPath = typeof product === 'string' ? '' : `${category?.slug || PRODUCT_GRID_CATEGORY}/`;
-  return `/products/${categoryPath}${encodeURIComponent(slug || '')}`;
+  return `/products/${categoryPath}${encodeURIComponent(slug || '')}/`;
 }
 
 function getFeaturedProducts(products) {
@@ -129,6 +129,35 @@ function getProductCategory(product) {
     || product?.categories?.find((item) => item?.slug !== 'hero' && item?.slug !== 't-shirt')
     || product?.categories?.[0];
   return category?.name || 'Vectors';
+}
+
+function updateProductMetadata(product) {
+  const title = `${product?.name || 'Product'} | IOARTS`;
+  const description = String(product?.description || `Explore ${product?.name || 'this product'} in the IOARTS digital art gallery.`)
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, 160);
+  const canonical = document.querySelector('link[rel="canonical"]');
+  const canonicalUrl = window.location.pathname.startsWith('/products/')
+    ? `https://ioarts.ink${window.location.pathname.endsWith('/') ? window.location.pathname : `${window.location.pathname}/`}`
+    : null;
+
+  document.title = title;
+  const descriptionMeta = document.querySelector('meta[name="description"]');
+  if (descriptionMeta) descriptionMeta.content = description;
+
+  const setMetaContent = (selector, value) => {
+    const meta = document.querySelector(selector);
+    if (meta) meta.content = value;
+  };
+  setMetaContent('meta[property="og:title"]', title);
+  setMetaContent('meta[property="og:description"]', description);
+  setMetaContent('meta[name="twitter:title"]', title);
+  setMetaContent('meta[name="twitter:description"]', description);
+  if (canonical && canonicalUrl) {
+    canonical.href = canonicalUrl;
+    setMetaContent('meta[property="og:url"]', canonicalUrl);
+  }
 }
 
 function renderFilterGroup(container, options, activeValue, onChange) {
@@ -295,6 +324,7 @@ function renderProductDetail(product) {
   const detailContainer = document.getElementById('product-detail');
   if (!detailContainer) return;
 
+  updateProductMetadata(product);
   const name = product?.name || 'Product';
   const description = product?.description || 'No description provided.';
   const imageUrl = product?.images?.[0]?.url || product?.heroImage?.url || 'https://placehold.co/1200x1200/f1e9e0/1f2a37?text=Product';
