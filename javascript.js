@@ -161,6 +161,11 @@ function updateProductMetadata(product) {
   setMetaContent('meta[property="og:description"]', description);
   setMetaContent('meta[name="twitter:title"]', title);
   setMetaContent('meta[name="twitter:description"]', description);
+  const imageUrl = product?.images?.[0]?.url || product?.heroImage?.url;
+  if (imageUrl) {
+    setMetaContent('meta[property="og:image"]', imageUrl);
+    setMetaContent('meta[name="twitter:image"]', imageUrl);
+  }
   if (canonical && canonicalUrl) {
     canonical.href = canonicalUrl;
     setMetaContent('meta[property="og:url"]', canonicalUrl);
