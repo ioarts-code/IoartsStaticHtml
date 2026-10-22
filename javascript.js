@@ -731,19 +731,28 @@ window.BASIC_IOARTS = {
 
 const currentPath = window.location.pathname;
 const productPathMatch = currentPath.match(/^\/products\/(?:([^/]+)\/)?([^/]+)\/?$/);
-const slug = productPathMatch
-  ? decodeURIComponent(productPathMatch[2])
-  : currentPath.endsWith('/product.html')
-    ? new URLSearchParams(window.location.search).get('slug')
-    : null;
+const detailContainer = document.getElementById('product-detail');
+const isProductRouteFallback = detailContainer?.hasAttribute('data-product-route-fallback');
+let slug = currentPath.endsWith('/product.html')
+  ? new URLSearchParams(window.location.search).get('slug')
+  : null;
+
+if (productPathMatch) {
+  try {
+    slug = decodeURIComponent(productPathMatch[2]);
+  } catch {
+    slug = null;
+  }
+}
 
 if (slug) {
   fetchProductBySlug(slug);
 } else if (currentPath.endsWith('/product.html')) {
-  const detailContainer = document.getElementById('product-detail');
   if (detailContainer) {
     detailContainer.innerHTML = '<div class="empty-state">No product was selected.</div>';
   }
+} else if (isProductRouteFallback && detailContainer) {
+  detailContainer.innerHTML = '<div class="empty-state">Page not found.</div>';
 } else {
   fetchProductsFromHygraph();
 }

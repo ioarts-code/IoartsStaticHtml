@@ -4,28 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <base href="https://ioarts.ink/" />
-    <title>Page Not Found | IOARTS</title>
-    <meta name="description" content="The page you requested could not be found." />
+    <title>Product | IOARTS</title>
+    <meta name="description" content="View featured IOARTS fanart and product details." />
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="shared.css" />
-    <link rel="stylesheet" href="pages.css" />
+    <link rel="stylesheet" href="product.css" />
     <script src="shared.js" defer></script>
   </head>
-  <body class="theme-dark has-side-menu">
+  <body>
     <div data-site-menu></div>
-    <div class="page-shell">
-      <main class="legal-page">
-        <div class="container legal-wrap">
-          <div class="page-card">
-            <header class="legal-header">
-              <h1>Page not found</h1>
-              <p>The page you requested doesn’t exist or may have moved.</p>
-            </header>
-            <a class="back-link" href="index.html">Back to home</a>
-          </div>
-        </div>
+    <div class="page-wrapper">
+      <main id="product-detail" class="page" aria-live="polite" data-product-route-fallback>
+        <p class="detail-loading">Loading product...</p>
       </main>
       <div data-site-footer></div>
     </div>
+    <script src="javascript.js"></script>
   </body>
 </html>
