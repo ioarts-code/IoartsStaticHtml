@@ -134,7 +134,7 @@ html, body {
   position: absolute;
   z-index: 1;
   left: 480px;
-  top: 200px;
+  top: 0px;
   max-width: 280px;
   font-weight: 700;
   font-size: clamp(56px, 4vw, 64px);
@@ -147,16 +147,16 @@ html, body {
 /* ── Price ── */
 .price-section {
   position: absolute;
-  left: 480px;
-  top: 455px;
-  padding-bottom: 8px;
-  border-bottom: 4px solid #949494;
+  left: 0px;
+  top: 0px;
+  padding-bottom: 0px;
+  border-bottom: 0px solid #949494;
 }
 
 .price {
   font-weight: 600;
   font-size: 48px;
-  line-height: 0px;
+  line-height: 48px;
   color: #a2a2a2;
   display: block;
 }
