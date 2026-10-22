@@ -72,6 +72,7 @@ html, body {
 
 /* ── Product image (t-shirt) ── */
 .product-image {
+  --product-image-scale: 1;
   position: absolute;
   z-index: 2;
   left: 748.8px;
@@ -89,6 +90,7 @@ html, body {
   z-index: 2;
   width: 96%;
   height: auto;
+  scale: var(--product-image-scale);
   transition: opacity 0.3s ease;
 }
 
@@ -99,6 +101,7 @@ html, body {
   z-index: 1;
   width: 96%;
   height: auto;
+  scale: var(--product-image-scale);
   opacity: 0.62;
   pointer-events: none;
   transition: opacity 0.3s ease, transform 0.3s ease;
