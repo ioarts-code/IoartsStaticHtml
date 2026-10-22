@@ -41,7 +41,7 @@ html, body {
 /* ── Back to Home ── */
 .back-link {
   position: absolute;
-  left: 376px;
+  left: 440px;
   top: 72px;
   display: flex;
   align-items: center;
@@ -133,11 +133,11 @@ html, body {
 .title {
   position: absolute;
   z-index: 1;
-  left: 376px;
+  left: 440px;
   top: 200px;
-  max-width: 360px;
+  max-width: 280px;
   font-weight: 700;
-  font-size: clamp(56px, 5vw, 88px);
+  font-size: clamp(44px, 3vw, 52px);
   line-height: 0.95;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -147,7 +147,7 @@ html, body {
 /* ── Price ── */
 .price-section {
   position: absolute;
-  left: 376px;
+  left: 440px;
   top: 455px;
   padding-bottom: 8px;
   border-bottom: 4px solid #949494;
@@ -164,7 +164,7 @@ html, body {
 /* ── Description ── */
 .description {
   position: absolute;
-  left: 376px;
+  left: 440px;
   top: 440px;
   width: 550px;
   font-weight: 500;
@@ -176,7 +176,7 @@ html, body {
 /* ── Action buttons ── */
 .buttons-row {
   position: absolute;
-  left: 376px;
+  left: 440px;
   top: 540px;
   display: flex;
   gap: 20px;
@@ -246,7 +246,7 @@ html, body {
 /* ── Metadata ── */
 .meta {
   position: absolute;
-  left: 376px;
+  left: 440px;
   top: 630px;
   display: flex;
   flex-direction: column;
@@ -292,7 +292,7 @@ html, body {
   .description,
   .buttons-row,
   .meta {
-    left: 6vw;
+    left: 9vw;
   }
 
   .product-image {
@@ -302,7 +302,7 @@ html, body {
 
   .title {
     top: 180px;
-    font-size: clamp(52px, 7vw, 82px);
+    font-size: clamp(40px, 5vw, 52px);
   }
 
   .description {
@@ -324,7 +324,7 @@ html, body {
   .description,
   .buttons-row,
   .meta {
-    left: 6vw;
+    left: 9vw;
   }
 
   .product-image {
@@ -334,7 +334,7 @@ html, body {
 
   .title {
     top: 180px;
-    font-size: clamp(52px, 7vw, 82px);
+    font-size: clamp(40px, 5vw, 52px);
   }
 
   .description {
