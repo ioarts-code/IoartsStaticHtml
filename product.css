@@ -144,23 +144,6 @@ html, body {
   color: #a2a2a2;
 }
 
-/* ── Price ── */
-.price-section {
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  padding-bottom: 0px;
-  border-bottom: 0px solid #949494;
-}
-
-.price {
-  font-weight: 600;
-  font-size: 48px;
-  line-height: 48px;
-  color: #a2a2a2;
-  display: block;
-}
-
 /* ── Description ── */
 .description {
   position: absolute;
@@ -288,7 +271,6 @@ html, body {
 
   .back-link,
   .title,
-  .price-section,
   .description,
   .buttons-row,
   .meta {
@@ -320,7 +302,6 @@ html, body {
 
   .back-link,
   .title,
-  .price-section,
   .description,
   .buttons-row,
   .meta {

@@ -231,15 +231,6 @@ function showHeroLoadingState(message) {
   heroCarousel.innerHTML = `<div class="hero-loading">${message}</div>`;
 }
 
-function formatPrice(price) {
-  const value = Number(price || 0);
-  if (!Number.isFinite(value)) return 'Price unavailable';
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-  }).format(value);
-}
-
 function renderProductGrid() {
   if (!productGrid) return;
 
@@ -483,7 +474,6 @@ async function fetchProductPage(skip, pageSize = PRODUCT_PAGE_SIZE, whereOverrid
         id
         name
         slug
-        price
         description
         colorTypeModel
         tags {
@@ -629,7 +619,6 @@ async function fetchProductBySlug(slug) {
         id
         name
         slug
-        price
         linkToEtsy
         linktoDeviantArt
         description
