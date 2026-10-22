@@ -38,38 +38,6 @@ html, body {
   font-size: 16px;
 }
 
-/* ── Back to Home ── */
-.back-link {
-  position: absolute;
-  left: 440px;
-  top: 72px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  width: 207px;
-  height: 54px;
-  padding: 0 18px;
-  border: 2.5px solid #a2a2a2;
-  border-radius: 9999px;
-  text-decoration: none;
-  color: #a2a2a2;
-  font-weight: 700;
-  font-size: 14px;
-  letter-spacing: 0.35px;
-  text-transform: uppercase;
-}
-
-.arrow-circle {
-  width: 32px;
-  height: 32px;
-  border: 2px solid #a2a2a2;
-  border-radius: 9999px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
 /* ── Product image (t-shirt) ── */
 .product-image {
   --product-image-scale: 1.2;
@@ -270,10 +238,6 @@ html, body {
     height: auto;
   }
 
-  .back-link {
-    left: 12vw;
-  }
-
   .product-copy {
     left: 12vw;
     top: 180px;
@@ -296,10 +260,6 @@ html, body {
   .page {
     width: 100vw;
     min-width: 0;
-  }
-
-  .back-link {
-    left: 12vw;
   }
 
   .product-copy {
@@ -342,7 +302,6 @@ html, body {
     overflow: visible;
   }
 
-  .back-link,
   .product-image,
   .product-copy {
     position: relative;
@@ -352,7 +311,6 @@ html, body {
     left: auto;
   }
 
-  .back-link { order: 1; width: max-content; }
   .product-image { order: 2; display: flex; position: relative; width: 100%; max-height: 58vh; align-items: center; justify-content: center; overflow: visible; }
   .product-image img { max-height: 58vh; margin-inline: auto; object-fit: contain; object-position: center; }
   .product-image__main { position: relative; z-index: 2; width: 92%; touch-action: pan-y; }

@@ -307,10 +307,6 @@ function renderProductDetail(product) {
     : `<p>${name}</p>`;
 
   detailContainer.innerHTML = `
-    <a class="back-link" href="index.html#shop">
-      <span class="arrow-circle"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 15.8333L4.16667 10L10 4.16667M15.8333 10H4.16667" stroke="currentColor" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-      Back to Home
-    </a>
     <div class="product-image">
       <img id="product-secondary-image" class="product-image__bg" src="${secondaryImageUrl}" alt="" draggable="false" />
       <img id="product-main-image" class="product-image__main" src="${imageUrl}" alt="${name}" draggable="false" />
