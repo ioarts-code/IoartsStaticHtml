@@ -215,6 +215,11 @@ html, body {
   gap: 10px;
 }
 
+.meta-line--tags {
+  color: #e0e0e0;
+  font-weight: 400;
+}
+
 .badge {
   display: inline-flex;
   align-items: center;
