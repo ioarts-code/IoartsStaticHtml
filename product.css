@@ -135,10 +135,11 @@ html, body {
   z-index: 1;
   left: 376px;
   top: 200px;
+  max-width: 360px;
   font-weight: 700;
-  font-size: 128px;
-  line-height: 112.64px;
-  letter-spacing: 5.4px;
+  font-size: clamp(56px, 5vw, 88px);
+  line-height: 0.95;
+  letter-spacing: 2px;
   text-transform: uppercase;
   color: #a2a2a2;
 }
@@ -301,7 +302,7 @@ html, body {
 
   .title {
     top: 180px;
-    font-size: clamp(64px, 10vw, 128px);
+    font-size: clamp(52px, 7vw, 82px);
   }
 
   .description {
@@ -333,7 +334,7 @@ html, body {
 
   .title {
     top: 180px;
-    font-size: clamp(64px, 10vw, 128px);
+    font-size: clamp(52px, 7vw, 82px);
   }
 
   .description {
