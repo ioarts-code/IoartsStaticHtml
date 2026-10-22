@@ -316,8 +316,10 @@ function renderProductDetail(product) {
       <img id="product-main-image" class="product-image__main" src="${imageUrl}" alt="${name}" draggable="false" />
       ${images.length > 1 ? '<svg class="product-image__arrow" width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>' : ''}
     </div>
-    <div class="title">${titleMarkup}</div>
-    <p class="description">${description}</p>
+    <div class="product-copy">
+      <div class="title">${titleMarkup}</div>
+      <p class="description">${description}</p>
+    </div>
     <div class="buttons-row">
       ${linkToEtsy ? `<a class="btn" href="${linkToEtsy}" target="_blank" rel="noopener noreferrer">Buy on Etsy</a>` : ''}
       ${linkToDeviantArt ? `<a class="btn" href="${linkToDeviantArt}" target="_blank" rel="noopener noreferrer">View On DeviantArt</a>` : ''}
