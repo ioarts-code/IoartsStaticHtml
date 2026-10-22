@@ -456,7 +456,7 @@ function renderProductDetail(product) {
   }
 }
 
-async function fetchProductPage(skip, pageSize = PRODUCT_PAGE_SIZE) {
+async function fetchProductPage(skip, pageSize = PRODUCT_PAGE_SIZE, whereOverride = null) {
   const config = getHygraphConfig();
   const endpoint = (config.endpoint || '').trim();
   const token = (config.authToken || '').trim();
@@ -465,9 +465,9 @@ async function fetchProductPage(skip, pageSize = PRODUCT_PAGE_SIZE) {
     throw new Error('Configure the Hygraph endpoint before loading products.');
   }
 
-  const where = {};
-  if (activeTagFilter !== 'all') where.tags_some = { name: activeTagFilter };
-  if (activeColorTypeFilter !== 'all') where.colorTypeModel = activeColorTypeFilter;
+  const where = whereOverride ? { ...whereOverride } : {};
+  if (!whereOverride && activeTagFilter !== 'all') where.tags_some = { name: activeTagFilter };
+  if (!whereOverride && activeColorTypeFilter !== 'all') where.colorTypeModel = activeColorTypeFilter;
 
   const query = `
     query GetProducts($first: Int!, $skip: Int!, $where: ProductWhereInput) {
@@ -544,11 +544,14 @@ async function fetchProductPage(skip, pageSize = PRODUCT_PAGE_SIZE) {
 
 async function fetchProductsFromHygraph() {
   try {
-    const { products, colorTypes, tagNames } = await fetchProductPage(0, INITIAL_PRODUCT_COUNT);
+    const [{ products, colorTypes, tagNames }, { products: featuredProducts }] = await Promise.all([
+      fetchProductPage(0, INITIAL_PRODUCT_COUNT),
+      fetchProductPage(0, FEATURED_PRODUCT_SLUGS.length, { slug_in: FEATURED_PRODUCT_SLUGS }),
+    ]);
     colorTypeOptions = colorTypes;
     tagOptionNames = tagNames;
     productOffset = products.length;
-    renderFeaturedHero(products);
+    renderFeaturedHero(featuredProducts);
     renderProducts(products);
     if (loadMoreContainer) loadMoreContainer.hidden = products.length < INITIAL_PRODUCT_COUNT;
   } catch (error) {
