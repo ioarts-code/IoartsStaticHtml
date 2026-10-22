@@ -119,8 +119,8 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
   padding: 0 32px;
   border: 2.5px solid #a2a2a2;
   border-radius: 9999px;
-  background: transparent;
-  color: #a2a2a2;
+  background: #a2a2a2;
+  color: #000;
   font-family: 'Inter', sans-serif;
   font-weight: 700;
   font-size: 14px;
@@ -132,8 +132,8 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
 
 .hero__btn:hover,
 .hero__btn:focus-visible {
-  background: #a2a2a2;
-  border-color: #a2a2a2;
+  background: #fff;
+  border-color: #fff;
   color: #000;
 }
 
