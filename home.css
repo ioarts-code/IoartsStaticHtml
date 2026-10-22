@@ -55,10 +55,10 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
 
 .hero__tshirt {
   position: absolute;
-  top: 50%;
+  top: 0;
   left: 50%;
-  transform: translate(-10%, -50%);
-  height: 70%;
+  transform: translateX(-10%);
+  height: 100%;
   width: auto;
   max-width: none;
   object-fit: cover;
@@ -475,7 +475,7 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
 @media (max-width: 720px) {
   body { min-width: 0; overflow-x: hidden; }
   .hero { height: min(760px, 100svh); min-height: 620px; }
-  .hero__tshirt { top: 43%; left: 42%; width: 100%; height: 68%; object-fit: contain; transform: translate(-3%, -50%); }
+  .hero__tshirt { left: 37%; width: 132%; height: 84%; object-fit: contain; transform: translateX(-3%); }
   .hero__side { padding: 78px 20px 250px; width: min(300px, 58vw); }
   .hero__side .label { margin-bottom: 8px; font-size: 10px; }
   .hero__title { margin-bottom: 8px; font-size: clamp(19px, 5vw, 27px); line-height: 1.15; }
