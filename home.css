@@ -37,7 +37,7 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
 
 /* ── Hero ── */
 .hero {
-  --hero-image-scale: 0.86;
+  --hero-image-scale: 1.86;
   position: relative;
   width: 100%;
   height: 100vh;
