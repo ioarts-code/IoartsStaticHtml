@@ -162,10 +162,8 @@ html, body {
 
 /* ── Action buttons ── */
 .buttons-row {
-  position: absolute;
-  left: 480px;
-  top: 435px;
   display: flex;
+  flex-wrap: wrap;
   gap: 20px;
 }
 
@@ -232,9 +230,6 @@ html, body {
 
 /* ── Metadata ── */
 .meta {
-  position: absolute;
-  left: 480px;
-  top: 534px;
   display: flex;
   flex-direction: column;
   gap: 18px;
@@ -273,9 +268,7 @@ html, body {
     height: auto;
   }
 
-  .back-link,
-  .buttons-row,
-  .meta {
+  .back-link {
     left: 12vw;
   }
 
@@ -303,9 +296,7 @@ html, body {
     min-width: 0;
   }
 
-  .back-link,
-  .buttons-row,
-  .meta {
+  .back-link {
     left: 12vw;
   }
 
@@ -322,14 +313,6 @@ html, body {
 
   .title {
     font-size: clamp(52px, 5vw, 64px);
-  }
-
-  .buttons-row {
-    top: 504px;
-  }
-
-  .meta {
-    top: 594px;
   }
 
 }
@@ -359,9 +342,7 @@ html, body {
 
   .back-link,
   .product-image,
-  .product-copy,
-  .buttons-row,
-  .meta {
+  .product-copy {
     position: relative;
     top: auto;
     right: auto;
@@ -379,7 +360,7 @@ html, body {
   .product-copy { order: 4; width: 100%; margin-top: -36px; }
   .title { font-size: clamp(36px, 10vw, 64px); font-weight: 500; line-height: .95; letter-spacing: 2px; }
   .description { font-size: 14px; line-height: 1.5; }
-  .buttons-row { order: 6; flex-wrap: wrap; margin-bottom: 16px; }
-  .meta { order: 7; gap: 16px; }
+  .buttons-row { flex-wrap: wrap; margin-bottom: 16px; }
+  .meta { gap: 16px; }
   .meta-line { flex-wrap: wrap; line-height: 1.8; }
 }

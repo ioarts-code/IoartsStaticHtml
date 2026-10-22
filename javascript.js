@@ -319,11 +319,12 @@ function renderProductDetail(product) {
     <div class="product-copy">
       <div class="title">${titleMarkup}</div>
       <p class="description">${description}</p>
-    </div>
-    <div class="buttons-row">
-      ${linkToEtsy ? `<a class="btn" href="${linkToEtsy}" target="_blank" rel="noopener noreferrer">Buy on Etsy</a>` : ''}
-      ${linkToDeviantArt ? `<a class="btn" href="${linkToDeviantArt}" target="_blank" rel="noopener noreferrer">View On DeviantArt</a>` : ''}
-      ${hasExternalLink ? '' : '<button class="btn" type="button" data-open-product-options>Download Image Free</button>'}
+      <div class="buttons-row">
+        ${linkToEtsy ? `<a class="btn" href="${linkToEtsy}" target="_blank" rel="noopener noreferrer">Buy on Etsy</a>` : ''}
+        ${linkToDeviantArt ? `<a class="btn" href="${linkToDeviantArt}" target="_blank" rel="noopener noreferrer">View On DeviantArt</a>` : ''}
+        ${hasExternalLink ? '' : '<button class="btn" type="button" data-open-product-options>Download Image Free</button>'}
+      </div>
+      <div class="meta"><span class="meta-line">Tags: ${tags}</span><span class="meta-line">Copyright: ${product?.copyright || 'Unofficial fanart'}</span>${colorType ? `<span class="meta-line">Color Type: ${colorType}</span>` : ''}</div>
     </div>
     ${hasExternalLink ? '' : `
       <dialog class="product-options" data-product-options>
@@ -333,7 +334,6 @@ function renderProductDetail(product) {
         </div>
       </dialog>
     `}
-    <div class="meta"><span class="meta-line">Tags: ${tags}</span><span class="meta-line">Copyright: ${product?.copyright || 'Unofficial fanart'}</span>${colorType ? `<span class="meta-line">Color Type: ${colorType}</span>` : ''}</div>
   `;
 
   const productOptions = detailContainer.querySelector('[data-product-options]');
