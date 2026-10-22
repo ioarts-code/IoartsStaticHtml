@@ -61,7 +61,7 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
   height: 100%;
   width: auto;
   max-width: none;
-  object-fit: contain;
+  object-fit: cover;
 }
 
 /* Left info panel */
