@@ -441,7 +441,7 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
 
 /* ── Responsive: start page overrides (max 720px) ── */
 @media (max-width: 720px) {
-  body { min-width: 0; overflow-x: hidden; }
+  body { min-width: 0; overflow-x: hidden; padding-left: 42px; }
   .hero { height: min(760px, 100svh); min-height: 620px; }
   .hero__backdrop { width: 72%; height: 84%; }
   .hero__side { padding: 78px 20px 250px; width: min(300px, 58vw); }

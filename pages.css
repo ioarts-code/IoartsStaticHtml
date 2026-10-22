@@ -333,7 +333,7 @@ img {
 /* ── Responsive: content pages (max 700px) ── */
 @media (max-width: 720px) {
   body { min-width: 0; }
-  .has-side-menu .page-shell { padding-left: 0; }
+  .has-side-menu .page-shell { padding-left: 42px; }
   .container { width: min(100% - 48px, 920px); }
   .contact-page, .legal-page { padding: 42px 0 56px; }
   .contact-header, .legal-header { margin-bottom: 28px; }
