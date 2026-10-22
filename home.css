@@ -37,6 +37,7 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
 
 /* ── Hero ── */
 .hero {
+  --hero-image-scale: 0.86;
   position: relative;
   width: 100%;
   height: 100vh;
@@ -53,6 +54,17 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
   overflow: hidden;
 }
 
+.hero__backdrop {
+  position: absolute;
+  inset: -8%;
+  width: 116%;
+  height: 116%;
+  max-width: none;
+  object-fit: cover;
+  filter: blur(24px) brightness(0.45);
+  pointer-events: none;
+}
+
 .hero__tshirt {
   position: absolute;
   top: 0;
@@ -61,7 +73,9 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
   height: 100%;
   width: auto;
   max-width: none;
-  object-fit: cover;
+  object-fit: contain;
+  scale: var(--hero-image-scale);
+  transform-origin: 100% 50%;
 }
 
 /* Left info panel */
@@ -443,7 +457,7 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
 
   .hero__tshirt {
     left: 31%;
-    transform: translateX(-10%) scale(0.86);
+    transform: translateX(-10%);
     transform-origin: top center;
   }
 
