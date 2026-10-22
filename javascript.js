@@ -216,6 +216,7 @@ function renderFeaturedHero(products) {
         return `
           <article class="hero-slide${index === 0 ? ' active' : ''}" data-hero-slide="${index}">
             <div class="hero__bg">${imageUrl ? `<img class="hero__backdrop" src="${escapeHtml(optimizeImage(imageUrl, 1200))}" srcset="${escapeHtml(imageSrcset(imageUrl, [640, 1200, 1800]))}" sizes="(max-width: 720px) 72vw, 54vw" decoding="async" ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} alt="${escapeHtml(name)}">` : ''}</div>
+            <a class="hero-slide__link" href="${escapeHtml(getProductUrl(product))}" aria-label="View ${escapeHtml(name)}"></a>
             <div class="hero__side">
               <span class="label">${escapeHtml(getProductCategory(product))}</span>
               <h1 class="hero__title">${escapeHtml(name)}</h1>
