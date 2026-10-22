@@ -72,7 +72,7 @@ html, body {
 
 /* ── Product image (t-shirt) ── */
 .product-image {
-  --product-image-scale: 0.3;
+  --product-image-scale: 0.9;
   position: absolute;
   z-index: 2;
   left: 748.8px;
