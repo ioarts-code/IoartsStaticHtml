@@ -183,7 +183,7 @@ function renderFeaturedHero(products) {
         const imageUrl = product?.images?.[0]?.url || product?.heroImage?.url || '';
         return `
           <article class="hero-slide${index === 0 ? ' active' : ''}" data-hero-slide="${index}">
-            <div class="hero__bg">${imageUrl ? `<img class="hero__backdrop" src="${optimizeImage(imageUrl, 1200)}" srcset="${imageSrcset(imageUrl, [640, 1200, 1800])}" sizes="(max-width: 720px) 90vw, 50vw" decoding="async" ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} alt="${product?.name || 'Featured product'}">` : ''}</div>
+            <div class="hero__bg">${imageUrl ? `<img class="hero__backdrop" src="${optimizeImage(imageUrl, 1200)}" srcset="${imageSrcset(imageUrl, [640, 1200, 1800])}" sizes="(max-width: 720px) 72vw, 54vw" decoding="async" ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} alt="${product?.name || 'Featured product'}">` : ''}</div>
             <div class="hero__side">
               <span class="label">${getProductCategory(product)}</span>
               <h1 class="hero__title">${product?.name || 'Featured product'}</h1>
