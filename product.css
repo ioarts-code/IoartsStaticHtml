@@ -164,7 +164,7 @@ html, body {
 .buttons-row {
   position: absolute;
   left: 480px;
-  top: 480px;
+  top: 420px;
   display: flex;
   gap: 20px;
 }
@@ -234,7 +234,7 @@ html, body {
 .meta {
   position: absolute;
   left: 480px;
-  top: 570px;
+  top: 510px;
   display: flex;
   flex-direction: column;
   gap: 18px;
@@ -325,11 +325,11 @@ html, body {
   }
 
   .buttons-row {
-    top: 540px;
+    top: 480px;
   }
 
   .meta {
-    top: 630px;
+    top: 570px;
   }
 
 }
