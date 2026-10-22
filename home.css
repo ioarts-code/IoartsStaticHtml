@@ -38,8 +38,7 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
 /* ── Hero ── */
 .hero {
   --hero-image-scale: 1.86;
-  --hero-image-position: 100%;
-  --hero-image-width: 504%;
+  --hero-image-left: 70%;
   position: relative;
   width: 100%;
   height: 100vh;
@@ -59,8 +58,8 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
 .hero__backdrop {
   position: absolute;
   top: 0;
-  left: calc(var(--hero-image-position) - var(--hero-image-width));
-  width: var(--hero-image-width);
+  left: var(--hero-image-left);
+  width: 54%;
   height: 100%;
   max-width: none;
   object-fit: contain;
@@ -470,8 +469,7 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
 @media (max-width: 720px) {
   body { min-width: 0; overflow-x: hidden; }
   .hero { height: min(760px, 100svh); min-height: 620px; }
-  .hero { --hero-image-width: 72%; }
-  .hero__backdrop { height: 84%; }
+  .hero__backdrop { width: 72%; height: 84%; }
   .hero__side { padding: 78px 20px 250px; width: min(300px, 58vw); }
   .hero__side .label { margin-bottom: 8px; font-size: 10px; }
   .hero__title { margin-bottom: 8px; font-size: clamp(19px, 5vw, 27px); line-height: 1.15; }
