@@ -38,6 +38,7 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
 /* ── Hero ── */
 .hero {
   --hero-image-scale: 1.86;
+  --hero-image-side: right;
   position: relative;
   width: 100%;
   height: 100vh;
@@ -52,19 +53,21 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
   position: absolute;
   inset: 0;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  justify-content: var(--hero-image-side);
 }
 
 .hero__backdrop {
-  position: absolute;
-  top: 0;
-  right: 0;
+  position: relative;
   width: 54%;
   height: 100%;
   max-width: none;
   object-fit: contain;
-  object-position: right center;
+  object-position: var(--hero-image-side) center;
   transform: scale(var(--hero-image-scale));
-  transform-origin: right center;
+  transform-origin: var(--hero-image-side) center;
   pointer-events: none;
 }
 
