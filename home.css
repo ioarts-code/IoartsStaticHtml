@@ -56,26 +56,16 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
 
 .hero__backdrop {
   position: absolute;
-  inset: -8%;
-  width: 116%;
-  height: 116%;
-  max-width: none;
-  object-fit: cover;
-  filter: blur(24px) brightness(0.45);
-  pointer-events: none;
-}
-
-.hero__tshirt {
-  position: absolute;
   top: 0;
-  left: 50%;
-  transform: translateX(-10%);
+  right: 0;
+  width: 54%;
   height: 100%;
-  width: auto;
   max-width: none;
   object-fit: contain;
-  scale: var(--hero-image-scale);
-  transform-origin: 100% 50%;
+  object-position: right center;
+  transform: scale(var(--hero-image-scale));
+  transform-origin: right center;
+  pointer-events: none;
 }
 
 /* Left info panel */
@@ -414,11 +404,6 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
   pointer-events: auto;
 }
 
-.hero__tshirt {
-  left: 46%;
-  width: 92%;
-}
-
 .hero-dots {
   position: absolute;
   z-index: 4;
@@ -455,12 +440,6 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
     min-height: 760px;
   }
 
-  .hero__tshirt {
-    left: 31%;
-    transform: translateX(-10%);
-    transform-origin: top center;
-  }
-
   .hero__side {
     padding: 105px 24px 260px;
     width: min(430px, 78vw);
@@ -489,7 +468,7 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
 @media (max-width: 720px) {
   body { min-width: 0; overflow-x: hidden; }
   .hero { height: min(760px, 100svh); min-height: 620px; }
-  .hero__tshirt { left: 37%; width: 132%; height: 84%; object-fit: contain; transform: translateX(-3%); }
+  .hero__backdrop { width: 72%; height: 84%; }
   .hero__side { padding: 78px 20px 250px; width: min(300px, 58vw); }
   .hero__side .label { margin-bottom: 8px; font-size: 10px; }
   .hero__title { margin-bottom: 8px; font-size: clamp(19px, 5vw, 27px); line-height: 1.15; }
