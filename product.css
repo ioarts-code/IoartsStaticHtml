@@ -110,10 +110,10 @@ html, body {
 }
 
 .title {
-  margin-top: 40px;
+  margin-top: 10px;
   max-width: 100%;
   font-weight: 700;
-  font-size: clamp(56px, 4vw, 64px);
+  font-size: clamp(60px, 4vw, 72px);
   line-height: 0.95;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -250,7 +250,7 @@ html, body {
   }
 
   .title {
-    font-size: clamp(52px, 5vw, 64px);
+    font-size: clamp(56px, 5vw, 70px);
   }
 
 }
@@ -274,7 +274,7 @@ html, body {
   }
 
   .title {
-    font-size: clamp(52px, 5vw, 64px);
+    font-size: clamp(56px, 5vw, 70px);
   }
 
 }
@@ -318,7 +318,7 @@ html, body {
   .product-image__arrow { position: absolute; z-index: 3; top: 50%; right: 14px; display: block; width: 28px; height: 28px; transform: translateY(-50%); color: #444444; pointer-events: auto; cursor: pointer; padding: 10px; box-sizing: content-box; }
   .product-image__arrow path { stroke-width: 2.5; }
   .product-copy { order: 4; width: 100%; margin-top: -36px; }
-  .title { font-size: clamp(36px, 10vw, 64px); font-weight: 500; line-height: .95; letter-spacing: 2px; }
+  .title { font-size: clamp(40px, 10vw, 68px); font-weight: 500; line-height: .95; letter-spacing: 2px; }
   .description { font-size: 14px; line-height: 1.5; }
   .buttons-row { flex-wrap: wrap; }
   .meta { gap: 8px; }
