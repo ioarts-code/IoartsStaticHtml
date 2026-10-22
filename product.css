@@ -164,7 +164,7 @@ html, body {
 .buttons-row {
   position: absolute;
   left: 480px;
-  top: 430px;
+  top: 435px;
   display: flex;
   gap: 20px;
 }
