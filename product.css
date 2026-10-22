@@ -137,7 +137,7 @@ html, body {
   top: 200px;
   max-width: 280px;
   font-weight: 700;
-  font-size: clamp(44px, 3vw, 52px);
+  font-size: clamp(56px, 4vw, 64px);
   line-height: 0.95;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -165,11 +165,11 @@ html, body {
 .description {
   position: absolute;
   left: 480px;
-  top: 440px;
+  top: 380px;
   width: 280px;
   font-weight: 500;
-  font-size: 16px;
-  line-height: 26px;
+  font-size: 13px;
+  line-height: 21px;
   color: #c8c8c8;
 }
 
@@ -302,7 +302,7 @@ html, body {
 
   .title {
     top: 180px;
-    font-size: clamp(40px, 5vw, 52px);
+    font-size: clamp(52px, 5vw, 64px);
   }
 
   .description {
@@ -334,7 +334,7 @@ html, body {
 
   .title {
     top: 180px;
-    font-size: clamp(40px, 5vw, 52px);
+    font-size: clamp(52px, 5vw, 64px);
   }
 
   .description {
@@ -395,7 +395,7 @@ html, body {
   .product-image__arrow { position: absolute; z-index: 3; top: 50%; right: 14px; display: block; width: 28px; height: 28px; transform: translateY(-50%); color: #444444; pointer-events: auto; cursor: pointer; padding: 10px; box-sizing: content-box; }
   .product-image__arrow path { stroke-width: 2.5; }
   .title { order: 4; margin-top: -36px; font-size: clamp(36px, 10vw, 64px); font-weight: 500; line-height: .95; letter-spacing: 2px; }
-  .description { order: 5; width: 100%; font-size: 15px; line-height: 1.55; }
+  .description { order: 5; width: 100%; font-size: 14px; line-height: 1.5; }
   .buttons-row { order: 6; flex-wrap: wrap; margin-bottom: 16px; }
   .meta { order: 7; gap: 16px; }
   .meta-line { flex-wrap: wrap; line-height: 1.8; }
