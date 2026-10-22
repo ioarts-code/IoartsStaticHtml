@@ -75,8 +75,8 @@ html, body {
   --product-image-scale: 0.9;
   position: absolute;
   z-index: 2;
-  left: 748.8px;
-  right: 440px;
+  left: 800px;
+  right: 480px;
   top: -11px;
 }
 
@@ -133,7 +133,7 @@ html, body {
 .title {
   position: absolute;
   z-index: 1;
-  left: 440px;
+  left: 480px;
   top: 200px;
   max-width: 280px;
   font-weight: 700;
@@ -147,7 +147,7 @@ html, body {
 /* ── Price ── */
 .price-section {
   position: absolute;
-  left: 440px;
+  left: 480px;
   top: 455px;
   padding-bottom: 8px;
   border-bottom: 4px solid #949494;
@@ -164,7 +164,7 @@ html, body {
 /* ── Description ── */
 .description {
   position: absolute;
-  left: 440px;
+  left: 480px;
   top: 440px;
   width: 280px;
   font-weight: 500;
@@ -176,7 +176,7 @@ html, body {
 /* ── Action buttons ── */
 .buttons-row {
   position: absolute;
-  left: 440px;
+  left: 480px;
   top: 540px;
   display: flex;
   gap: 20px;
@@ -246,7 +246,7 @@ html, body {
 /* ── Metadata ── */
 .meta {
   position: absolute;
-  left: 440px;
+  left: 480px;
   top: 630px;
   display: flex;
   flex-direction: column;
@@ -292,12 +292,12 @@ html, body {
   .description,
   .buttons-row,
   .meta {
-    left: 9vw;
+    left: 12vw;
   }
 
   .product-image {
-    left: 42vw;
-    right: 9vw;
+    left: 48vw;
+    right: 12vw;
   }
 
   .title {
@@ -324,12 +324,12 @@ html, body {
   .description,
   .buttons-row,
   .meta {
-    left: 9vw;
+    left: 12vw;
   }
 
   .product-image {
-    left: 42vw;
-    right: 9vw;
+    left: 48vw;
+    right: 12vw;
   }
 
   .title {
