@@ -142,7 +142,7 @@ html, body {
 }
 
 .title {
-  margin-top: 180px;
+  margin-top: 40px;
   max-width: 100%;
   font-weight: 700;
   font-size: clamp(56px, 4vw, 64px);
