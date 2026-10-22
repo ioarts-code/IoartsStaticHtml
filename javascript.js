@@ -78,6 +78,8 @@ const FEATURED_PRODUCT_SLUGS = ['t-shirt-cells', 'for-the-horde',];
 const PRODUCT_GRID_CATEGORY = 'vectors';
 const PRODUCT_PAGE_SIZE = 6;
 const INITIAL_PRODUCT_COUNT = 3;
+let heroAutoplayTimer = null;
+let heroSwipeController = null;
 
 // Inserts Hygraph asset transforms (resize + webp) before the asset handle; other hosts pass through.
 function optimizeImage(url, width) {
@@ -171,6 +173,8 @@ function renderProductFilters() {
 function renderFeaturedHero(products) {
   if (!heroCarousel) return;
 
+  window.clearInterval(heroAutoplayTimer);
+  heroSwipeController?.abort();
   const featuredProducts = getFeaturedProducts(products);
   if (featuredProducts.length === 0) {
     heroCarousel.innerHTML = '<div class="hero-loading">No featured products found.</div>';
@@ -213,7 +217,37 @@ function renderFeaturedHero(products) {
   });
 
   if (featuredProducts.length > 1) {
-    window.setInterval(() => showSlide(activeIndex + 1), 5500);
+    const slides = heroCarousel.querySelector('.hero-slides');
+    heroSwipeController = new AbortController();
+    const { signal } = heroSwipeController;
+    let pointerStart = null;
+    let suppressClickUntil = 0;
+
+    slides.addEventListener('pointerdown', (event) => {
+      if (!event.isPrimary || event.button !== 0) return;
+      pointerStart = { x: event.clientX, y: event.clientY, id: event.pointerId };
+    });
+    window.addEventListener('pointerup', (event) => {
+      if (!pointerStart || event.pointerId !== pointerStart.id) return;
+      const deltaX = event.clientX - pointerStart.x;
+      const deltaY = event.clientY - pointerStart.y;
+      pointerStart = null;
+      if (Math.abs(deltaX) < 50 || Math.abs(deltaX) <= Math.abs(deltaY)) return;
+
+      suppressClickUntil = Date.now() + 400;
+      showSlide(activeIndex + (deltaX < 0 ? 1 : -1));
+    }, { signal });
+    window.addEventListener('pointercancel', () => {
+      pointerStart = null;
+    }, { signal });
+    slides.addEventListener('click', (event) => {
+      if (Date.now() >= suppressClickUntil) return;
+      event.preventDefault();
+      event.stopPropagation();
+      suppressClickUntil = 0;
+    }, true);
+
+    heroAutoplayTimer = window.setInterval(() => showSlide(activeIndex + 1), 5500);
   }
 }
 
@@ -456,7 +490,7 @@ function renderProductDetail(product) {
   }
 }
 
-async function fetchProductPage(skip, pageSize = PRODUCT_PAGE_SIZE) {
+async function fetchProductPage(skip, pageSize = PRODUCT_PAGE_SIZE, whereOverride = null) {
   const config = getHygraphConfig();
   const endpoint = (config.endpoint || '').trim();
   const token = (config.authToken || '').trim();
@@ -465,9 +499,11 @@ async function fetchProductPage(skip, pageSize = PRODUCT_PAGE_SIZE) {
     throw new Error('Configure the Hygraph endpoint before loading products.');
   }
 
-  const where = {};
-  if (activeTagFilter !== 'all') where.tags_some = { name: activeTagFilter };
-  if (activeColorTypeFilter !== 'all') where.colorTypeModel = activeColorTypeFilter;
+  const where = whereOverride ? { ...whereOverride } : {};
+  if (!whereOverride) {
+    if (activeTagFilter !== 'all') where.tags_some = { name: activeTagFilter };
+    if (activeColorTypeFilter !== 'all') where.colorTypeModel = activeColorTypeFilter;
+  }
 
   const query = `
     query GetProducts($first: Int!, $skip: Int!, $where: ProductWhereInput) {
@@ -543,17 +579,22 @@ async function fetchProductPage(skip, pageSize = PRODUCT_PAGE_SIZE) {
 }
 
 async function fetchProductsFromHygraph() {
+  fetchProductPage(0, FEATURED_PRODUCT_SLUGS.length, { slug_in: FEATURED_PRODUCT_SLUGS })
+    .then(({ products }) => renderFeaturedHero(products))
+    .catch((error) => {
+      console.error('Hygraph hero fetch error:', error);
+      showHeroLoadingState('Unable to load featured products. Check the Hygraph endpoint and token, or refresh with a valid auth token.');
+    });
+
   try {
     const { products, colorTypes, tagNames } = await fetchProductPage(0, INITIAL_PRODUCT_COUNT);
     colorTypeOptions = colorTypes;
     tagOptionNames = tagNames;
     productOffset = products.length;
-    renderFeaturedHero(products);
     renderProducts(products);
     if (loadMoreContainer) loadMoreContainer.hidden = products.length < INITIAL_PRODUCT_COUNT;
   } catch (error) {
     console.error('Hygraph fetch error:', error);
-    showHeroLoadingState('Unable to load featured products. Check the Hygraph endpoint and token, or refresh with a valid auth token.');
     showEmptyState('Unable to load products from Hygraph. Check the endpoint and token, or refresh with a valid auth token.');
     if (loadMoreContainer) loadMoreContainer.hidden = true;
   }

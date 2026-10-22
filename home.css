@@ -389,6 +389,10 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
   inset: 0;
 }
 
+.hero-slides {
+  touch-action: pan-y;
+}
+
 .hero-slide {
   opacity: 0;
   pointer-events: none;
