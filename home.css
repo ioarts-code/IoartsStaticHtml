@@ -334,7 +334,12 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
   object-fit: cover;
   object-position: center;
   opacity: 1;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.card__img-link:hover .card__shadow,
+.card__img-link:focus-visible .card__shadow {
+  transform: scale(1.04);
 }
 
 .card__art {
