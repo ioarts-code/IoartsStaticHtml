@@ -47,6 +47,14 @@
   justify-content: flex-start;
 }
 
+.vertical-menu__panel {
+  display: contents;
+}
+
+.vertical-menu__toggle {
+  display: none;
+}
+
 .vertical-menu a:hover {
   color: #74d5ff;
 }
@@ -153,22 +161,82 @@
 /* ── Responsive: menu (max 720px) ── */
 @media (max-width: 720px) {
   .vertical-menu {
-    width: 42px;
+    top: 16px;
+    left: 16px;
+    z-index: 100;
+    width: 48px;
+    height: 48px;
+    gap: 0;
+    padding: 0;
+  }
+
+  .vertical-menu__toggle {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    place-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    background: rgba(15, 15, 15, 0.6);
+    color: #fff;
+    cursor: pointer;
+  }
+
+  .vertical-menu__toggle-lines {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+    width: 24px;
+  }
+
+  .vertical-menu__toggle-lines span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: currentColor;
+  }
+
+  .vertical-menu__toggle-lines span:nth-child(2) { width: 15px; }
+  .vertical-menu__toggle-lines span:nth-child(3) { width: 20px; }
+
+  .vertical-menu__panel {
+    position: fixed;
+    z-index: 1;
+    inset: 0;
+    display: none;
+    width: 100vw;
     height: 100vh;
     height: 100dvh;
-    gap: 28px;
-    padding: 20px 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    padding: 80px 24px 40px;
+    background: rgba(15, 15, 15, 0.96);
+  }
+
+  .vertical-menu--open .vertical-menu__panel {
+    display: flex;
   }
 
   .vertical-menu a {
-    font-size: 10px;
+    font-size: 16px;
     letter-spacing: 0.5px;
+    writing-mode: horizontal-tb;
+    transform: none;
   }
 
-  .vertical-menu__brand { font-size: 12px; letter-spacing: 1px; }
+  .vertical-menu__brand {
+    font-size: clamp(48px, 14vw, 76px);
+    letter-spacing: 2px;
+    text-transform: lowercase;
+  }
 
   .vertical-menu__links {
-    flex: 1;
+    flex: 0 1 auto;
     flex-direction: column;
     justify-content: center;
     gap: 28px;
@@ -176,9 +244,7 @@
 }
 
 @media (max-width: 380px) {
-  .vertical-menu { gap: 20px; padding-block: 16px; }
-  .vertical-menu__links { gap: 20px; }
-  .vertical-menu__links a { font-size: 9px; }
+  .vertical-menu { top: 12px; left: 12px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
