@@ -3,8 +3,9 @@
 
 const SITE_MENU_HTML = `
   <aside class="vertical-menu" aria-label="Site menu">
-    <a class="vertical-menu__brand" href="index.html">IOARTS</a>
-    <nav class="vertical-menu__links" aria-label="Main navigation">
+    <button class="vertical-menu__dots" type="button" aria-label="Open menu" aria-controls="site-menu-links" aria-expanded="false"><span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span></button>
+    <a class="vertical-menu__brand" href="index.html">ioarts</a>
+    <nav id="site-menu-links" class="vertical-menu__links" aria-label="Main navigation">
       <a href="index.html">Home</a>
       <a href="about-me.html">About Me</a>
       <a href="https://buymeacoffee.com/ioartseu">Buy me coffee</a>
@@ -40,4 +41,39 @@ function injectSharedParts() {
   });
 }
 
+function initializeMobileMenu() {
+  document.querySelectorAll('.vertical-menu').forEach((menu) => {
+    const toggle = menu.querySelector('.vertical-menu__dots');
+    const links = menu.querySelector('.vertical-menu__links');
+    if (!toggle || !links) return;
+
+    const setOpen = (isOpen) => {
+      menu.classList.toggle('vertical-menu--open', isOpen);
+      toggle.setAttribute('aria-expanded', String(isOpen));
+      toggle.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+    };
+
+    toggle.addEventListener('click', () => {
+      const isOpen = toggle.getAttribute('aria-expanded') !== 'true';
+      setOpen(isOpen);
+      if (isOpen) links.querySelector('a')?.focus();
+    });
+
+    links.addEventListener('click', (event) => {
+      if (event.target.closest('a')) setOpen(false);
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!menu.contains(event.target)) setOpen(false);
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape' || toggle.getAttribute('aria-expanded') !== 'true') return;
+      setOpen(false);
+      toggle.focus();
+    });
+  });
+}
+
 injectSharedParts();
+initializeMobileMenu();
