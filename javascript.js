@@ -290,6 +290,10 @@ function renderProductGrid() {
       const imageUrl = imageUrls[0] || '';
       const secondaryImageUrl = imageUrls[1] || imageUrl;
       const name = product?.name || 'Unnamed product';
+      const productTags = [...new Set((product?.tags || [])
+        .map((tag) => tag?.name?.trim())
+        .filter(Boolean))];
+      const tagsMarkup = productTags.map(escapeHtml).join(' / ');
 
       return `
         <article class="card">
@@ -300,7 +304,7 @@ function renderProductGrid() {
             </a>
           </div>
           <a class="card__label" href="${escapeHtml(getProductUrl(product))}"><p class="card__name">${escapeHtml(name)}</p></a>
-          <p class="card__tags">${escapeHtml(getProductCategory(product))} / Free</p>
+          ${tagsMarkup ? `<p class="card__tags">${tagsMarkup}</p>` : ''}
         </article>
       `;
     })
