@@ -76,7 +76,7 @@ html, body {
   position: absolute;
   z-index: 2;
   left: 748.8px;
-  right: 148.8px;
+  right: 440px;
   top: -11px;
 }
 
@@ -166,7 +166,7 @@ html, body {
   position: absolute;
   left: 440px;
   top: 440px;
-  width: 550px;
+  width: 280px;
   font-weight: 500;
   font-size: 16px;
   line-height: 26px;
@@ -297,7 +297,7 @@ html, body {
 
   .product-image {
     left: 42vw;
-    right: 4vw;
+    right: 9vw;
   }
 
   .title {
@@ -329,7 +329,7 @@ html, body {
 
   .product-image {
     left: 42vw;
-    right: 4vw;
+    right: 9vw;
   }
 
   .title {
