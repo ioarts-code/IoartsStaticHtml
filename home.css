@@ -55,7 +55,7 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
 
 .hero__tshirt {
   position: absolute;
-  top: 100%;
+  top: 0%;
   left: 50%;
   transform: translateX(-10%);
   height: 70%;
