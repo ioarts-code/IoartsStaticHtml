@@ -3,9 +3,8 @@
 
 const SITE_MENU_HTML = `
   <aside class="vertical-menu" aria-label="Site menu">
-    <button class="vertical-menu__dots" type="button" aria-label="Open menu"><span></span><span></span><span></span></button>
     <a class="vertical-menu__brand" href="index.html">IOARTS</a>
-    <nav class="vertical-menu__links">
+    <nav class="vertical-menu__links" aria-label="Main navigation">
       <a href="index.html">Home</a>
       <a href="about-me.html">About Me</a>
       <a href="https://buymeacoffee.com/ioartseu">Buy me coffee</a>

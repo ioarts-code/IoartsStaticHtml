@@ -98,8 +98,32 @@ function optimizeImage(url, width) {
 function imageSrcset(url, widths) {
   return widths.map((width) => `${optimizeImage(url, width)} ${width}w`).join(', ');
 }
+
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>"']/g, (character) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  })[character]);
+}
+
+function safeHttpUrl(value) {
+  const url = String(value || '').trim();
+  if (!url) return '';
+
+  try {
+    const parsed = new URL(url, document.baseURI);
+    return parsed.protocol === 'http:' || parsed.protocol === 'https:' ? url : '';
+  } catch {
+    return '';
+  }
+}
+
 let productOffset = 0;
 let isLoadingMoreProducts = false;
+let heroSlideTimerId = null;
 let loadedProducts = [];
 let colorTypeOptions = [];
 let tagOptionNames = [];
@@ -107,13 +131,19 @@ let productRequestId = 0;
 let activeTagFilter = 'all';
 let activeColorTypeFilter = 'all';
 
+function clearFeaturedHeroTimer() {
+  if (heroSlideTimerId === null) return;
+  window.clearInterval(heroSlideTimerId);
+  heroSlideTimerId = null;
+}
+
 function getProductUrl(product) {
   const slug = typeof product === 'string' ? product : product?.slug;
   const category = typeof product === 'string' ? null
     : product?.categories?.find((item) => item?.slug === PRODUCT_GRID_CATEGORY)
       || product?.categories?.find((item) => item?.slug !== 'hero' && item?.slug !== 't-shirt')
       || product?.categories?.[0];
-  const categoryPath = typeof product === 'string' ? '' : `${category?.slug || PRODUCT_GRID_CATEGORY}/`;
+  const categoryPath = typeof product === 'string' ? '' : `${encodeURIComponent(category?.slug || PRODUCT_GRID_CATEGORY)}/`;
   return `/products/${categoryPath}${encodeURIComponent(slug || '')}`;
 }
 
@@ -170,6 +200,7 @@ function renderProductFilters() {
 
 function renderFeaturedHero(products) {
   if (!heroCarousel) return;
+  clearFeaturedHeroTimer();
 
   const featuredProducts = getFeaturedProducts(products);
   if (featuredProducts.length === 0) {
@@ -181,14 +212,15 @@ function renderFeaturedHero(products) {
     <div class="hero-slides">
       ${featuredProducts.map((product, index) => {
         const imageUrl = product?.images?.[0]?.url || product?.heroImage?.url || '';
+        const name = product?.name || 'Featured product';
         return `
           <article class="hero-slide${index === 0 ? ' active' : ''}" data-hero-slide="${index}">
-            <div class="hero__bg">${imageUrl ? `<img class="hero__backdrop" src="${optimizeImage(imageUrl, 1200)}" srcset="${imageSrcset(imageUrl, [640, 1200, 1800])}" sizes="(max-width: 720px) 72vw, 54vw" decoding="async" ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} alt="${product?.name || 'Featured product'}">` : ''}</div>
+            <div class="hero__bg">${imageUrl ? `<img class="hero__backdrop" src="${escapeHtml(optimizeImage(imageUrl, 1200))}" srcset="${escapeHtml(imageSrcset(imageUrl, [640, 1200, 1800]))}" sizes="(max-width: 720px) 72vw, 54vw" decoding="async" ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} alt="${escapeHtml(name)}">` : ''}</div>
             <div class="hero__side">
-              <span class="label">${getProductCategory(product)}</span>
-              <h1 class="hero__title">${product?.name || 'Featured product'}</h1>
-              ${product?.description ? `<p class="hero__desc">${product.description}</p>` : ''}
-              <a href="${getProductUrl(product)}" class="hero__btn">View</a>
+              <span class="label">${escapeHtml(getProductCategory(product))}</span>
+              <h1 class="hero__title">${escapeHtml(name)}</h1>
+              ${product?.description ? `<p class="hero__desc">${escapeHtml(product.description)}</p>` : ''}
+              <a href="${escapeHtml(getProductUrl(product))}" class="hero__btn">View</a>
             </div>
           </article>
         `;
@@ -196,7 +228,7 @@ function renderFeaturedHero(products) {
     </div>
     ${featuredProducts.length > 1 ? `
       <div class="hero-dots" aria-label="Featured products">
-        ${featuredProducts.map((product, index) => `<button class="hero-dot${index === 0 ? ' active' : ''}" type="button" data-hero-dot="${index}" aria-label="Show ${product.name}"></button>`).join('')}
+        ${featuredProducts.map((product, index) => `<button class="hero-dot${index === 0 ? ' active' : ''}" type="button" data-hero-dot="${index}" aria-label="Show ${escapeHtml(product?.name || 'featured product')}"></button>`).join('')}
       </div>
     ` : ''}
   `;
@@ -213,7 +245,7 @@ function renderFeaturedHero(products) {
   });
 
   if (featuredProducts.length > 1) {
-    window.setInterval(() => showSlide(activeIndex + 1), 5500);
+    heroSlideTimerId = window.setInterval(() => showSlide(activeIndex + 1), 5500);
   }
 }
 
@@ -221,14 +253,15 @@ function showEmptyState(message) {
   if (!productGrid) return;
   productGrid.innerHTML = `
     <div class="empty-state">
-      <p>${message}</p>
+      <p>${escapeHtml(message)}</p>
     </div>
   `;
 }
 
 function showHeroLoadingState(message) {
   if (!heroCarousel) return;
-  heroCarousel.innerHTML = `<div class="hero-loading">${message}</div>`;
+  clearFeaturedHeroTimer();
+  heroCarousel.innerHTML = `<div class="hero-loading">${escapeHtml(message)}</div>`;
 }
 
 function renderProductGrid() {
@@ -255,17 +288,18 @@ function renderProductGrid() {
         .filter((url, index, urls) => url && urls.indexOf(url) === index);
       const imageUrl = imageUrls[0] || '';
       const secondaryImageUrl = imageUrls[1] || imageUrl;
+      const name = product?.name || 'Unnamed product';
 
       return `
         <article class="card">
           <div class="card__img">
-            <a class="card__img-link" href="${getProductUrl(product)}">
-              <img class="card__shadow" src="${imageUrl ? optimizeImage(imageUrl, 640) : 'https://placehold.co/800x1000/171717/a2a2a2?text=Product'}" ${imageUrl ? `srcset="${imageSrcset(imageUrl, [480, 960])}" sizes="(max-width: 720px) 100vw, 33vw"` : ''} loading="lazy" decoding="async" alt="">
-              <img class="card__art" src="${secondaryImageUrl ? optimizeImage(secondaryImageUrl, 640) : 'https://placehold.co/800x1000/171717/a2a2a2?text=Product'}" ${secondaryImageUrl ? `srcset="${imageSrcset(secondaryImageUrl, [480, 960])}" sizes="(max-width: 720px) 100vw, 33vw"` : ''} loading="lazy" decoding="async" alt="${product?.name || 'Product image'}">
+            <a class="card__img-link" href="${escapeHtml(getProductUrl(product))}">
+              <img class="card__shadow" src="${escapeHtml(imageUrl ? optimizeImage(imageUrl, 640) : 'https://placehold.co/800x1000/171717/a2a2a2?text=Product')}" ${imageUrl ? `srcset="${escapeHtml(imageSrcset(imageUrl, [480, 960]))}" sizes="(max-width: 720px) 100vw, 33vw"` : ''} loading="lazy" decoding="async" alt="">
+              <img class="card__art" src="${escapeHtml(secondaryImageUrl ? optimizeImage(secondaryImageUrl, 640) : 'https://placehold.co/800x1000/171717/a2a2a2?text=Product')}" ${secondaryImageUrl ? `srcset="${escapeHtml(imageSrcset(secondaryImageUrl, [480, 960]))}" sizes="(max-width: 720px) 100vw, 33vw"` : ''} loading="lazy" decoding="async" alt="${escapeHtml(name)}">
             </a>
           </div>
-          <a class="card__label" href="${getProductUrl(product)}"><p class="card__name">${product?.name || 'Unnamed product'}</p></a>
-          <p class="card__tags">${getProductCategory(product)} / Free</p>
+          <a class="card__label" href="${escapeHtml(getProductUrl(product))}"><p class="card__name">${escapeHtml(name)}</p></a>
+          <p class="card__tags">${escapeHtml(getProductCategory(product))} / Free</p>
         </article>
       `;
     })
@@ -286,8 +320,8 @@ function renderProductDetail(product) {
   const detailContainer = document.getElementById('product-detail');
   if (!detailContainer) return;
 
-  const name = product?.name || 'Product';
-  const description = product?.description || 'No description provided.';
+  const name = escapeHtml(product?.name || 'Product');
+  const description = escapeHtml(product?.description || 'No description provided.');
   const imageUrl = product?.images?.[0]?.url || product?.heroImage?.url || 'https://placehold.co/1200x1200/f1e9e0/1f2a37?text=Product';
   const images = [...(product?.images || []), ...(product?.heroImage ? [product.heroImage] : [])].filter((image, index, list) => image?.url && list.findIndex((item) => item?.url === image.url) === index);
   const secondaryImageUrl = images[1]?.url || imageUrl;
@@ -295,12 +329,12 @@ function renderProductDetail(product) {
     ? product.colorTypeModel.charAt(0).toUpperCase() + product.colorTypeModel.slice(1)
     : '';
   const category = getProductCategory(product);
-  const tags = product?.tags?.map((tag) => tag.name).join(', ') || category;
-  const linkToEtsy = product?.linkToEtsy || '';
-  const linkToDeviantArt = product?.linktoDeviantArt || product?.linkToDeviantArt || '';
+  const tags = escapeHtml(product?.tags?.map((tag) => tag.name).join(', ') || category);
+  const linkToEtsy = safeHttpUrl(product?.linkToEtsy);
+  const linkToDeviantArt = safeHttpUrl(product?.linktoDeviantArt || product?.linkToDeviantArt);
   const hasExternalLink = linkToDeviantArt || linkToEtsy;
-  const downloadUrl = product?.download?.url || '#';
-  const downloadFileName = product?.download?.fileName || `${product?.slug || 'product'}.svg`;
+  const downloadUrl = safeHttpUrl(product?.download?.url) || '#';
+  const downloadFileName = escapeHtml(product?.download?.fileName || `${product?.slug || 'product'}.svg`);
   const titleParts = name.split(/\s+/);
   const titleMarkup = titleParts.length > 1
     ? `<p>${titleParts.slice(0, Math.ceil(titleParts.length / 2)).join(' ')}</p><p>${titleParts.slice(Math.ceil(titleParts.length / 2)).join(' ')}</p>`
@@ -308,24 +342,24 @@ function renderProductDetail(product) {
 
   detailContainer.innerHTML = `
     <div class="product-image">
-      <img id="product-secondary-image" class="product-image__bg" src="${secondaryImageUrl}" alt="" draggable="false" />
-      <img id="product-main-image" class="product-image__main" src="${imageUrl}" alt="${name}" draggable="false" />
+      <img id="product-secondary-image" class="product-image__bg" src="${escapeHtml(secondaryImageUrl)}" alt="" draggable="false" />
+      <img id="product-main-image" class="product-image__main" src="${escapeHtml(imageUrl)}" alt="${name}" draggable="false" />
       ${images.length > 1 ? '<svg class="product-image__arrow" width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>' : ''}
     </div>
     <div class="product-copy">
       <div class="title">${titleMarkup}</div>
       <p class="description">${description}</p>
       <div class="buttons-row">
-        ${linkToEtsy ? `<a class="btn" href="${linkToEtsy}" target="_blank" rel="noopener noreferrer">Buy on Etsy</a>` : ''}
-        ${linkToDeviantArt ? `<a class="btn" href="${linkToDeviantArt}" target="_blank" rel="noopener noreferrer">View On DeviantArt</a>` : ''}
+        ${linkToEtsy ? `<a class="btn" href="${escapeHtml(linkToEtsy)}" target="_blank" rel="noopener noreferrer">Buy on Etsy</a>` : ''}
+        ${linkToDeviantArt ? `<a class="btn" href="${escapeHtml(linkToDeviantArt)}" target="_blank" rel="noopener noreferrer">View On DeviantArt</a>` : ''}
         ${hasExternalLink ? '' : '<button class="btn" type="button" data-open-product-options>Download Image Free</button>'}
       </div>
-      <div class="meta"><span class="meta-line">Tags: ${tags}</span><span class="meta-line">Copyright: ${product?.copyright || 'Unofficial fanart'}</span>${colorType ? `<span class="meta-line">Color Type: ${colorType}</span>` : ''}</div>
+      <div class="meta"><span class="meta-line">Tags: ${tags}</span><span class="meta-line">Copyright: ${escapeHtml(product?.copyright || 'Unofficial fanart')}</span>${colorType ? `<span class="meta-line">Color Type: ${escapeHtml(colorType)}</span>` : ''}</div>
     </div>
     ${hasExternalLink ? '' : `
       <dialog class="product-options" data-product-options>
         <div class="product-options__content">
-          <a class="btn" href="${downloadUrl}" data-download-svg ${downloadUrl === '#' ? '' : `download="${downloadFileName}"`}>Download Image Free</a>
+          <a class="btn" href="${escapeHtml(downloadUrl)}" data-download-svg ${downloadUrl === '#' ? '' : `download="${downloadFileName}"`}>Download Image Free</a>
           <a class="btn" href="https://buymeacoffee.com/ioartseu" target="_blank" rel="noopener noreferrer">Buy me coffee</a>
         </div>
       </dialog>
@@ -368,19 +402,25 @@ function renderProductDetail(product) {
   const mainImage = detailContainer.querySelector('#product-main-image');
   const secondaryImage = detailContainer.querySelector('#product-secondary-image');
   let imageIndex = 0;
+  let imageChangeAnimation = null;
 
   const setImages = (primaryIdx, direction = 0) => {
     imageIndex = Math.min(primaryIdx, Math.max(images.length - 1, 0));
     if (images[imageIndex]?.url && mainImage) {
-      if (direction !== 0) {
-        mainImage.animate([
+      imageChangeAnimation?.cancel();
+      imageChangeAnimation = null;
+      if (direction !== 0 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        imageChangeAnimation = mainImage.animate([
           { transform: `translateX(${direction * 18}px) scale(0.98)`, opacity: 0.8 },
           { transform: 'translateX(0) scale(1)', opacity: 1 }
         ], {
           duration: 180,
           easing: 'ease-out',
-          fill: 'forwards',
+          fill: 'none',
         });
+        imageChangeAnimation.onfinish = () => {
+          imageChangeAnimation = null;
+        };
       }
       mainImage.src = images[imageIndex].url;
     }

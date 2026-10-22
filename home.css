@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@500;700;900&family=Mr+Dafoe&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Mr+Dafoe&display=swap");
 
 /* ── Fonts ── */
 @font-face {
@@ -439,37 +439,6 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
   color: #a2a2a2;
 }
 
-/* ── Responsive: hero (max 720px) ── */
-@media (max-width: 720px) {
-  .hero {
-    height: 760px;
-    min-height: 760px;
-  }
-
-  .hero__side {
-    padding: 105px 24px 260px;
-    width: min(430px, 78vw);
-    max-width: none;
-  }
-
-  .hero__footer {
-    height: 210px;
-  }
-
-  .hero-dots {
-    bottom: 244px;
-  }
-
-  .gallery {
-    grid-template-columns: 1fr;
-    padding: 56px 24px 72px;
-  }
-
-  .load-more-container {
-    padding: 0 24px 72px;
-  }
-}
-
 /* ── Responsive: start page overrides (max 720px) ── */
 @media (max-width: 720px) {
   body { min-width: 0; overflow-x: hidden; }
@@ -485,6 +454,7 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
   .hero__blurb { font-size: 10px; }
   .hero-dots { bottom: 228px; }
   .gallery { grid-template-columns: 1fr; row-gap: 56px; padding: 56px 24px 72px; }
+  .load-more-container { padding: 0 24px 72px; }
   .card__name { font-size: clamp(20px, 6vw, 24px); }
   .card__label { min-height: 64px; height: auto; margin-top: 2px; padding: 8px; }
 }
