@@ -546,12 +546,16 @@ async function fetchProductsFromHygraph() {
   try {
     const [{ products, colorTypes, tagNames }, { products: featuredProducts }] = await Promise.all([
       fetchProductPage(0, INITIAL_PRODUCT_COUNT),
-      fetchProductPage(0, FEATURED_PRODUCT_SLUGS.length, { slug_in: FEATURED_PRODUCT_SLUGS }),
+      fetchProductPage(0, FEATURED_PRODUCT_SLUGS.length, { slug_in: FEATURED_PRODUCT_SLUGS })
+        .catch((error) => {
+          console.error('Featured products fetch error:', error);
+          return { products: [] };
+        }),
     ]);
     colorTypeOptions = colorTypes;
     tagOptionNames = tagNames;
     productOffset = products.length;
-    renderFeaturedHero(featuredProducts);
+    renderFeaturedHero(featuredProducts.length > 0 ? featuredProducts : products);
     renderProducts(products);
     if (loadMoreContainer) loadMoreContainer.hidden = products.length < INITIAL_PRODUCT_COUNT;
   } catch (error) {
