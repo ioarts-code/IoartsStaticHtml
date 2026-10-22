@@ -81,25 +81,6 @@ const INITIAL_PRODUCT_COUNT = 3;
 let heroAutoplayTimer = null;
 let heroSwipeController = null;
 
-// Inserts Hygraph asset transforms (resize + webp) before the asset handle; other hosts pass through.
-function optimizeImage(url, width) {
-  if (!url) return url;
-  try {
-    const parsed = new URL(url);
-    if (!parsed.hostname.endsWith('graphassets.com')) return url;
-    const segments = parsed.pathname.split('/');
-    const handle = segments.pop();
-    segments.push(`resize=width:${width},fit:max`, 'quality=value:80', 'output=format:webp', handle);
-    parsed.pathname = segments.join('/');
-    return parsed.toString();
-  } catch {
-    return url;
-  }
-}
-
-function imageSrcset(url, widths) {
-  return widths.map((width) => `${optimizeImage(url, width)} ${width}w`).join(', ');
-}
 let productOffset = 0;
 let isLoadingMoreProducts = false;
 let loadedProducts = [];
@@ -187,7 +168,7 @@ function renderFeaturedHero(products) {
         const imageUrl = product?.images?.[0]?.url || product?.heroImage?.url || '';
         return `
           <article class="hero-slide${index === 0 ? ' active' : ''}" data-hero-slide="${index}">
-            <div class="hero__bg">${imageUrl ? `<img class="hero__tshirt" src="${optimizeImage(imageUrl, 1200)}" srcset="${imageSrcset(imageUrl, [640, 1200, 1800])}" sizes="(max-width: 720px) 90vw, 50vw" decoding="async" ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} alt="${product?.name || 'Featured product'}">` : ''}</div>
+            <div class="hero__bg">${imageUrl ? `<img class="hero__tshirt" src="${imageUrl}" decoding="async" ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} alt="${product?.name || 'Featured product'}">` : ''}</div>
             <div class="hero__side">
               <span class="label">${getProductCategory(product)}</span>
               <h1 class="hero__title">${product?.name || 'Featured product'}</h1>
@@ -303,8 +284,8 @@ function renderProductGrid() {
         <article class="card">
           <div class="card__img">
             <a class="card__img-link" href="${getProductUrl(product)}">
-              <img class="card__shadow" src="${imageUrl ? optimizeImage(imageUrl, 640) : 'https://placehold.co/800x1000/171717/a2a2a2?text=Product'}" ${imageUrl ? `srcset="${imageSrcset(imageUrl, [480, 960])}" sizes="(max-width: 720px) 100vw, 33vw"` : ''} loading="lazy" decoding="async" alt="">
-              <img class="card__art" src="${secondaryImageUrl ? optimizeImage(secondaryImageUrl, 640) : 'https://placehold.co/800x1000/171717/a2a2a2?text=Product'}" ${secondaryImageUrl ? `srcset="${imageSrcset(secondaryImageUrl, [480, 960])}" sizes="(max-width: 720px) 100vw, 33vw"` : ''} loading="lazy" decoding="async" alt="${product?.name || 'Product image'}">
+              <img class="card__shadow" src="${imageUrl || 'https://placehold.co/800x1000/171717/a2a2a2?text=Product'}" loading="lazy" decoding="async" alt="">
+              <img class="card__art" src="${secondaryImageUrl || 'https://placehold.co/800x1000/171717/a2a2a2?text=Product'}" loading="lazy" decoding="async" alt="${product?.name || 'Product image'}">
             </a>
           </div>
           <a class="card__label" href="${getProductUrl(product)}"><p class="card__name">${product?.name || 'Unnamed product'}</p></a>
