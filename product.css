@@ -129,13 +129,20 @@ html, body {
   color: #ffffff;
 }
 
-/* ── Title ── */
-.title {
+/* ── Product copy ── */
+.product-copy {
   position: absolute;
   z-index: 1;
   left: 480px;
   top: 0px;
-  max-width: 280px;
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.title {
+  max-width: 100%;
   font-weight: 700;
   font-size: clamp(56px, 4vw, 64px);
   line-height: 0.95;
@@ -146,10 +153,7 @@ html, body {
 
 /* ── Description ── */
 .description {
-  position: absolute;
-  left: 480px;
-  top: 380px;
-  width: 280px;
+  width: 100%;
   font-weight: 500;
   font-size: 13px;
   line-height: 21px;
@@ -270,11 +274,15 @@ html, body {
   }
 
   .back-link,
-  .title,
-  .description,
   .buttons-row,
   .meta {
     left: 12vw;
+  }
+
+  .product-copy {
+    left: 12vw;
+    top: 180px;
+    width: 30vw;
   }
 
   .product-image {
@@ -283,12 +291,7 @@ html, body {
   }
 
   .title {
-    top: 180px;
     font-size: clamp(52px, 5vw, 64px);
-  }
-
-  .description {
-    width: 30vw;
   }
 
 }
@@ -301,11 +304,15 @@ html, body {
   }
 
   .back-link,
-  .title,
-  .description,
   .buttons-row,
   .meta {
     left: 12vw;
+  }
+
+  .product-copy {
+    left: 12vw;
+    top: 180px;
+    width: 30vw;
   }
 
   .product-image {
@@ -314,12 +321,7 @@ html, body {
   }
 
   .title {
-    top: 180px;
     font-size: clamp(52px, 5vw, 64px);
-  }
-
-  .description {
-    width: 30vw;
   }
 
   .buttons-row {
@@ -357,8 +359,7 @@ html, body {
 
   .back-link,
   .product-image,
-  .title,
-  .description,
+  .product-copy,
   .buttons-row,
   .meta {
     position: relative;
@@ -375,8 +376,9 @@ html, body {
   .product-image__bg { position: absolute; top: -8%; right: -8%; z-index: 1; width: 92%; opacity: 0.62; }
   .product-image__arrow { position: absolute; z-index: 3; top: 50%; right: 14px; display: block; width: 28px; height: 28px; transform: translateY(-50%); color: #444444; pointer-events: auto; cursor: pointer; padding: 10px; box-sizing: content-box; }
   .product-image__arrow path { stroke-width: 2.5; }
-  .title { order: 4; margin-top: -36px; font-size: clamp(36px, 10vw, 64px); font-weight: 500; line-height: .95; letter-spacing: 2px; }
-  .description { order: 5; width: 100%; font-size: 14px; line-height: 1.5; }
+  .product-copy { order: 4; width: 100%; margin-top: -36px; }
+  .title { font-size: clamp(36px, 10vw, 64px); font-weight: 500; line-height: .95; letter-spacing: 2px; }
+  .description { font-size: 14px; line-height: 1.5; }
   .buttons-row { order: 6; flex-wrap: wrap; margin-bottom: 16px; }
   .meta { order: 7; gap: 16px; }
   .meta-line { flex-wrap: wrap; line-height: 1.8; }
