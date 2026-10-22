@@ -320,7 +320,7 @@ function renderProductDetail(product) {
         ${linkToDeviantArt ? `<a class="btn" href="${linkToDeviantArt}" target="_blank" rel="noopener noreferrer">View On DeviantArt</a>` : ''}
         ${hasExternalLink ? '' : '<button class="btn" type="button" data-open-product-options>Download Image Free</button>'}
       </div>
-      <div class="meta"><span class="meta-line meta-line--tags">Tags: ${tags}</span><span class="meta-line">Copyright: ${product?.copyright || 'Unofficial fanart'}</span>${colorType ? `<span class="meta-line">Color Type: ${colorType}</span>` : ''}</div>
+      <div class="meta"><span class="meta-line">Tags: ${tags}</span><span class="meta-line">Copyright: ${product?.copyright || 'Unofficial fanart'}</span>${colorType ? `<span class="meta-line">Color Type: ${colorType}</span>` : ''}</div>
     </div>
     ${hasExternalLink ? '' : `
       <dialog class="product-options" data-product-options>

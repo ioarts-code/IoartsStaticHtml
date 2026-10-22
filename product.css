@@ -206,18 +206,13 @@ html, body {
 }
 
 .meta-line {
-  font-weight: 700;
+  font-weight: 400;
   font-size: 14px;
-  color: #a2a2a2;
+  color: #e0e0e0;
   letter-spacing: -0.24px;
   display: flex;
   align-items: center;
   gap: 10px;
-}
-
-.meta-line--tags {
-  color: #e0e0e0;
-  font-weight: 400;
 }
 
 .badge {
