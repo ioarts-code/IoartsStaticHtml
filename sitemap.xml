@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url><loc>https://ioarts.ink/</loc><priority>1.0</priority></url>
-  <url><loc>https://ioarts.ink/product.html</loc><priority>0.8</priority></url>
-  <url><loc>https://ioarts.ink/about-me.html</loc><priority>0.5</priority></url>
-  <url><loc>https://ioarts.ink/contact.html</loc><priority>0.5</priority></url>
-  <url><loc>https://ioarts.ink/terms-of-sale.html</loc><priority>0.3</priority></url>
-  <url><loc>https://ioarts.ink/privacy-policy.html</loc><priority>0.3</priority></url>
-  <url><loc>https://ioarts.ink/copyright-attribution.html</loc><priority>0.3</priority></url>
+  <url><loc>https://ioarts.ink/product</loc><priority>0.8</priority></url>
+  <url><loc>https://ioarts.ink/about-me</loc><priority>0.5</priority></url>
+  <url><loc>https://ioarts.ink/contact</loc><priority>0.5</priority></url>
+  <url><loc>https://ioarts.ink/terms-of-sale</loc><priority>0.3</priority></url>
+  <url><loc>https://ioarts.ink/privacy-policy</loc><priority>0.3</priority></url>
+  <url><loc>https://ioarts.ink/copyright-attribution</loc><priority>0.3</priority></url>
 
   <url>
     <loc>https://ioarts.ink/products/vectors/t-shirt-elden</loc>
