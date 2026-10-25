@@ -299,7 +299,7 @@ function renderProductGrid() {
         <article class="card">
           <div class="card__img">
             <a class="card__img-link" href="${escapeHtml(getProductUrl(product))}">
-              <img class="card__shadow" src="${escapeHtml(imageUrl ? optimizeImage(imageUrl, 640) : 'https://placehold.co/800x1000/171717/a2a2a2?text=Product')}" ${imageUrl ? `srcset="${escapeHtml(imageSrcset(imageUrl, [480, 960]))}" sizes="(max-width: 720px) 100vw, 33vw"` : ''} loading="lazy" decoding="async" alt="">
+              <img class="card__shadow" src="/jnj3kgrund2Vitolaygrey.webp" loading="lazy" decoding="async" alt="">
               <img class="card__art" src="${escapeHtml(secondaryImageUrl ? optimizeImage(secondaryImageUrl, 640) : 'https://placehold.co/800x1000/171717/a2a2a2?text=Product')}" ${secondaryImageUrl ? `srcset="${escapeHtml(imageSrcset(secondaryImageUrl, [480, 960]))}" sizes="(max-width: 720px) 100vw, 33vw"` : ''} loading="lazy" decoding="async" alt="${escapeHtml(name)}">
             </a>
           </div>
