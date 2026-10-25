@@ -33,9 +33,25 @@
   transform: rotate(180deg);
 }
 
-.vertical-menu__brand {
+.vertical-menu__title {
+  margin: 0;
+  font-size: inherit;
+  line-height: 1;
+}
+
+.vertical-menu .vertical-menu__brand {
+  display: inline-block;
+  padding: 8px 6px;
+  border-radius: 0;
+  background: #fff;
+  color: #151515;
   font-size: 14px;
   letter-spacing: 2px;
+}
+
+.vertical-menu .vertical-menu__brand:hover {
+  color: #151515;
+  background: #74d5ff;
 }
 
 .vertical-menu__links {
@@ -229,7 +245,8 @@
     transform: none;
   }
 
-  .vertical-menu__brand {
+  .vertical-menu .vertical-menu__brand {
+    padding: 10px 16px;
     font-size: clamp(48px, 14vw, 76px);
     letter-spacing: 2px;
     text-transform: lowercase;

@@ -7,7 +7,7 @@ const SITE_MENU_HTML = `
       <span class="vertical-menu__toggle-lines" aria-hidden="true"><span></span><span></span><span></span></span>
     </button>
     <div class="vertical-menu__panel" id="mobile-site-menu">
-      <a class="vertical-menu__brand" href="index.html">ioarts</a>
+      <h1 class="vertical-menu__title"><a class="vertical-menu__brand" href="index.html">ioarts</a></h1>
       <nav class="vertical-menu__links" aria-label="Main navigation">
         <a href="index.html">Home</a>
         <a href="about-me.html">About Me</a>
