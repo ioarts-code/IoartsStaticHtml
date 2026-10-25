@@ -46,7 +46,7 @@
   display: inline-block;
   padding: 8px 6px;
   border-radius: 0;
-  background: #fff;
+  background: #a2a2a2;
   color: #151515;
   font-size: 14px;
   font-weight: 900;
@@ -55,7 +55,7 @@
 
 .vertical-menu .vertical-menu__brand:hover {
   color: #151515;
-  background: #74d5ff;
+  background: #fff;
 }
 
 .vertical-menu__links {
