@@ -291,5 +291,8 @@ html, body {
 
 /* ── Tablet: arrow closer to the image ── */
 @media (min-width: 721px) and (max-width: 1100px) {
-  .product-image__arrow { right: auto; left: calc(50% + 70px); }
+  .page { padding-inline: 48px; }
+  .product-image { --product-image-scale: 1; }
+  .product-image__bg { top: -3%; right: -3%; }
+  .product-image__arrow { right: 0; left: auto; width: 44px; height: 44px; }
 }
