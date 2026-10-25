@@ -81,7 +81,7 @@ html, body {
   position: absolute;
   z-index: 3;
   top: 50%;
-  right: 400px;
+  right: 40px;
   display: block;
   width: 72px;
   height: 72px;
@@ -287,6 +287,11 @@ html, body {
   .buttons-row { flex-wrap: wrap; }
   .meta { gap: 8px; }
   .meta-line { flex-wrap: wrap; line-height: 1.8; }
+}
+
+/* ── Small laptop / horizontal tablet: arrow beside the image ── */
+@media (min-width: 1101px) and (max-width: 1599px) {
+  .product-image__arrow { right: -48px; width: 48px; height: 48px; }
 }
 
 /* ── Tablet: arrow closer to the image ── */
