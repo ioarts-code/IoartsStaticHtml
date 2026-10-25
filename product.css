@@ -288,3 +288,8 @@ html, body {
   .meta { gap: 8px; }
   .meta-line { flex-wrap: wrap; line-height: 1.8; }
 }
+
+/* ── Tablet: arrow closer to the image ── */
+@media (min-width: 721px) and (max-width: 1100px) {
+  .product-image__arrow { right: auto; left: calc(50% + 25px); }
+}
