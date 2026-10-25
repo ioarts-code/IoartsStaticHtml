@@ -291,5 +291,5 @@ html, body {
 
 /* ── Tablet: arrow closer to the image ── */
 @media (min-width: 721px) and (max-width: 1100px) {
-  .product-image__arrow { right: auto; left: calc(50% + 25px); }
+  .product-image__arrow { right: auto; left: calc(50% + 70px); }
 }
