@@ -279,7 +279,7 @@ html, body {
   .product-image img { max-height: 58vh; margin-inline: auto; object-fit: contain; object-position: center; }
   .product-image__main { position: relative; z-index: 2; width: 92%; touch-action: pan-y; }
   .product-image__bg { position: absolute; top: -8%; right: -8%; z-index: 1; width: 92%; opacity: 0.62; }
-  .product-image__arrow { position: absolute; z-index: 3; top: 50%; right: 14px; display: block; width: 28px; height: 28px; transform: translateY(-50%); color: #444444; pointer-events: auto; cursor: pointer; padding: 10px; box-sizing: content-box; }
+  .product-image__arrow { position: absolute; z-index: 3; top: 50%; right: 28px; display: block; width: 36px; height: 36px; transform: translateY(-50%); color: #444444; pointer-events: auto; cursor: pointer; padding: 10px; box-sizing: content-box; }
   .product-image__arrow path { stroke-width: 2.5; }
   .product-copy { order: 4; width: 100%; margin-top: -36px; margin-left: 0; }
   .title { font-size: clamp(40px, 10vw, 68px); font-weight: 500; line-height: .95; letter-spacing: 2px; }
