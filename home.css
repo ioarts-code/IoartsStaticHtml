@@ -445,7 +445,7 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
 
 /* ── Tablet / small laptop: title box below image ── */
 @media (min-width: 721px) and (max-width: 1199px) {
-  .card__label { margin-top: 8px; height: auto; min-height: 56px; padding: 6px 8px; }
+  .card__label { margin-top: -6px; height: auto; min-height: 56px; padding: 6px 8px; }
   .card__name { font-size: 18px; line-height: 26px; }
 }
 
