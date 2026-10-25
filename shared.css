@@ -5,6 +5,8 @@
    BEFORE the page stylesheet so pages can override.
    ============================================= */
 
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
 /* ── Vertical side menu ── */
 .vertical-menu {
   position: fixed;
@@ -23,8 +25,9 @@
 
 .vertical-menu a {
   color: #fff;
+  font-family: 'Roboto', sans-serif;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 400;
   letter-spacing: 1px;
   text-decoration: none;
   text-transform: uppercase;
@@ -46,6 +49,7 @@
   background: #fff;
   color: #151515;
   font-size: 14px;
+  font-weight: 700;
   letter-spacing: 2px;
 }
 
