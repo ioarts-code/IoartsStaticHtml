@@ -452,12 +452,6 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
   color: #a2a2a2;
 }
 
-/* ── Tablet (stacked): centered, smaller hero image ── */
-@media (min-width: 721px) and (max-width: 1024px) {
-  .hero { --hero-image-scale: 1.05; }
-  .hero__backdrop { left: 50%; width: 60%; height: calc(100% - 192px); object-position: center; transform: translateX(-50%) scale(var(--hero-image-scale)); transform-origin: center center; }
-}
-
 /* ── Tablet / small laptop: title box below image ── */
 @media (min-width: 721px) and (max-width: 1199px) {
   .card__label { margin-top: -6px; height: auto; min-height: 56px; padding: 6px 8px; }
