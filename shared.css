@@ -95,7 +95,7 @@
 .ioarts-footer__brand {
   position: relative;
   z-index: 1;
-  color: #585858;
+  color: #333;
   font-size: clamp(100px, 20vw, 260px);
   font-weight: 800;
   line-height: 1;
@@ -152,7 +152,7 @@
 }
 
 .ioarts-footer__links a {
-  color: #585858;
+  color: #333;
   font-size: 14px;
   font-weight: 600;
   text-decoration: none;
@@ -173,7 +173,7 @@
   z-index: 3;
   font-size: 13px;
   font-weight: 600;
-  color: #585858;
+  color: #333;
   writing-mode: vertical-rl;
   transform: none;
 }
