@@ -447,7 +447,7 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
 @media (max-width: 720px) {
   body { min-width: 0; overflow-x: hidden; }
   .hero { --hero-image-left: 50%; height: min(760px, 100svh); min-height: 620px; }
-  .hero__backdrop { left: 50%; width: 72%; height: 84%; object-position: center; transform: translateX(-50%) scale(var(--hero-image-scale)); transform-origin: center center; }
+  .hero__backdrop { left: 50%; width: 72%; height: 84%; object-position: center; transform: translate(-50%, -6%) scale(var(--hero-image-scale)); transform-origin: center center; }
   .hero-slide__link { position: absolute; inset: 0; z-index: 1; display: block; }
   .hero-slide__link:focus-visible { outline: 2px solid #fff; outline-offset: -8px; }
   .hero__side { display: none; }
