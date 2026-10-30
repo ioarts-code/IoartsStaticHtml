@@ -164,15 +164,26 @@ function getProductCategory(product) {
 function renderFilterGroup(container, options, activeValue, onChange) {
   if (!container) return;
 
-  container.replaceChildren();
-  options.forEach(({ value, label }) => {
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.className = `filter${value === activeValue ? ' filter--active' : ''}`;
-    button.textContent = label;
-    button.setAttribute('aria-pressed', String(value === activeValue));
-    button.addEventListener('click', () => onChange(value));
-    container.append(button);
+  const key = options.map(({ value }) => value).join('\u0000');
+  if (container.dataset.optionsKey !== key) {
+    container.dataset.optionsKey = key;
+    container.replaceChildren();
+    options.forEach(({ value, label }) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'filter';
+      button.dataset.value = value;
+      button.textContent = label;
+      button.addEventListener('click', () => onChange(value));
+      container.append(button);
+    });
+  }
+
+  // Update in place so buttons aren't recreated (which restarts hover/transition and drops focus).
+  container.querySelectorAll('.filter').forEach((button) => {
+    const isActive = button.dataset.value === activeValue;
+    button.classList.toggle('filter--active', isActive);
+    button.setAttribute('aria-pressed', String(isActive));
   });
 }
 
