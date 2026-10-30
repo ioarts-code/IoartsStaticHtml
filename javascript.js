@@ -312,7 +312,6 @@ function renderProductGrid() {
             <a class="card__img-link" href="${escapeHtml(getProductUrl(product))}">
               <img class="card__shadow" src="${escapeHtml(imageUrl ? optimizeImage(imageUrl, 640) : 'https://placehold.co/800x1000/171717/a2a2a2?text=Product')}" ${imageUrl ? `srcset="${escapeHtml(imageSrcset(imageUrl, [480, 960]))}" sizes="(max-width: 720px) 100vw, 33vw"` : ''} loading="lazy" decoding="async" alt="">
               <img class="card__art" src="/jnj3kgrund2Vitolaygrey.webp" loading="lazy" decoding="async" alt="">
-              <svg class="card__arrow" width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
           </div>
           <a class="card__label" href="${escapeHtml(getProductUrl(product))}"><p class="card__name">${escapeHtml(name)}</p></a>
