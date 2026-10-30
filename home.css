@@ -365,6 +365,9 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
 }
 
 .card__arrow svg { display: block; width: 100%; height: 100%; }
+@media (min-width: 1200px) {
+  .card__arrow { width: 56px; height: 56px; padding: 10px; }
+}
 .card__arrow:hover,
 .card__arrow:focus-visible { color: #ffffff; }
 
