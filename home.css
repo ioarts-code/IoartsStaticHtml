@@ -351,6 +351,23 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
   transform: scale(1.04);
 }
 
+.card__arrow {
+  position: absolute;
+  z-index: 5;
+  top: 50%;
+  right: 4%;
+  width: 44px;
+  height: 44px;
+  padding: 8px;
+  transform: translateY(-50%);
+  color: #444444;
+  transition: color 0.2s ease;
+}
+
+.card__arrow svg { display: block; width: 100%; height: 100%; }
+.card__arrow:hover,
+.card__arrow:focus-visible { color: #ffffff; }
+
 .card__art {
   position: absolute;
   top: -8%;

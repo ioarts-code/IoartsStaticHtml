@@ -307,12 +307,13 @@ function renderProductGrid() {
       const tagsMarkup = productTags.map(escapeHtml).join(' / ');
 
       return `
-        <article class="card">
+        <article class="card" data-images="${escapeHtml(JSON.stringify(imageUrls))}" data-image-index="0">
           <div class="card__img">
             <a class="card__img-link" href="${escapeHtml(getProductUrl(product))}">
               <img class="card__shadow" src="${escapeHtml(imageUrl ? optimizeImage(imageUrl, 640) : 'https://placehold.co/800x1000/171717/a2a2a2?text=Product')}" ${imageUrl ? `srcset="${escapeHtml(imageSrcset(imageUrl, [480, 960]))}" sizes="(max-width: 720px) 100vw, 33vw"` : ''} loading="lazy" decoding="async" alt="">
               <img class="card__art" src="/jnj3kgrund2Vitolaygrey.webp" loading="lazy" decoding="async" alt="">
             </a>
+            ${imageUrls.length > 1 ? '<button class="card__arrow" type="button" aria-label="Next image"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>' : ''}
           </div>
           <a class="card__label" href="${escapeHtml(getProductUrl(product))}"><p class="card__name">${escapeHtml(name)}</p></a>
           ${tagsMarkup ? `<p class="card__tags">${tagsMarkup}</p>` : ''}
@@ -653,6 +654,22 @@ async function loadMoreProducts() {
 }
 
 if (loadMoreButton) loadMoreButton.addEventListener('click', loadMoreProducts);
+
+if (productGrid) {
+  productGrid.addEventListener('click', (event) => {
+    const arrow = event.target.closest('.card__arrow');
+    if (!arrow) return;
+    const card = arrow.closest('.card');
+    let urls = [];
+    try { urls = JSON.parse(card.dataset.images || '[]'); } catch { return; }
+    if (urls.length < 2) return;
+    const nextIndex = (Number(card.dataset.imageIndex) + 1) % urls.length;
+    card.dataset.imageIndex = String(nextIndex);
+    const image = card.querySelector('.card__shadow');
+    image.src = optimizeImage(urls[nextIndex], 640);
+    image.srcset = imageSrcset(urls[nextIndex], [480, 960]);
+  });
+}
 
 async function fetchProductBySlug(slug) {
   const config = getHygraphConfig();
