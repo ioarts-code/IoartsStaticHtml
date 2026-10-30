@@ -347,3 +347,8 @@
     margin-top: -6px;
   }
 }
+
+/* Match the 48px page gutter between 721px and 768px */
+@media (min-width: 721px) and (max-width: 768px) {
+  .ioarts-footer { width: calc(100% - 96px); margin: 24px 48px 48px; }
+}
