@@ -454,9 +454,9 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
 
 /* ── Large monitors (above 24"): full-width description, larger image shifted left ── */
 @media (min-width: 1921px) {
-  .hero { --hero-image-scale: 1.9; --hero-image-left: 40%; }
+  .hero { --hero-image-scale: 1.9; --hero-image-left: 46%; }
   .hero__side { width: 100%; padding: 0 12%; }
-  .hero__desc { max-width: none; }
+  .hero__desc { max-width: 500px; }
 }
 
 /* ── Tablet / small laptop: title box below image ── */
