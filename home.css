@@ -452,6 +452,13 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
   color: #a2a2a2;
 }
 
+/* ── Large monitors (above 24"): full-width description, larger image shifted left ── */
+@media (min-width: 1921px) {
+  .hero { --hero-image-scale: 1.9; --hero-image-left: 40%; }
+  .hero__side { width: 100%; padding: 0 12%; }
+  .hero__desc { max-width: none; }
+}
+
 /* ── Tablet / small laptop: title box below image ── */
 @media (min-width: 721px) and (max-width: 1199px) {
   .card__label { margin-top: -6px; height: auto; min-height: 56px; padding: 6px 8px; }
