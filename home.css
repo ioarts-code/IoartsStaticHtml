@@ -255,7 +255,7 @@ button { cursor: pointer; background: none; border: none; font-family: inherit; 
   color: #a2a2a2;
   background: transparent;
   text-transform: lowercase;
-  transition: background 0.15s, color 0.15s;
+  transition: none;
   cursor: pointer;
 }
 
