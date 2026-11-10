@@ -77,7 +77,7 @@ const colorTypeFilters = document.getElementById('color-type-filters');
 const FEATURED_PRODUCT_SLUGS = ['t-shirt-cells', 'for-the-horde',];
 const PRODUCT_GRID_CATEGORY = 'vectors';
 const PRODUCT_PAGE_SIZE = 6;
-const INITIAL_PRODUCT_COUNT = 3;
+const INITIAL_PRODUCT_COUNT = PRODUCT_PAGE_SIZE;
 
 // Inserts Hygraph asset transforms (resize + webp) before the asset handle; other hosts pass through.
 function optimizeImage(url, width) {
@@ -525,7 +525,7 @@ async function fetchProductPage(skip, pageSize = PRODUCT_PAGE_SIZE, whereOverrid
       allTags: tags(first: 100) {
         name
       }
-      products(first: $first, skip: $skip, where: $where) {
+      products(first: $first, skip: $skip, where: $where, orderBy: createdAt_DESC) {
         id
         name
         slug
