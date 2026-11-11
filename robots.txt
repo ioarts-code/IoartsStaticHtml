@@ -1,4 +1,11 @@
 User-agent: *
 Allow: /
+Allow: /products/
+Allow: /images/
+Allow: /*.jpg$
+Allow: /*.jpeg$
+Allow: /*.png$
+Allow: /*.webp$
+Allow: /*.svg$
 
 Sitemap: https://ioarts.ink/sitemap.xml

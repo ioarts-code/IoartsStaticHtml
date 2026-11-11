@@ -155,10 +155,10 @@ function getFeaturedProducts(products) {
 }
 
 function getProductCategory(product) {
-  const category = product?.categories?.find((item) => item?.slug === 'vectors')
+  const category = product?.categories?.find((item) => item?.slug === PRODUCT_GRID_CATEGORY)
     || product?.categories?.find((item) => item?.slug !== 'hero' && item?.slug !== 't-shirt')
     || product?.categories?.[0];
-  return category?.name || 'Vectors';
+  return category?.name || 'Motifs';
 }
 
 function renderFilterGroup(container, options, activeValue, onChange) {
@@ -333,6 +333,62 @@ function renderProducts(products, append = false) {
   renderProductGrid();
 }
 
+function updateProductMetadata(product, images, category) {
+  const name = String(product?.name || 'IOARTS artwork');
+  const description = String(product?.description || `Explore ${name} from the IOARTS Motifs collection.`);
+  const canonicalUrl = new URL(window.location.pathname, window.location.origin).href;
+  const imageUrls = images.map((image) => image.url).filter(Boolean);
+  const setMeta = (attribute, key, value) => {
+    let meta = document.head.querySelector(`meta[${attribute}="${key}"]`);
+    if (!meta) {
+      meta = document.createElement('meta');
+      meta.setAttribute(attribute, key);
+      document.head.append(meta);
+    }
+    meta.setAttribute('content', value);
+  };
+
+  document.title = `${name} | IOARTS`;
+  let canonical = document.head.querySelector('link[rel="canonical"]');
+  if (!canonical) {
+    canonical = document.createElement('link');
+    canonical.rel = 'canonical';
+    document.head.append(canonical);
+  }
+  canonical.href = canonicalUrl;
+  setMeta('name', 'description', description);
+  setMeta('property', 'og:type', 'product');
+  setMeta('property', 'og:url', canonicalUrl);
+  setMeta('property', 'og:title', document.title);
+  setMeta('property', 'og:description', description);
+  setMeta('property', 'og:site_name', 'IOARTS');
+  setMeta('name', 'twitter:card', 'summary_large_image');
+  setMeta('name', 'twitter:title', document.title);
+  setMeta('name', 'twitter:description', description);
+  if (imageUrls[0]) {
+    setMeta('property', 'og:image', imageUrls[0]);
+    setMeta('name', 'twitter:image', imageUrls[0]);
+  }
+
+  let structuredData = document.getElementById('product-structured-data');
+  if (!structuredData) {
+    structuredData = document.createElement('script');
+    structuredData.id = 'product-structured-data';
+    structuredData.type = 'application/ld+json';
+    document.head.append(structuredData);
+  }
+  structuredData.textContent = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'VisualArtwork',
+    name,
+    description,
+    image: imageUrls,
+    genre: category,
+    url: canonicalUrl,
+    creator: { '@type': 'Organization', name: 'IOARTS' },
+  });
+}
+
 function renderProductDetail(product) {
   const detailContainer = document.getElementById('product-detail');
   if (!detailContainer) return;
@@ -346,6 +402,7 @@ function renderProductDetail(product) {
     ? product.colorTypeModel.charAt(0).toUpperCase() + product.colorTypeModel.slice(1)
     : '';
   const category = getProductCategory(product);
+  updateProductMetadata(product, images, category);
   const tags = escapeHtml(product?.tags?.map((tag) => tag.name).join(', ') || category);
   const linkToEtsy = safeHttpUrl(product?.linkToEtsy);
   const linkToDeviantArt = safeHttpUrl(product?.linktoDeviantArt || product?.linkToDeviantArt);
