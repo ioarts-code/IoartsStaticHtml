@@ -75,7 +75,7 @@ const tagFilters = document.getElementById('tag-filters');
 const colorTypeFilters = document.getElementById('color-type-filters');
 
 const FEATURED_PRODUCT_SLUGS = ['t-shirt-cells', 'for-the-horde',];
-const PRODUCT_GRID_CATEGORY = 'vectors';
+const PRODUCT_GRID_CATEGORY = 'motifs';
 const PRODUCT_PAGE_SIZE = 6;
 const INITIAL_PRODUCT_COUNT = PRODUCT_PAGE_SIZE;
 
