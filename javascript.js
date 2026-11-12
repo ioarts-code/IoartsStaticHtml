@@ -78,6 +78,17 @@ const FEATURED_PRODUCT_SLUGS = ['t-shirt-cells', 'for-the-horde',];
 const PRODUCT_GRID_CATEGORY = 'motifs';
 const PRODUCT_PAGE_SIZE = 6;
 const INITIAL_PRODUCT_COUNT = PRODUCT_PAGE_SIZE;
+const INITIAL_GRID_TAG_GROUPS = [
+  {
+    count: 3,
+    where: { tags_some: { name: 'Gaming' }, tags_none: { name: 'HD' } },
+  },
+  {
+    count: 3,
+    where: { AND: [{ tags_some: { name: 'Gaming' } }, { tags_some: { name: 'HD' } }] },
+  },
+];
+const INITIAL_GRID_TAG_QUERY_LIMIT = 12;
 
 // Inserts Hygraph asset transforms (resize + webp) before the asset handle; other hosts pass through.
 function optimizeImage(url, width) {
@@ -155,10 +166,10 @@ function getFeaturedProducts(products) {
 }
 
 function getProductCategory(product) {
-  const category = product?.categories?.find((item) => item?.slug === 'vectors')
+  const category = product?.categories?.find((item) => item?.slug === PRODUCT_GRID_CATEGORY)
     || product?.categories?.find((item) => item?.slug !== 'hero' && item?.slug !== 't-shirt')
     || product?.categories?.[0];
-  return category?.name || 'Vectors';
+  return category?.name || 'Motifs';
 }
 
 function renderFilterGroup(container, options, activeValue, onChange) {
@@ -280,6 +291,10 @@ function renderProductGrid() {
   if (!productGrid) return;
 
   const gridProducts = [...loadedProducts].sort((first, second) => {
+    const firstGroupOrder = Number.isInteger(first?._initialGridRank) ? first._initialGridRank : 2;
+    const secondGroupOrder = Number.isInteger(second?._initialGridRank) ? second._initialGridRank : 2;
+    if (firstGroupOrder !== secondGroupOrder) return firstGroupOrder - secondGroupOrder;
+
     const firstOrder = first?.colorTypeModel === 'light' ? 0 : first?.colorTypeModel === 'dark' ? 2 : 1;
     const secondOrder = second?.colorTypeModel === 'light' ? 0 : second?.colorTypeModel === 'dark' ? 2 : 1;
     return firstOrder - secondOrder;
@@ -326,11 +341,76 @@ function renderProductGrid() {
 function renderProducts(products, append = false) {
   if (!productGrid) return;
 
-  if (append) loadedProducts.push(...products);
-  else loadedProducts = [...products];
+  if (append) {
+    const knownProducts = new Set(loadedProducts.map((product) => product?.id || product?.slug).filter(Boolean));
+    loadedProducts.push(...products.filter((product) => {
+      const key = product?.id || product?.slug;
+      if (!key || knownProducts.has(key)) return false;
+      knownProducts.add(key);
+      return true;
+    }));
+  } else {
+    loadedProducts = [...products];
+  }
 
   renderProductFilters();
   renderProductGrid();
+}
+
+function updateProductMetadata(product, images, category) {
+  const name = String(product?.name || 'IOARTS artwork');
+  const description = String(product?.description || `Explore ${name} from the IOARTS Motifs collection.`);
+  const canonicalUrl = new URL(window.location.pathname, window.location.origin).href;
+  const imageUrls = images.map((image) => image.url).filter(Boolean);
+  const setMeta = (attribute, key, value) => {
+    let meta = document.head.querySelector(`meta[${attribute}="${key}"]`);
+    if (!meta) {
+      meta = document.createElement('meta');
+      meta.setAttribute(attribute, key);
+      document.head.append(meta);
+    }
+    meta.setAttribute('content', value);
+  };
+
+  document.title = `${name} | IOARTS`;
+  let canonical = document.head.querySelector('link[rel="canonical"]');
+  if (!canonical) {
+    canonical = document.createElement('link');
+    canonical.rel = 'canonical';
+    document.head.append(canonical);
+  }
+  canonical.href = canonicalUrl;
+  setMeta('name', 'description', description);
+  setMeta('property', 'og:type', 'product');
+  setMeta('property', 'og:url', canonicalUrl);
+  setMeta('property', 'og:title', document.title);
+  setMeta('property', 'og:description', description);
+  setMeta('property', 'og:site_name', 'IOARTS');
+  setMeta('name', 'twitter:card', 'summary_large_image');
+  setMeta('name', 'twitter:title', document.title);
+  setMeta('name', 'twitter:description', description);
+  if (imageUrls[0]) {
+    setMeta('property', 'og:image', imageUrls[0]);
+    setMeta('name', 'twitter:image', imageUrls[0]);
+  }
+
+  let structuredData = document.getElementById('product-structured-data');
+  if (!structuredData) {
+    structuredData = document.createElement('script');
+    structuredData.id = 'product-structured-data';
+    structuredData.type = 'application/ld+json';
+    document.head.append(structuredData);
+  }
+  structuredData.textContent = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'VisualArtwork',
+    name,
+    description,
+    image: imageUrls,
+    genre: category,
+    url: canonicalUrl,
+    creator: { '@type': 'Organization', name: 'IOARTS' },
+  });
 }
 
 function renderProductDetail(product) {
@@ -346,6 +426,7 @@ function renderProductDetail(product) {
     ? product.colorTypeModel.charAt(0).toUpperCase() + product.colorTypeModel.slice(1)
     : '';
   const category = getProductCategory(product);
+  updateProductMetadata(product, images, category);
   const tags = escapeHtml(product?.tags?.map((tag) => tag.name).join(', ') || category);
   const linkToEtsy = safeHttpUrl(product?.linkToEtsy);
   const linkToDeviantArt = safeHttpUrl(product?.linktoDeviantArt || product?.linkToDeviantArt);
@@ -589,20 +670,60 @@ async function fetchProductPage(skip, pageSize = PRODUCT_PAGE_SIZE, whereOverrid
 
 async function fetchProductsFromHygraph() {
   try {
-    const [{ products, colorTypes, tagNames }, { products: featuredProducts }] = await Promise.all([
+    const [
+      { products: generalProducts, colorTypes, tagNames },
+      gamingProductsResult,
+      gamingHdProductsResult,
+      { products: featuredProducts },
+    ] = await Promise.all([
       fetchProductPage(0, INITIAL_PRODUCT_COUNT),
+      fetchProductPage(0, INITIAL_GRID_TAG_QUERY_LIMIT, INITIAL_GRID_TAG_GROUPS[0].where)
+        .catch((error) => {
+          console.error('Initial gaming products fetch error:', error);
+          return { products: [] };
+        }),
+      fetchProductPage(0, INITIAL_GRID_TAG_QUERY_LIMIT, INITIAL_GRID_TAG_GROUPS[1].where)
+        .catch((error) => {
+          console.error('Initial Gaming/HD products fetch error:', error);
+          return { products: [] };
+        }),
       fetchProductPage(0, FEATURED_PRODUCT_SLUGS.length, { slug_in: FEATURED_PRODUCT_SLUGS })
         .catch((error) => {
           console.error('Featured products fetch error:', error);
           return { products: [] };
         }),
     ]);
+
+    const seenProducts = new Set();
+    const takeUniqueProducts = (products, count, groupRank) => {
+      const selected = [];
+      for (const product of products) {
+        const key = product?.id || product?.slug;
+        if (!key || seenProducts.has(key)) continue;
+        seenProducts.add(key);
+        selected.push({ ...product, _initialGridRank: groupRank });
+        if (selected.length === count) break;
+      }
+      return selected;
+    };
+
+    const groupedProducts = INITIAL_GRID_TAG_GROUPS.flatMap((group, index) => {
+      const products = index === 0 ? gamingProductsResult.products : gamingHdProductsResult.products;
+      return takeUniqueProducts(products, group.count, index);
+    });
+    const remainingProducts = takeUniqueProducts(
+      generalProducts,
+      Math.max(0, INITIAL_PRODUCT_COUNT - groupedProducts.length),
+      INITIAL_GRID_TAG_GROUPS.length,
+    );
+    const initialProducts = [...groupedProducts, ...remainingProducts];
+
     colorTypeOptions = colorTypes;
     tagOptionNames = tagNames;
-    productOffset = products.length;
-    renderFeaturedHero(featuredProducts.length > 0 ? featuredProducts : products);
-    renderProducts(products);
-    if (loadMoreContainer) loadMoreContainer.hidden = products.length < INITIAL_PRODUCT_COUNT;
+    productOffset = 0;
+    renderFeaturedHero(featuredProducts.length > 0 ? featuredProducts : generalProducts);
+    renderProducts(initialProducts);
+    if (loadMoreContainer) loadMoreContainer.hidden = generalProducts.length < INITIAL_PRODUCT_COUNT;
   } catch (error) {
     console.error('Hygraph fetch error:', error);
     showHeroLoadingState('Unable to load featured products. Check the Hygraph endpoint and token, or refresh with a valid auth token.');
